@@ -4,6 +4,7 @@ import { createGame } from "@/lib/game-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
+  try {
   const ip = request.headers.get("x-forwarded-for") || "unknown";
   const { allowed } = checkRateLimit(ip);
   if (!allowed) {
@@ -57,4 +58,11 @@ export async function POST(request: NextRequest) {
     cardPool: count,
     cardId: card.id,
   });
+  } catch (err) {
+    console.error("Game API error:", err);
+    return NextResponse.json(
+      { error: String(err), stack: err instanceof Error ? err.stack : undefined },
+      { status: 500 }
+    );
+  }
 }
