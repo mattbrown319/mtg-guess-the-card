@@ -10,9 +10,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Missing cardId" }, { status: 400 });
   }
 
+  const db = await getDb();
   const challengeId = uuidv4().slice(0, 8);
 
-  await getDb().execute({
+  await db.execute({
     sql: `INSERT INTO challenges (challenge_id, card_id, created_at, creator_session_id, creator_questions, creator_correct)
           VALUES (?, ?, ?, ?, ?, ?)`,
     args: [
@@ -34,7 +35,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
   }
 
-  const result = await getDb().execute({
+  const db = await getDb();
+  const result = await db.execute({
     sql: "SELECT * FROM challenges WHERE challenge_id = ?",
     args: [challengeId],
   });

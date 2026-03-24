@@ -9,11 +9,12 @@ export async function createGame(
   card: Card,
   timeLimitSeconds?: number
 ): Promise<GameState> {
+  const db = await getDb();
   const sessionId = uuidv4();
   const now = Date.now();
   const timeLimit = timeLimitSeconds || DEFAULT_TIME_LIMIT;
 
-  await getDb().execute({
+  await db.execute({
     sql: `INSERT INTO sessions (session_id, card_json, started_at, max_questions, time_limit_seconds)
           VALUES (?, ?, ?, ?, ?)`,
     args: [sessionId, JSON.stringify(card), now, MAX_QUESTIONS, timeLimit],
@@ -32,7 +33,8 @@ export async function createGame(
 }
 
 export async function getGame(sessionId: string): Promise<GameState | null> {
-  const result = await getDb().execute({
+  const db = await getDb();
+  const result = await db.execute({
     sql: "SELECT * FROM sessions WHERE session_id = ?",
     args: [sessionId],
   });
@@ -71,9 +73,10 @@ export async function addQuestion(
   if (game.questionCount >= game.maxQuestions)
     return { success: false, error: "Maximum questions reached" };
 
+  const db = await getDb();
   const questions = [...game.questions, qa];
 
-  await getDb().execute({
+  await db.execute({
     sql: `UPDATE sessions SET questions_json = ?, question_count = question_count + 1
           WHERE session_id = ?`,
     args: [JSON.stringify(questions), sessionId],
@@ -100,7 +103,8 @@ export async function submitGuess(
     );
   }
 
-  await getDb().execute({
+  const db = await getDb();
+  await db.execute({
     sql: `UPDATE sessions SET status = 'guessed', guess = ?, correct = ?
           WHERE session_id = ?`,
     args: [cardName, correct ? 1 : 0, sessionId],
@@ -110,7 +114,8 @@ export async function submitGuess(
 }
 
 export async function expireGame(sessionId: string): Promise<void> {
-  await getDb().execute({
+  const db = await getDb();
+  await db.execute({
     sql: "UPDATE sessions SET status = 'timeout' WHERE session_id = ? AND status = 'active'",
     args: [sessionId],
   });

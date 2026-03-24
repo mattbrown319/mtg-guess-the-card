@@ -41,7 +41,7 @@ export interface CardFilters {
 }
 
 export async function getRandomCard(filters: CardFilters): Promise<Card | null> {
-  const db = getDb();
+  const db = await getDb();
   const conditions: string[] = [];
   const args: (string | number)[] = [];
 
@@ -90,14 +90,14 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
 }
 
 export async function getCardById(id: string): Promise<Card | null> {
-  const db = getDb();
+  const db = await getDb();
   const result = await db.execute({ sql: "SELECT * FROM cards WHERE id = ?", args: [id] });
   return result.rows.length > 0 ? rowToCard(result.rows[0]) : null;
 }
 
 export async function searchCardNames(query: string, limit: number = 10): Promise<string[]> {
   if (!query || query.length < 2) return [];
-  const db = getDb();
+  const db = await getDb();
   const result = await db.execute({
     sql: "SELECT DISTINCT name FROM cards WHERE name LIKE ? ORDER BY popularity_score ASC NULLS LAST LIMIT ?",
     args: [`%${query}%`, limit],
@@ -106,7 +106,7 @@ export async function searchCardNames(query: string, limit: number = 10): Promis
 }
 
 export async function getCardCount(filters: CardFilters): Promise<number> {
-  const db = getDb();
+  const db = await getDb();
   const conditions: string[] = ["image_uri_normal IS NOT NULL"];
   const args: (string | number)[] = [];
 
