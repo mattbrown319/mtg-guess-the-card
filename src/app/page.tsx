@@ -210,6 +210,15 @@ export default function Home() {
         >
           {loading ? "Starting..." : "Start Game"}
         </button>
+
+        <div className="text-center">
+          <a
+            href="/create"
+            className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+          >
+            Or create a challenge for a specific card &rarr;
+          </a>
+        </div>
       </div>
     </main>
   );
