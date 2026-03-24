@@ -63,7 +63,7 @@ function buildShareText(
       : `Missed it after ${questionsAsked} Qs ❌`;
 
   const hintText = usedHint ? " (used a hint)" : "";
-  let text = `MTG Guess the Card 🃏\n${rows.join("\n")}\n${result}${hintText}`;
+  let text = `MTG Guess the Card\n${rows.join("\n")}\n${result}${hintText}`;
 
   if (challengeUrl) {
     text += `\nCan you beat me? ${challengeUrl}`;
