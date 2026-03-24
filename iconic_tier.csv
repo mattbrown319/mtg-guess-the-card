@@ -1,0 +1,393 @@
+name,popularity_score,edhrec_rank,penny_rank,num_printings,rarity,type_line
+Abrade,28.0,153,232,22,uncommon,Instant
+"Abrupt Decay",25.0,685,119,8,rare,Instant
+"Adarkar Wastes",26.0,166,192,23,rare,Land
+"Adeline, Resplendent Cathar",50.0,519,244,9,rare,"Legendary Creature — Human Knight"
+"Aether Hub",4.0,3162,14,5,uncommon,Land
+"An Offer You Can't Refuse",9.0,37,2203,8,uncommon,Instant
+"Ancestral Recall",1.0,,,11,bonus,Instant
+"Ancestral Vision",23.0,3000,95,6,rare,Sorcery
+"Ancient Tomb",8.0,64,,16,rare,Land
+"Anguished Unmaking",26.0,156,2995,17,rare,Instant
+"Animate Dead",36.0,226,184,17,uncommon,"Enchantment — Aura"
+"Arcane Denial",11.0,56,,20,common,Instant
+"Arcane Signet",0.0,3,,78,uncommon,Artifact
+"Archmage's Charm",4.0,1782,16,5,rare,Instant
+"Arid Mesa",9.0,55,,11,rare,Land
+"Ash Barrens",32.0,189,,29,common,Land
+"Ashnod's Altar",28.0,129,,12,uncommon,Artifact
+"Assassin's Trophy",21.0,125,568,16,rare,Instant
+"Austere Command",25.0,163,4790,22,rare,Sorcery
+"Avenger of Zendikar",38.0,264,6576,15,mythic,"Creature — Elemental"
+"Azorius Signet",35.0,185,1439,20,uncommon,Artifact
+Balance,0.0,,,22,mythic,Sorcery
+"Basilisk Collar",43.0,258,2872,17,rare,"Artifact — Equipment"
+"Battlefield Forge",19.0,123,179,21,rare,Land
+"Beast Whisperer",35.0,195,1989,13,rare,"Creature — Elf Druid"
+"Beast Within",4.0,25,,34,uncommon,Instant
+Berserk,32.0,3911,206,11,mythic,Instant
+"Big Score",40.0,171,2029,10,common,Instant
+"Birds of Paradise",4.0,33,71,47,rare,"Creature — Bird"
+Bitterblossom,24.0,634,163,13,mythic,"Kindred Enchantment — Faerie"
+"Black Lotus",0.0,,,13,bonus,Artifact
+"Black Market Connections",30.0,133,891,7,rare,Enchantment
+"Blackcleave Cliffs",30.0,1043,142,8,rare,Land
+"Blasphemous Act",3.0,23,3006,39,rare,Sorcery
+"Blast Zone",25.0,1536,140,14,rare,Land
+"Blood Artist",30.0,149,1136,15,uncommon,"Creature — Vampire"
+"Blood Crypt",12.0,72,,16,rare,"Land — Swamp Mountain"
+"Bloodbraid Elf",42.0,4400,204,14,uncommon,"Creature — Elf Berserker"
+"Bloodstained Mire",6.0,43,,12,rare,Land
+"Bloom Tender",44.0,289,3966,12,mythic,"Creature — Elf Druid"
+"Bojuka Bog",4.0,27,,34,common,Land
+"Bonecrusher Giant // Stomp",20.0,5329,90,7,rare,"Creature — Giant // Instant — Adventure"
+"Boros Charm",36.0,173,,14,uncommon,Instant
+"Boros Signet",44.0,228,2465,18,uncommon,Artifact
+"Boseiju, Who Endures",20.0,78,,5,rare,"Legendary Land"
+"Botanical Sanctum",13.0,1669,60,7,rare,Land
+"Bountiful Promenade",48.0,204,,6,rare,Land
+Brainstorm,1.0,68,9,41,common,Instant
+"Breeding Pool",4.0,63,25,18,rare,"Land — Forest Island"
+"Brisela, Voice of Nightmares",21.0,,,6,mythic,"Legendary Creature — Eldrazi Angel"
+Brushland,17.0,250,113,25,rare,Land
+"Buried Ruin",41.0,194,759,13,uncommon,Land
+"Burst Lightning",10.0,7373,35,6,common,Instant
+"Cabal Coffers",31.0,183,,9,mythic,Land
+"Canopy Vista",15.0,101,628,30,rare,"Land — Forest Plains"
+"Canyon Slough",50.0,705,299,17,rare,"Land — Swamp Mountain"
+"Cascade Bluffs",18.0,329,96,11,rare,Land
+"Castle Ardenvale",32.0,670,178,13,rare,Land
+"Cavern of Souls",12.0,112,,22,mythic,Land
+"Caves of Koilos",9.0,124,55,19,rare,Land
+"Celestial Colonnade",29.0,5368,158,13,rare,Land
+"Chain Lightning",5.0,6406,21,12,common,Sorcery
+Channel,5.0,,73,13,mythic,Sorcery
+"Chaos Orb",3.0,,,8,rare,Artifact
+"Chaos Warp",4.0,29,,47,rare,Instant
+"Choked Estuary",40.0,280,247,19,rare,Land
+"Chord of Calling",13.0,542,62,9,rare,Instant
+"Chromatic Lantern",11.0,79,3816,32,rare,Artifact
+"Chrome Mox",16.0,142,,11,mythic,Artifact
+"Cinder Glade",12.0,84,967,35,rare,"Land — Mountain Forest"
+"City of Brass",15.0,106,,34,rare,Land
+"Clifftop Retreat",14.0,87,289,18,rare,Land
+"Collective Brutality",50.0,11546,222,7,rare,Sorcery
+"Command Beacon",33.0,180,,12,rare,Land
+"Command Tower",0.0,2,,100,common,Land
+"Commander's Sphere",6.0,39,,43,common,Artifact
+"Concealed Courtyard",35.0,1160,155,7,rare,Land
+Condemn,36.0,4457,173,14,uncommon,Instant
+Consider,9.0,386,40,12,common,Instant
+"Contract from Below",3.0,,,7,rare,Sorcery
+"Copperline Gorge",13.0,1449,56,7,rare,Land
+"Council's Judgment",38.0,3383,187,9,rare,Sorcery
+Counterspell,1.0,17,8,67,uncommon,Instant
+"Cranial Plating",41.0,2217,216,11,uncommon,"Artifact — Equipment"
+"Craterhoof Behemoth",50.0,346,,14,mythic,"Creature — Beast"
+"Crop Rotation",41.0,213,,11,uncommon,Instant
+Crusade,1.0,,,12,rare,Enchantment
+"Cryptic Command",3.0,1667,15,11,rare,Instant
+Cultivate,3.0,20,1405,48,common,Sorcery
+"Cyclonic Rift",7.0,48,504,12,mythic,Instant
+Damn,9.0,325,42,9,rare,Sorcery
+Damnation,12.0,351,66,13,rare,Sorcery
+"Dark Confidant",11.0,1286,76,14,mythic,"Creature — Human Wizard"
+"Dark Ritual",3.0,34,32,47,common,Instant
+Darkpact,3.0,,,7,rare,Sorcery
+"Darkslick Shores",28.0,1321,125,7,rare,Land
+"Darkwater Catacombs",44.0,299,,27,rare,Land
+"Day of Judgment",35.0,1926,193,13,rare,Sorcery
+"Deadly Dispute",23.0,132,1101,15,common,Instant
+"Deadly Rollick",19.0,115,,6,rare,Instant
+"Deflecting Swat",13.0,81,,6,rare,Instant
+"Delighted Halfling",35.0,158,,7,rare,"Creature — Halfling Citizen"
+"Delver of Secrets // Insectile Aberration",44.0,15558,176,8,common,"Creature — Human Wizard // Creature — Human Insect"
+"Demonic Attorney",3.0,,,7,rare,Sorcery
+"Demonic Consultation",8.0,806,38,5,uncommon,Instant
+"Demonic Tutor",4.0,58,,22,mythic,Sorcery
+"Dig Through Time",4.0,625,31,13,rare,Instant
+"Dimir Signet",26.0,134,1274,19,common,Artifact
+"Doubling Season",29.0,209,3946,17,mythic,Enchantment
+"Dragonskull Summit",13.0,88,146,26,rare,Land
+"Dreamroot Cascade",34.0,186,,12,rare,Land
+"Drown in the Loch",45.0,1332,160,6,uncommon,Instant
+"Drowned Catacomb",15.0,111,94,21,rare,Land
+Duress,6.0,3227,36,36,common,Sorcery
+"Elvish Mystic",23.0,110,315,13,common,"Creature — Elf Druid"
+"Emrakul, the Aeons Torn",1.0,,,12,mythic,"Legendary Creature — Eldrazi"
+"Enlightened Tutor",22.0,116,,12,rare,Instant
+Entomb,42.0,315,,11,rare,Instant
+"Esper Sentinel",19.0,73,,5,rare,"Artifact Creature — Human Soldier"
+"Etali, Primal Storm",40.0,257,4710,22,rare,"Legendary Creature — Elder Dinosaur"
+"Eternal Witness",18.0,99,412,25,uncommon,"Creature — Human Shaman"
+"Everflowing Chalice",44.0,248,1189,24,uncommon,Artifact
+"Evolving Wilds",2.0,16,85,73,common,Land
+"Exotic Orchard",1.0,9,7358,50,rare,Land
+Explore,40.0,229,350,27,common,Sorcery
+"Expressive Iteration",39.0,971,243,10,uncommon,Sorcery
+"Fabled Passage",5.0,60,33,21,rare,Land
+"Fact or Fiction",17.0,631,101,32,uncommon,Instant
+"Faithless Looting",9.0,95,50,25,common,Sorcery
+Farewell,25.0,146,,15,rare,Sorcery
+Farseek,4.0,22,1205,30,common,Sorcery
+Fastbond,2.0,,,9,mythic,Enchantment
+"Feed the Swarm",17.0,89,306,21,common,Sorcery
+"Fellwar Stone",3.0,18,,37,uncommon,Artifact
+"Fetid Heath",22.0,387,109,9,rare,Land
+"Fetid Pools",35.0,834,202,15,rare,"Land — Island Swamp"
+"Field of the Dead",6.0,431,54,7,rare,Land
+"Fierce Guardianship",13.0,77,,6,rare,Instant
+"Flawless Maneuver",28.0,181,,7,rare,Instant
+"Flooded Strand",5.0,42,,13,rare,Land
+"Flowering of the White Tree",38.0,731,149,5,rare,"Legendary Enchantment"
+Forbid,37.0,7866,144,5,rare,Instant
+"Force of Will",20.0,188,,13,mythic,Instant
+"Frantic Search",16.0,113,114,15,common,Instant
+Gamble,44.0,231,,11,rare,Sorcery
+"Garruk Wildspeaker",48.0,5443,284,9,mythic,"Legendary Planeswalker — Garruk"
+"Garruk's Uprising",21.0,92,3221,11,uncommon,Enchantment
+"Gemstone Caverns",29.0,178,,10,mythic,"Legendary Land"
+"Generous Gift",10.0,54,2471,18,uncommon,Instant
+"Ghost Quarter",48.0,729,227,13,uncommon,Land
+"Ghostly Prison",32.0,168,,19,uncommon,Enchantment
+"Gitaxian Probe",2.0,530,10,5,common,Sorcery
+"Glacial Fortress",12.0,103,77,22,rare,Land
+"Godless Shrine",3.0,61,19,18,rare,"Land — Plains Swamp"
+"Grand Abolisher",38.0,249,1594,12,mythic,"Creature — Human Cleric"
+"Graven Cairns",37.0,588,167,7,rare,Land
+Griselbrand,2.0,,,10,mythic,"Legendary Creature — Demon"
+"Growth Spiral",37.0,217,175,13,common,Instant
+"Guardian Project",44.0,293,10155,13,mythic,Enchantment
+Gush,28.0,5906,152,7,common,Instant
+"Hall of Storm Giants",33.0,5131,130,5,rare,Land
+"Hallowed Fountain",11.0,66,,15,rare,"Land — Plains Island"
+"Hardened Scales",33.0,202,441,18,rare,Enchantment
+Harmonize,48.0,301,1224,38,uncommon,Sorcery
+Harrow,44.0,235,2870,20,common,Instant
+"Heartless Act",32.0,4829,105,5,uncommon,Instant
+"Hengegate Pathway // Mistgate Pathway",5.0,1122,20,5,rare,"Land // Land"
+"Herald's Horn",30.0,140,,13,uncommon,Artifact
+"Heroic Intervention",5.0,32,1529,26,rare,Instant
+"High Tide",33.0,817,180,7,uncommon,Instant
+"Hinterland Harbor",17.0,108,253,19,rare,Land
+"Hopeful Initiate",49.0,5373,219,7,rare,"Creature — Human Warlock"
+"Hullbreaker Horror",47.0,268,573,14,rare,"Creature — Kraken Horror"
+"Hymn to Tourach",2.0,9380,12,18,uncommon,Sorcery
+"Idol of Oblivion",36.0,199,,13,rare,Artifact
+"Impact Tremors",48.0,182,3709,7,common,Enchantment
+Impulse,29.0,2524,137,13,common,Instant
+Incinerate,41.0,13648,221,21,common,Instant
+"Irrigated Farmland",22.0,775,133,17,rare,"Land — Plains Island"
+"Isolated Chapel",10.0,98,61,18,rare,Land
+"Izzet Signet",30.0,162,1950,21,common,Artifact
+"Jeska's Will",26.0,102,,5,rare,Sorcery
+Karakas,2.0,,,9,mythic,"Legendary Land"
+"Karn's Bastion",37.0,198,3238,12,rare,Land
+"Karplusan Forest",17.0,230,118,29,rare,Land
+"Kellan, Planar Trailblazer",35.0,12334,136,5,rare,"Legendary Creature — Human Faerie Scout"
+"Kiki-Jiki, Mirror Breaker",32.0,1131,198,10,mythic,"Legendary Creature — Goblin Shaman"
+"Kodama's Reach",6.0,36,6214,26,common,"Sorcery — Arcane"
+"Kytheon, Hero of Akros // Gideon, Battle-Forged",26.0,10830,124,5,mythic,"Legendary Creature — Human Soldier // Legendary Planeswalker — Gideon"
+"Land Tax",40.0,426,,18,mythic,Enchantment
+"Leyline Axe",49.0,1566,205,6,rare,"Artifact — Equipment"
+"Lightning Bolt",20.0,159,,56,uncommon,Instant
+"Lightning Greaves",2.0,13,1005,45,uncommon,"Artifact — Equipment"
+"Living Death",40.0,483,225,14,rare,Sorcery
+"Llanowar Elves",9.0,62,276,55,common,"Creature — Elf Druid"
+"Llanowar Wastes",19.0,151,120,21,rare,Land
+"Lotus Bloom",48.0,3865,201,6,rare,Artifact
+"Lotus Petal",17.0,117,,13,uncommon,Artifact
+"Luminarch Aspirant",47.0,3582,185,5,rare,"Creature — Human Cleric"
+"Lurrus of the Dream-Den",39.0,2681,274,9,rare,"Legendary Creature — Cat Nightmare"
+"Luxury Suite",40.0,157,,5,rare,Land
+"Mana Confluence",25.0,118,,8,rare,Land
+"Mana Drain",9.0,114,,10,mythic,Instant
+"Mana Leak",8.0,1638,41,20,common,Instant
+"Mana Vault",10.0,143,,18,mythic,Artifact
+"Marsh Flats",8.0,51,,11,rare,Land
+"Memory Lapse",7.0,3028,44,17,common,Instant
+"Mind Stone",5.0,31,,42,uncommon,Artifact
+"Mind's Desire",44.0,3598,267,6,rare,Sorcery
+"Mishra's Factory",19.0,2930,107,25,uncommon,Land
+"Misty Rainforest",7.0,41,,11,rare,Land
+"Monastery Swiftspear",21.0,7124,111,11,uncommon,"Creature — Human Monk"
+"Morphic Pool",35.0,136,,5,rare,Land
+"Mosswort Bridge",31.0,191,3973,19,rare,Land
+"Mother of Runes",33.0,516,159,14,uncommon,"Creature — Human Cleric"
+"Mox Amber",37.0,208,,5,mythic,"Legendary Artifact"
+"Mox Emerald",1.0,,,10,bonus,Artifact
+"Mox Jet",1.0,,,10,bonus,Artifact
+"Mox Opal",31.0,239,,7,mythic,"Legendary Artifact"
+"Mox Pearl",1.0,,,10,bonus,Artifact
+"Mox Ruby",1.0,,,10,bonus,Artifact
+"Mox Sapphire",1.0,,,10,bonus,Artifact
+"Myriad Landscape",4.0,24,,39,uncommon,Land
+"Mystic Gate",29.0,897,115,5,rare,Land
+"Mystic Remora",18.0,93,,7,rare,Enchantment
+"Mystic Sanctuary",23.0,176,110,5,common,"Land — Island"
+"Mystical Tutor",13.0,139,,12,rare,Instant
+"Nature's Lore",6.0,30,1579,20,uncommon,Sorcery
+Necropotence,4.0,498,49,12,mythic,Enchantment
+Negate,9.0,53,181,29,common,Instant
+"Night's Whisper",39.0,196,,17,common,Sorcery
+"Nihil Spellbomb",14.0,5030,52,7,common,Artifact
+"Oblivion Stone",28.0,5217,138,9,rare,Artifact
+Opt,13.0,210,69,18,common,Instant
+"Orzhov Signet",31.0,172,1668,24,common,Artifact
+"Otawara, Soaring City",23.0,91,,5,rare,"Legendary Land"
+"Overgrown Tomb",5.0,74,28,15,rare,"Land — Swamp Forest"
+Panharmonicon,46.0,259,4943,14,rare,Artifact
+"Path of Ancestry",2.0,14,,43,common,Land
+"Path to Exile",1.0,15,5,47,uncommon,Instant
+Persist,44.0,1392,186,6,rare,Sorcery
+"Phyrexian Arena",15.0,96,353,24,rare,Enchantment
+"Phyrexian Tower",37.0,211,,8,mythic,"Legendary Land"
+"Pithing Needle",14.0,6096,97,15,rare,Artifact
+"Poison Counter",31.0,,,6,common,Card
+"Polluted Delta",5.0,38,,10,rare,Land
+Ponder,1.0,147,6,23,common,Sorcery
+Pongify,38.0,160,3751,9,uncommon,Instant
+"Prairie Stream",15.0,104,188,33,rare,"Land — Plains Island"
+Preordain,34.0,216,,20,common,Sorcery
+"Primeval Titan",2.0,,,9,mythic,"Creature — Giant"
+"Professional Face-Breaker",47.0,222,4395,8,rare,"Creature — Human Warrior"
+Propaganda,24.0,121,,17,uncommon,Enchantment
+"Ragavan, Nimble Pilferer",30.0,266,,10,mythic,"Legendary Creature — Monkey Pirate"
+"Rakdos Signet",29.0,152,1564,20,uncommon,Artifact
+"Rampant Growth",4.0,26,655,46,common,Sorcery
+"Rapid Hybridization",50.0,214,5002,10,uncommon,Instant
+"Razorverge Thicket",22.0,1471,103,8,rare,Land
+Reanimate,7.0,59,139,16,rare,Sorcery
+"Reflecting Pool",28.0,175,307,20,rare,Land
+"Rejuvenating Springs",33.0,141,,6,rare,Land
+"Reliquary Tower",2.0,10,3632,38,uncommon,Land
+Repeal,32.0,12177,128,8,common,Instant
+"Return of the Wildspeaker",30.0,174,7389,15,rare,Instant
+"Rhystic Study",6.0,40,,11,rare,Enchantment
+"Richard Garfield, Ph.D.",32.0,,,5,rare,"Legendary Creature — Human Designer"
+"Rishkar's Expertise",50.0,245,4979,9,rare,Sorcery
+"Rockfall Vale",39.0,207,520,11,rare,Land
+"Rogue's Passage",3.0,19,3626,31,uncommon,Land
+"Rootbound Crag",20.0,131,295,25,rare,Land
+"Rugged Prairie",38.0,322,197,11,rare,Land
+"Sacred Foundry",13.0,80,108,18,rare,"Land — Mountain Plains"
+"Sakura-Tribe Elder",18.0,105,,30,common,"Creature — Snake Shaman"
+"Scalding Tarn",8.0,50,,11,rare,Land
+"Scavenging Ooze",35.0,1418,217,19,rare,"Creature — Ooze"
+"Scute Swarm",44.0,225,3511,10,rare,"Creature — Insect"
+"Sea of Clouds",39.0,165,,6,rare,Land
+"Seachrome Coast",18.0,1221,80,7,rare,Land
+"Search for Azcanta // Azcanta, the Sunken Ruin",44.0,3611,172,5,rare,"Legendary Enchantment // Legendary Land"
+"Secret Base",38.0,,,5,common,Land
+"Sensei's Divining Top",33.0,220,,8,rare,Artifact
+"Serum Visions",5.0,795,27,18,uncommon,Sorcery
+"Shambling Vent",27.0,5334,122,7,rare,Land
+"Shark Typhoon",6.0,1227,26,8,rare,Enchantment
+"Shipwreck Marsh",43.0,218,,10,rare,Land
+"Shivan Reef",13.0,120,84,22,rare,Land
+"Sign in Blood",44.0,227,424,18,common,Sorcery
+"Silverbluff Bridge",49.0,1144,164,5,common,"Artifact Land"
+"Simian Spirit Guide",24.0,445,106,7,common,"Creature — Ape Spirit"
+"Simic Growth Chamber",50.0,275,3725,22,uncommon,Land
+Skullclamp,6.0,45,,24,uncommon,"Artifact — Equipment"
+"Sleight of Hand",44.0,4002,190,10,common,Sorcery
+"Smoldering Marsh",13.0,94,1131,31,rare,"Land — Swamp Mountain"
+"Smothering Tithe",8.0,57,5427,13,mythic,Enchantment
+"Smuggler's Copter",29.0,1827,123,6,rare,"Artifact — Vehicle"
+"Snow-Covered Forest",12.0,,,10,common,"Basic Snow Land — Forest"
+"Snow-Covered Island",8.0,,,11,common,"Basic Snow Land — Island"
+"Snow-Covered Mountain",12.0,,,10,common,"Basic Snow Land — Mountain"
+"Snow-Covered Plains",12.0,,,10,common,"Basic Snow Land — Plains"
+"Snow-Covered Swamp",12.0,,,10,common,"Basic Snow Land — Swamp"
+"Sokenzan, Crucible of Defiance",14.0,908,53,5,rare,"Legendary Land"
+"Sol Ring",0.0,1,,111,uncommon,Artifact
+"Solemn Simulacrum",4.0,35,949,51,rare,"Artifact Creature — Golem"
+"Soul-Guide Lantern",10.0,1359,43,10,uncommon,Artifact
+"Spectator Seating",43.0,170,,5,rare,Land
+"Spell Pierce",12.0,972,57,12,uncommon,Instant
+"Spire Garden",44.0,187,,6,rare,Land
+"Squirrel Stack",31.0,,,6,uncommon,"Artifact — Attraction"
+"Steam Vents",12.0,69,,15,rare,"Land — Island Mountain"
+"Sticker sheet",38.0,,,5,common,Stickers
+"Stomping Ground",3.0,67,18,18,rare,"Land — Mountain Forest"
+"Stormcarved Coast",29.0,221,148,10,rare,Land
+"Strip Mine",42.0,514,,18,rare,Land
+"Sulfur Falls",14.0,86,117,18,rare,Land
+"Sulfurous Springs",25.0,161,183,24,rare,Land
+"Sun Titan",34.0,279,2621,26,mythic,"Creature — Giant"
+"Sunken Hollow",11.0,82,237,35,rare,"Land — Island Swamp"
+"Sunpetal Grove",23.0,137,250,18,rare,Land
+"Supreme Verdict",15.0,459,81,12,rare,Sorcery
+"Swan Song",18.0,76,912,6,rare,Instant
+"Swiftfoot Boots",2.0,12,2881,41,uncommon,"Artifact — Equipment"
+"Sword of the Animist",42.0,241,6621,15,rare,"Legendary Artifact — Equipment"
+"Swords to Plowshares",1.0,11,,81,uncommon,Instant
+"Sylvan Library",28.0,255,189,13,mythic,Enchantment
+"Sylvan Safekeeper",47.0,785,200,6,rare,"Creature — Human Wizard"
+"Talisman of Conviction",32.0,155,2103,15,uncommon,Artifact
+"Talisman of Creativity",25.0,126,754,16,uncommon,Artifact
+"Talisman of Dominance",17.0,90,,20,uncommon,Artifact
+"Talisman of Hierarchy",29.0,138,1533,14,uncommon,Artifact
+"Talisman of Indulgence",26.0,127,919,14,uncommon,Artifact
+"Talisman of Progress",30.0,148,1909,16,uncommon,Artifact
+"Teferi's Protection",20.0,100,,10,rare,Instant
+"Teferi, Hero of Dominaria",25.0,4228,134,7,mythic,"Legendary Planeswalker — Teferi"
+"Temple Garden",7.0,83,39,15,rare,"Land — Forest Plains"
+"Temple of Deceit",47.0,303,616,23,rare,Land
+"Temple of Enlightenment",44.0,297,499,27,rare,Land
+"Temple of Epiphany",37.0,263,439,33,rare,Land
+"Temple of Mystery",42.0,295,440,31,rare,Land
+"Temple of Silence",40.0,269,378,27,rare,Land
+"Temple of Triumph",41.0,286,1234,29,rare,Land
+"Temple of the False God",11.0,70,,40,uncommon,Land
+Terminate,38.0,219,269,27,common,Instant
+"Terramorphic Expanse",4.0,28,718,56,common,Land
+"Thalia, Guardian of Thraben",15.0,2115,92,17,rare,"Legendary Creature — Human Soldier"
+"The Great Henge",38.0,234,,10,mythic,"Legendary Artifact"
+"The One Ring",10.0,85,,8,mythic,"Legendary Artifact"
+"Thought Scour",18.0,1696,67,7,common,Instant
+"Thought Vessel",4.0,21,764,29,common,Artifact
+"Thran Dynamo",43.0,206,,14,uncommon,Artifact
+"Three Tree City",44.0,197,890,7,rare,"Legendary Land"
+"Three Visits",9.0,44,,13,uncommon,Sorcery
+"Thrill of Possibility",42.0,201,1193,14,common,Instant
+"Time Vault",3.0,,,7,mythic,Artifact
+"Time Walk",1.0,,,10,bonus,Sorcery
+"Time Warp",44.0,1968,319,6,mythic,Sorcery
+"Timeless Dragon",41.0,8598,171,6,rare,"Creature — Dragon"
+Tinker,5.0,,,6,uncommon,Sorcery
+"Tireless Provisioner",44.0,177,2082,8,uncommon,"Creature — Elf Scout"
+"Tormod's Crypt",11.0,1818,51,12,uncommon,Artifact
+"Toxic Deluge",12.0,65,,12,rare,Sorcery
+"Training Center",34.0,145,,6,rare,Land
+"Treasure Cruise",1.0,616,13,12,common,Sorcery
+"Twilight Mire",41.0,430,209,10,rare,Land
+"Ugin, the Spirit Dragon",40.0,1496,288,10,mythic,"Legendary Planeswalker — Ugin"
+"Unclaimed Territory",50.0,233,,13,uncommon,Land
+"Underground River",23.0,154,226,25,rare,Land
+"Undergrowth Stadium",42.0,179,,6,rare,Land
+"Urborg, Tomb of Yawgmoth",14.0,71,,10,rare,"Legendary Land"
+"Urza's Saga",21.0,119,,8,rare,"Enchantment Land — Urza's Saga"
+"Vampiric Tutor",11.0,107,,13,mythic,Instant
+Vandalblast,20.0,97,2239,15,uncommon,Sorcery
+"Vault of Champions",43.0,167,,5,rare,Land
+"Vault of Whispers",42.0,608,214,10,common,"Artifact Land"
+"Vendilion Clique",28.0,6820,161,8,mythic,"Legendary Creature — Faerie Wizard"
+"Verdant Catacombs",8.0,47,,11,rare,Land
+Vesuva,18.0,914,99,7,mythic,Land
+Victimize,25.0,130,1481,19,uncommon,Sorcery
+"Village Rites",46.0,200,1259,10,common,Instant
+Vindicate,24.0,1157,126,11,rare,Sorcery
+"War Room",28.0,150,,12,rare,Land
+"Waterlogged Grove",36.0,1068,153,6,rare,Land
+"Watery Grave",9.0,52,,18,rare,"Land — Island Swamp"
+"Wayfarer's Bauble",18.0,109,2524,32,common,Artifact
+"Wild Growth",35.0,203,195,25,common,"Enchantment — Aura"
+Windfall,20.0,144,,16,uncommon,Sorcery
+"Windswept Heath",6.0,46,,11,rare,Land
+"Wooded Foothills",7.0,49,,10,rare,Land
+"Woodland Cemetery",20.0,122,177,17,rare,Land
+"Worldly Tutor",37.0,164,,7,rare,Instant
+"Wrath of God",12.0,603,91,47,rare,Sorcery
+"Yavimaya Coast",20.0,135,129,22,rare,Land
+"Yavimaya, Cradle of Growth",16.0,75,,8,rare,"Legendary Land"
