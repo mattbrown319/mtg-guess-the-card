@@ -134,14 +134,15 @@ export default function CardReveal({
         challengeUrl
       );
 
+      // Always show the text, and try to copy automatically
+      setShareText(text);
+      setShareState("shown");
       try {
         await navigator.clipboard.writeText(text);
         setShareState("copied");
-        setTimeout(() => setShareState("idle"), 3000);
+        setTimeout(() => setShareState("shown"), 3000);
       } catch {
-        // Clipboard failed (likely HTTP) — show text for manual copy
-        setShareText(text);
-        setShareState("shown");
+        // Clipboard failed — user can copy manually
       }
     } catch {
       setShareState("idle");
@@ -181,31 +182,39 @@ export default function CardReveal({
       )}
 
       {/* Share */}
-      <div className="flex gap-3">
+      {!shareText ? (
         <button
           onClick={handleShare}
           className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
         >
-          {shareState === "loading"
-            ? "Creating link..."
-            : shareState === "copied"
-              ? "Copied!"
-              : "Challenge a Friend"}
+          {shareState === "loading" ? "Creating link..." : "Challenge a Friend"}
         </button>
-      </div>
-
-      {shareState === "shown" && shareText && (
-        <textarea
-          readOnly
-          value={shareText}
-          autoFocus
-          onClick={(e) => {
-            e.preventDefault();
-            (e.target as HTMLTextAreaElement).select();
-          }}
-          className="w-full max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--text-primary)] font-mono resize-none"
-          rows={6}
-        />
+      ) : (
+        <div className="w-full max-w-md space-y-2">
+          <textarea
+            readOnly
+            value={shareText}
+            onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+            className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--text-primary)] font-mono resize-none"
+            rows={6}
+          />
+          <button
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(shareText);
+                setShareState("copied");
+                setTimeout(() => setShareState("idle"), 3000);
+              } catch {
+                // Select the text as fallback
+                const textarea = document.querySelector("textarea");
+                textarea?.select();
+              }
+            }}
+            className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer text-sm"
+          >
+            {shareState === "copied" ? "Copied!" : "Copy to Clipboard"}
+          </button>
+        </div>
       )}
 
       {/* Vote */}
