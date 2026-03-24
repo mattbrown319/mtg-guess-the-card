@@ -120,7 +120,15 @@ export async function getHint(
     messages: [
       {
         role: "user",
-        content: `Based on the conversation, give the player ONE new fact about the card that they haven't asked about yet. Respond with ONLY the fact itself — no preamble, no summary of what they know, no explanation. Just the fact. Examples of good responses: "It's a legendary creature." or "It costs 3 mana." or "It has flying."\n\nConversation so far:\n${qaHistory || "No questions asked yet."}`,
+        content: `Give the player ONE new fact about the card they haven't discovered yet. Respond with ONLY the fact — no preamble.
+
+CRITICAL RULES FOR HINTS:
+- NEVER reveal the card's signature mechanic, unique ability, or defining characteristic. Those are what make the card identifiable — giving them away ruins the game.
+- Instead, give MUNDANE attributes: mana cost, color, card type, rarity, power/toughness, set era, artist name, or a generic keyword like flying or trample.
+- Good hints: "It costs 3 mana." / "It's from the 1990s." / "It's mythic rare." / "It has 5 toughness."
+- BAD hints (too revealing): "It involves a subgame." / "You flip it onto the battlefield." / "It has protection from everything." / "It shuffles your library into your deck."
+
+Conversation so far:\n${qaHistory || "No questions asked yet."}`,
       },
     ],
   });

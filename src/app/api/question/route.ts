@@ -41,6 +41,11 @@ export async function POST(request: NextRequest) {
   // Handle hint requests — allowed as long as game was active at some point
   if (requestHint) {
     const hint = await getHint(game.card, game.questions);
+    // Store hint in Q&A log
+    await addQuestion(sessionId, {
+      question: "[Hint requested]",
+      answer: hint,
+    });
     return NextResponse.json({ hint });
   }
 
