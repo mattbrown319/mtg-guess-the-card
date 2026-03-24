@@ -120,7 +120,7 @@ export async function getHint(
     messages: [
       {
         role: "user",
-        content: `Review what the player has already learned about the card from their questions, and what they still DON'T know. Give them ONE small piece of information they haven't discovered yet — a single attribute, keyword, or characteristic. Do NOT summarize what the card does or describe its main ability. Just one new fact they haven't asked about. Keep it to one short sentence.\n\nConversation so far:\n${qaHistory || "No questions asked yet."}`,
+        content: `Based on the conversation, give the player ONE new fact about the card that they haven't asked about yet. Respond with ONLY the fact itself — no preamble, no summary of what they know, no explanation. Just the fact. Examples of good responses: "It's a legendary creature." or "It costs 3 mana." or "It has flying."\n\nConversation so far:\n${qaHistory || "No questions asked yet."}`,
       },
     ],
   });
