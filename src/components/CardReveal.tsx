@@ -27,6 +27,7 @@ interface CardRevealProps {
   card: CardData;
   questionsAsked: number;
   gaveUp?: boolean;
+  usedHint?: boolean;
   onPlayAgain: () => void;
   onVote: (vote: "fun" | "not_fun") => void;
   questions: QuestionAnswer[];
@@ -39,6 +40,7 @@ function buildShareText(
   correct: boolean,
   gaveUp: boolean | undefined,
   questionsAsked: number,
+  usedHint: boolean,
   challengeUrl?: string
 ): string {
   // Build a visual grid showing narrowing progress
@@ -60,7 +62,8 @@ function buildShareText(
       ? `Gave up after ${questionsAsked} Qs ❌`
       : `Missed it after ${questionsAsked} Qs ❌`;
 
-  let text = `MTG Guess the Card 🃏\n${rows.join("\n")}\n${result}`;
+  const hintText = usedHint ? " (used a hint)" : "";
+  let text = `MTG Guess the Card 🃏\n${rows.join("\n")}\n${result}${hintText}`;
 
   if (challengeUrl) {
     text += `\nCan you beat me? ${challengeUrl}`;
@@ -74,6 +77,7 @@ export default function CardReveal({
   card,
   questionsAsked,
   gaveUp,
+  usedHint,
   onPlayAgain,
   onVote,
   questions,
@@ -131,6 +135,7 @@ export default function CardReveal({
         correct,
         gaveUp,
         questionsAsked,
+        !!usedHint,
         challengeUrl
       );
 

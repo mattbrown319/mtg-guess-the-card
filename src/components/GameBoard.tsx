@@ -221,6 +221,7 @@ export default function GameBoard({
         card={reveal.card}
         questionsAsked={reveal.questionsAsked}
         gaveUp={reveal.gaveUp}
+        usedHint={!!hint}
         onPlayAgain={handlePlayAgain}
         onVote={handleVote}
         questions={questions}
