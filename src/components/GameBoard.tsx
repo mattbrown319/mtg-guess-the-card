@@ -283,6 +283,15 @@ export default function GameBoard({
                     {qa.answer}
                   </span>
                 </div>
+                {/* Nudge after the last answer if it was a "Yes" */}
+                {phase === "asking" && i === questions.length - 1 && qa.answer.trim().toLowerCase().startsWith("yes") && (
+                  <button
+                    onClick={transitionToGuessing}
+                    className="text-sm text-[var(--accent)] hover:text-[var(--accent-hover)] pl-6 cursor-pointer"
+                  >
+                    Think you know it? Make your guess &rarr;
+                  </button>
+                )}
               </div>
             ))}
             <div ref={qaEndRef} />
