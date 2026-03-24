@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  const { cardId, creatorSessionId, creatorQuestions, creatorCorrect } = body;
+  const { cardId, creatorSessionId, creatorQuestions, creatorCorrect, timeLimit } = body;
 
   if (!cardId) {
     return NextResponse.json({ error: "Missing cardId" }, { status: 400 });
@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
   const challengeId = uuidv4().slice(0, 8);
 
   await db.execute({
-    sql: `INSERT INTO challenges (challenge_id, card_id, created_at, creator_session_id, creator_questions, creator_correct)
-          VALUES (?, ?, ?, ?, ?, ?)`,
+    sql: `INSERT INTO challenges (challenge_id, card_id, created_at, creator_session_id, creator_questions, creator_correct, time_limit)
+          VALUES (?, ?, ?, ?, ?, ?, ?)`,
     args: [
       challengeId,
       cardId,
@@ -23,6 +23,7 @@ export async function POST(request: NextRequest) {
       creatorSessionId || null,
       creatorQuestions || null,
       creatorCorrect ? 1 : 0,
+      timeLimit || 180,
     ],
   });
 
@@ -51,5 +52,6 @@ export async function GET(request: NextRequest) {
     cardId: row.card_id,
     creatorQuestions: row.creator_questions,
     creatorCorrect: row.creator_correct === 1,
+    timeLimit: row.time_limit || 180,
   });
 }

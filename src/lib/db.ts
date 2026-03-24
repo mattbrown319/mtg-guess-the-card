@@ -39,9 +39,15 @@ async function initTables(db: Client): Promise<void> {
       created_at INTEGER NOT NULL,
       creator_session_id TEXT,
       creator_questions INTEGER,
-      creator_correct INTEGER
+      creator_correct INTEGER,
+      time_limit INTEGER DEFAULT 180
     )
   `);
+
+  // Add time_limit column if it doesn't exist (migration for existing DBs)
+  await db.execute(
+    "ALTER TABLE challenges ADD COLUMN time_limit INTEGER DEFAULT 180"
+  ).catch(() => {});
 }
 
 export async function getDb(): Promise<Client> {

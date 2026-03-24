@@ -59,6 +59,29 @@ function buildShareText(
   return text;
 }
 
+function buildTranscriptText(
+  questions: QuestionAnswer[],
+  correct: boolean,
+  gaveUp: boolean | undefined,
+  questionsAsked: number,
+  usedHint: boolean
+): string {
+  const lines = questions.map((qa, i) => {
+    const prefix = qa.question === "[Hint requested]" ? "Hint" : `Q${i + 1}`;
+    return `${prefix}: ${qa.question === "[Hint requested]" ? qa.answer : `${qa.question} → ${qa.answer}`}`;
+  });
+
+  const result = correct
+    ? `Got it in ${questionsAsked} Qs! ✅`
+    : gaveUp
+      ? `Gave up after ${questionsAsked} Qs ❌`
+      : `Missed it after ${questionsAsked} Qs ❌`;
+
+  const hintText = usedHint ? " (used a hint)" : "";
+
+  return `MTG Guess the Card\n${lines.join("\n")}\n${result}${hintText}`;
+}
+
 export default function CardReveal({
   correct,
   card,
@@ -76,6 +99,7 @@ export default function CardReveal({
     "idle" | "loading" | "copied" | "shown"
   >("idle");
   const [shareText, setShareText] = useState("");
+  const [transcriptCopied, setTranscriptCopied] = useState(false);
 
   const heading = correct
     ? "You got it!"
@@ -175,12 +199,30 @@ export default function CardReveal({
 
       {/* Share */}
       {!shareText ? (
-        <button
-          onClick={handleShare}
-          className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
-        >
-          {shareState === "loading" ? "Creating link..." : "Challenge a Friend"}
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={handleShare}
+            className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
+          >
+            {shareState === "loading" ? "Creating link..." : "Challenge a Friend"}
+          </button>
+          <button
+            onClick={async () => {
+              const text = buildTranscriptText(questions, correct, gaveUp, questionsAsked, !!usedHint);
+              try {
+                await navigator.clipboard.writeText(text);
+                setTranscriptCopied(true);
+                setTimeout(() => setTranscriptCopied(false), 3000);
+              } catch {
+                setShareText(text);
+                setShareState("shown");
+              }
+            }}
+            className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
+          >
+            {transcriptCopied ? "Copied!" : "Share my Q&A"}
+          </button>
+        </div>
       ) : (
         <div className="w-full max-w-md space-y-2">
           <textarea

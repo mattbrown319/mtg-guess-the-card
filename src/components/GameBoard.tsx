@@ -308,7 +308,7 @@ export default function GameBoard({
           />
           <div className="flex gap-2 justify-between">
             <div>
-              {questions.length >= 3 && (
+              {questions.length >= 5 && (
                 <button
                   onClick={handleHint}
                   disabled={questionLoading}

@@ -44,7 +44,7 @@ export default function ChallengePage({
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             cardId: challengeData.cardId,
-            timeLimitSeconds: 180,
+            timeLimitSeconds: challengeData.timeLimit || 180,
           }),
         });
 

@@ -5,6 +5,16 @@ export const metadata: Metadata = {
   title: "MTG Guess the Card",
   description:
     "Can you guess the Magic: The Gathering card by asking yes/no questions?",
+  openGraph: {
+    title: "MTG Guess the Card",
+    description: "Ask yes/no questions to identify the mystery Magic: The Gathering card. Challenge your friends!",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MTG Guess the Card",
+    description: "Ask yes/no questions to identify the mystery Magic: The Gathering card.",
+  },
 };
 
 export default function RootLayout({

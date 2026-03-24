@@ -10,10 +10,20 @@ interface CardResult {
   imageUrl: string;
 }
 
+const TIME_LIMITS = [
+  { value: 60, label: "60 seconds" },
+  { value: 90, label: "90 seconds" },
+  { value: 120, label: "2 minutes" },
+  { value: 180, label: "3 minutes" },
+  { value: 300, label: "5 minutes" },
+  { value: 0, label: "No limit" },
+];
+
 export default function CreateChallenge() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CardResult[]>([]);
   const [selectedCard, setSelectedCard] = useState<CardResult | null>(null);
+  const [timeLimit, setTimeLimit] = useState(180);
   const [challengeUrl, setChallengeUrl] = useState("");
   const [creating, setCreating] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -53,7 +63,7 @@ export default function CreateChallenge() {
       const res = await fetch("/api/challenge", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cardId: selectedCard.id }),
+        body: JSON.stringify({ cardId: selectedCard.id, timeLimit }),
       });
       const data = await res.json();
       if (data.challengeId) {
@@ -119,6 +129,24 @@ export default function CreateChallenge() {
               ))}
             </ul>
           )}
+        </div>
+
+        {/* Timer selector */}
+        <div>
+          <label className="block text-sm font-medium mb-1.5 text-[var(--text-secondary)]">
+            Time Limit
+          </label>
+          <select
+            value={timeLimit}
+            onChange={(e) => setTimeLimit(Number(e.target.value))}
+            className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg px-3 py-2 text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent)]"
+          >
+            {TIME_LIMITS.map((t) => (
+              <option key={t.value} value={t.value}>
+                {t.label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* Selected card preview */}
