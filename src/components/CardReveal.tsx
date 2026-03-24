@@ -49,7 +49,8 @@ function buildShareText(
       ? `Gave up after ${questionsAsked} Qs ❌`
       : `Missed it after ${questionsAsked} Qs ❌`;
 
-  const hintText = usedHint ? " (used a hint)" : "";
+  const hintCount = questions.filter(qa => qa.question === "[Hint requested]").length;
+  const hintText = hintCount > 1 ? ` (used ${hintCount} hints)` : hintCount === 1 ? " (used a hint)" : "";
   let text = `MTG Guess the Card\n${result}${hintText}`;
 
   if (challengeUrl) {
@@ -64,7 +65,7 @@ function buildSummaryShareText(
   correct: boolean,
   gaveUp: boolean | undefined,
   questionsAsked: number,
-  usedHint: boolean
+  questions: QuestionAnswer[]
 ): string {
   const result = correct
     ? `Got it in ${questionsAsked} Qs! ✅`
@@ -72,7 +73,8 @@ function buildSummaryShareText(
       ? `Gave up after ${questionsAsked} Qs ❌`
       : `Missed it after ${questionsAsked} Qs ❌`;
 
-  const hintText = usedHint ? " (used a hint)" : "";
+  const hintCount = questions.filter(qa => qa.question === "[Hint requested]").length;
+  const hintText = hintCount > 1 ? ` (used ${hintCount} hints)` : hintCount === 1 ? " (used a hint)" : "";
 
   return `MTG Guess the Card\n${result}${hintText}\nNarrowed to: ${shareSummary}`;
 }
@@ -212,7 +214,7 @@ export default function CardReveal({
                 });
                 const data = await res.json();
                 if (data.shareSummary) {
-                  const text = buildSummaryShareText(data.shareSummary, correct, gaveUp, questionsAsked, !!usedHint);
+                  const text = buildSummaryShareText(data.shareSummary, correct, gaveUp, questionsAsked, questions);
                   try {
                     await navigator.clipboard.writeText(text);
                   } catch {
