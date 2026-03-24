@@ -1,0 +1,164 @@
+import Anthropic from "@anthropic-ai/sdk";
+import type { Card } from "@/types";
+
+const client = new Anthropic();
+
+function cardToContext(card: Card): string {
+  const parts: string[] = [
+    `Name: ${card.name}`,
+    `Mana Cost: ${card.mana_cost || "None"}`,
+    `Converted Mana Cost (Mana Value): ${card.cmc}`,
+    `Type Line: ${card.type_line}`,
+    `Colors: ${card.colors.length > 0 ? card.colors.join(", ") : "Colorless"}`,
+    `Color Identity: ${card.color_identity.length > 0 ? card.color_identity.join(", ") : "Colorless"}`,
+    `Rarity: ${card.rarity}`,
+    `Set: ${card.set_name} (${card.set_code})`,
+    `Released: ${card.released_at}`,
+    `Artist: ${card.artist}`,
+  ];
+
+  if (card.oracle_text) parts.push(`Oracle Text: ${card.oracle_text}`);
+  if (card.power !== null) parts.push(`Power: ${card.power}`);
+  if (card.toughness !== null) parts.push(`Toughness: ${card.toughness}`);
+  if (card.loyalty !== null) parts.push(`Loyalty: ${card.loyalty}`);
+  if (card.keywords.length > 0)
+    parts.push(`Keywords: ${card.keywords.join(", ")}`);
+  if (card.flavor_text) parts.push(`Flavor Text: ${card.flavor_text}`);
+  if (card.produced_mana && card.produced_mana.length > 0)
+    parts.push(`Produces Mana: ${card.produced_mana.join(", ")}`);
+
+  if (card.card_faces) {
+    parts.push(`\nThis is a double-faced card with ${card.card_faces.length} faces:`);
+    for (const face of card.card_faces) {
+      parts.push(`\n--- Face: ${face.name} ---`);
+      parts.push(`  Mana Cost: ${face.mana_cost || "None"}`);
+      parts.push(`  Type: ${face.type_line}`);
+      if (face.oracle_text) parts.push(`  Text: ${face.oracle_text}`);
+      if (face.power !== null) parts.push(`  Power: ${face.power}`);
+      if (face.toughness !== null) parts.push(`  Toughness: ${face.toughness}`);
+    }
+  }
+
+  const legalFormats = Object.entries(card.legalities)
+    .filter(([, status]) => status === "legal" || status === "restricted")
+    .map(([format]) => format);
+  if (legalFormats.length > 0)
+    parts.push(`Legal in: ${legalFormats.join(", ")}`);
+
+  const bannedFormats = Object.entries(card.legalities)
+    .filter(([, status]) => status === "banned")
+    .map(([format]) => format);
+  if (bannedFormats.length > 0)
+    parts.push(`Banned in: ${bannedFormats.join(", ")}`);
+
+  if (card.edhrec_rank !== null)
+    parts.push(`EDHREC Popularity Rank: ${card.edhrec_rank} (lower = more popular)`);
+
+  return parts.join("\n");
+}
+
+const SYSTEM_PROMPT = `You are a Magic: The Gathering expert acting as the host of a "Guess the Card" game. A player is trying to identify a specific MTG card by asking yes/no questions.
+
+RULES:
+1. Answer ONLY with "Yes." or "No." — nothing else. Do NOT add any explanation, clarification, or extra details.
+2. ABSOLUTELY NEVER reveal the card's name, even partially. Do not say the name, hint at the name, or confirm a name guess. If the player asks "is it [card name]?" respond ONLY with "Use the guess button to submit your answer!"
+3. NEVER volunteer information the player didn't ask about. If they ask "is it a permanent?" answer "Yes." — do NOT add "It's an artifact" or any other detail. They need to ask about card type separately.
+4. If the player says "I give up", "I don't know", "I quit", or similar, respond with "Don't give up! Use the guess button to make your best guess, or keep asking questions!"
+5. If a question is ambiguous, interpret it in the most common/natural MTG sense and answer yes or no.
+6. If a question truly cannot be answered yes/no, say "Try rephrasing as a yes/no question!"
+7. If a question is about subjective things (like "is this card good?"), use your MTG knowledge to give a reasonable yes/no based on general community consensus.
+8. For questions about competitive play, archetypes, combos, etc., use your training knowledge about Magic in addition to the card data.
+9. The set information in the card data may be from a reprint, not the original printing. If asked about the original set, say what you know from your training knowledge, or answer based on the data provided. Do NOT guess or make up set information.
+10. Keep responses extremely terse. "Yes." or "No." is the ideal response. Only add a VERY brief qualifier when the yes/no alone would be misleading (e.g., "Yes, but only one of its abilities does.").
+11. If the player asks something that contradicts or ignores what they already established, gently remind them. For example, if they already confirmed the card costs 4 mana and then ask "does it cost 2U?", answer "No — remember, it's 4 mana, not 3." If they're asking about the wrong color or type, a brief nudge helps. Act like a helpful game store host who notices when someone loses track.
+12. If a technically-correct yes/no would be misleading in context, add a SHORT qualifier. For example, if a card has Cycling (an activated ability used from hand) and the player asks "activated ability?" while clearly asking about battlefield abilities, say "Yes, but only from your hand (Cycling)."
+
+MTG KNOWLEDGE YOU MUST APPLY:
+- Color pairs have guild/faction names. You MUST recognize these: Azorius=WU, Dimir=UB, Rakdos=BR, Gruul=RG, Selesnya=GW, Orzhov=WB, Izzet=UR, Golgari=BG, Boros=RW, Simic=UG. Three-color combinations: Esper=WUB, Grixis=UBR, Jund=BRG, Naya=RGW, Bant=GWU, Abzan/Junk=WBG, Jeskai=URW, Sultai=BUG, Mardu=RWB, Temur=GUR.
+- MTG type hierarchy: Permanents include creatures, artifacts, enchantments, planeswalkers, battles, and lands. Creatures are a subset of permanents. If a card says "target nonland permanent", it CAN target creatures, artifacts, enchantments, planeswalkers, and battles. If a card says "target creature", it can target any creature. Think carefully about what card types are subsets of other types.
+- When a card says "destroy target nonland permanent" and the player asks "can it target a creature?", the answer is YES because creatures are nonland permanents.
+- "Does it interact with" or "does it deal with" a zone/type means the card's text references or affects that zone/type in any way.`;
+
+export async function answerQuestion(
+  card: Card,
+  question: string,
+  previousQA: { question: string; answer: string }[]
+): Promise<string> {
+  const messages: Anthropic.MessageParam[] = [];
+
+  // Include previous Q&A as conversation context
+  for (const qa of previousQA) {
+    messages.push({ role: "user", content: qa.question });
+    messages.push({ role: "assistant", content: qa.answer });
+  }
+
+  messages.push({ role: "user", content: question });
+
+  const response = await client.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 150,
+    system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
+    messages,
+  });
+
+  const textBlock = response.content.find((block) => block.type === "text");
+  return textBlock ? textBlock.text : "Sorry, I couldn't process that question.";
+}
+
+export async function getHint(
+  card: Card,
+  previousQA: { question: string; answer: string }[]
+): Promise<string> {
+  const qaHistory = previousQA
+    .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
+    .join("\n");
+
+  const response = await client.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 100,
+    system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
+    messages: [
+      {
+        role: "user",
+        content: `Review what the player has already learned about the card from their questions, and what they still DON'T know. Give them ONE small piece of information they haven't discovered yet — a single attribute, keyword, or characteristic. Do NOT summarize what the card does or describe its main ability. Just one new fact they haven't asked about. Keep it to one short sentence.\n\nConversation so far:\n${qaHistory || "No questions asked yet."}`,
+      },
+    ],
+  });
+
+  const textBlock = response.content.find((block) => block.type === "text");
+  return textBlock ? textBlock.text : "Try asking about the card's color or type!";
+}
+
+export async function generateSummary(
+  previousQA: { question: string; answer: string }[]
+): Promise<string> {
+  const qaHistory = previousQA
+    .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
+    .join("\n");
+
+  const response = await client.messages.create({
+    model: "claude-haiku-4-5-20251001",
+    max_tokens: 300,
+    system: `You consolidate information from a Q&A session about a mystery Magic: The Gathering card into a clean summary. Do NOT guess the card name.`,
+    messages: [
+      {
+        role: "user",
+        content: `Based on this Q&A, write a concise summary of what the player knows about the mystery card. Consolidate redundant facts (e.g., "is it 4+ mana?" Yes + "is it 7 mana?" Yes → just say "7 mana"). Include BOTH confirmed facts (Yes answers) and ruled-out facts (No answers). Format as two sections:
+
+IS:
+- bullet points of confirmed attributes
+
+IS NOT:
+- bullet points of ruled-out attributes
+
+Keep it tight. Merge related facts. Skip questions that were just refinements of earlier ones.
+
+Q&A:
+${qaHistory}`,
+      },
+    ],
+  });
+
+  const textBlock = response.content.find((block) => block.type === "text");
+  return textBlock ? textBlock.text : "Could not generate summary.";
+}
