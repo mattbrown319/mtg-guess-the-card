@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState, useEffect } from "react";
 import GameBoard from "@/components/GameBoard";
 import { useSearchParams } from "next/navigation";
 
@@ -14,6 +14,18 @@ export default function GamePage({
   const timeLimit = Number(searchParams.get("t")) || 180;
   const maxQuestions = Number(searchParams.get("q")) || 999;
   const cardId = searchParams.get("c") || undefined;
+  const [cardNames, setCardNames] = useState<string[] | undefined>(undefined);
+
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem("cardNames");
+      if (stored) {
+        setCardNames(JSON.parse(stored));
+      }
+    } catch {
+      // sessionStorage unavailable
+    }
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-6 pt-12">
@@ -26,6 +38,7 @@ export default function GamePage({
           timeLimitSeconds={timeLimit}
           maxQuestions={maxQuestions}
           cardId={cardId}
+          cardNames={cardNames}
         />
       </div>
     </main>

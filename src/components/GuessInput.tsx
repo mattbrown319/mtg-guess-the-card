@@ -6,12 +6,14 @@ interface GuessInputProps {
   onGuess: (cardName: string) => Promise<void>;
   disabled: boolean;
   loading: boolean;
+  cardNames?: string[];
 }
 
 export default function GuessInput({
   onGuess,
   disabled,
   loading,
+  cardNames,
 }: GuessInputProps) {
   const [guess, setGuess] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -25,6 +27,20 @@ export default function GuessInput({
       inputRef.current?.focus();
     }
   }, [disabled, loading]);
+
+  function filterLocal(query: string) {
+    if (query.length < 2 || !cardNames) {
+      setSuggestions([]);
+      return;
+    }
+    const lower = query.toLowerCase();
+    const matches = cardNames
+      .filter((name) => name.toLowerCase().includes(lower))
+      .slice(0, 10);
+    setSuggestions(matches);
+    setShowSuggestions(true);
+    setSelectedIndex(-1);
+  }
 
   async function fetchSuggestions(query: string) {
     if (query.length < 2) {
@@ -46,8 +62,14 @@ export default function GuessInput({
 
   function handleChange(value: string) {
     setGuess(value);
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => fetchSuggestions(value), 200);
+    if (cardNames) {
+      // Client-side filtering — instant
+      filterLocal(value);
+    } else {
+      // Fallback to server-side
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => fetchSuggestions(value), 200);
+    }
   }
 
   function handleSelect(name: string) {

@@ -146,3 +146,45 @@ export async function getCardCount(filters: CardFilters): Promise<number> {
   });
   return result.rows[0].count as number;
 }
+
+export async function getAllCardNames(filters: CardFilters): Promise<string[]> {
+  const db = await getDb();
+  const conditions: string[] = ["image_uri_normal IS NOT NULL"];
+  const args: (string | number)[] = [];
+
+  if (filters.format) {
+    conditions.push(
+      `json_extract(legalities, '$.' || ?) IN ('legal', 'restricted')`
+    );
+    args.push(filters.format);
+  }
+
+  if (filters.popularityTier) {
+    switch (filters.popularityTier) {
+      case "popular":
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 100");
+        break;
+      case "well-known":
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
+        break;
+      case "medium":
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 2000");
+        break;
+      case "obscure":
+        conditions.push("popularity_score IS NOT NULL AND popularity_score > 2000");
+        break;
+    }
+  }
+
+  if (filters.cardType) {
+    conditions.push("type_line LIKE ?");
+    args.push(`%${filters.cardType}%`);
+  }
+
+  const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
+  const result = await db.execute({
+    sql: `SELECT DISTINCT name FROM cards ${where} ORDER BY name`,
+    args,
+  });
+  return result.rows.map((r) => r.name as string);
+}

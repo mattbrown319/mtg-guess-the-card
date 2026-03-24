@@ -38,12 +38,14 @@ interface GameBoardProps {
   timeLimitSeconds: number;
   maxQuestions: number;
   cardId?: string;
+  cardNames?: string[];
 }
 
 export default function GameBoard({
   sessionId,
   timeLimitSeconds,
   cardId,
+  cardNames,
 }: GameBoardProps) {
   const [phase, setPhase] = useState<Phase>("asking");
   const [questions, setQuestions] = useState<QuestionAnswer[]>([]);
@@ -335,6 +337,7 @@ export default function GameBoard({
             onGuess={handleGuess}
             disabled={false}
             loading={guessLoading}
+            cardNames={cardNames}
           />
           <button
             onClick={handleGiveUp}

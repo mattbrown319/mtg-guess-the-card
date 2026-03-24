@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRandomCard, getCardCount, getCardById } from "@/lib/cards";
+import { getRandomCard, getCardCount, getCardById, getAllCardNames } from "@/lib/cards";
 import { createGame } from "@/lib/game-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 
@@ -51,12 +51,16 @@ export async function POST(request: NextRequest) {
 
   const game = await createGame(card, timeLimitSeconds);
 
+  // Preload card names for client-side autocomplete (skip for huge pools)
+  const cardNames = count <= 10000 ? await getAllCardNames(filters) : undefined;
+
   return NextResponse.json({
     sessionId: game.sessionId,
     timeLimitSeconds: game.timeLimitSeconds,
     maxQuestions: game.maxQuestions,
     cardPool: count,
     cardId: card.id,
+    cardNames,
   });
   } catch (err) {
     console.error("Game API error:", err);

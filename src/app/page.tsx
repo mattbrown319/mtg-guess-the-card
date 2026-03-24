@@ -99,6 +99,15 @@ export default function Home() {
         addRecentCardId(data.cardId);
       }
 
+      // Store card names in sessionStorage for client-side autocomplete
+      if (data.cardNames) {
+        try {
+          sessionStorage.setItem("cardNames", JSON.stringify(data.cardNames));
+        } catch {
+          // Storage full or unavailable
+        }
+      }
+
       router.push(`/game/${data.sessionId}?t=${timeLimit}&q=${data.maxQuestions}&c=${data.cardId}`);
     } catch {
       setError("Something went wrong. Is the card database imported?");
