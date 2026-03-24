@@ -45,7 +45,7 @@ function buildShareText(
   // Each question gets a colored square based on yes/no
   const squares = questions.map((qa) => {
     const a = qa.answer.trim().toLowerCase();
-    return a.startsWith("yes") ? "🟩" : "🟥";
+    return a.startsWith("yes") ? "⬜" : "⬛";
   });
 
   // Break into rows of 10
@@ -181,24 +181,28 @@ export default function CardReveal({
       )}
 
       {/* Share */}
-      <button
-        onClick={handleShare}
-        className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
-      >
-        {shareState === "loading"
-          ? "Creating link..."
-          : shareState === "copied"
-            ? "Copied to clipboard!"
-            : shareState === "shown"
-              ? "Copy the text below!"
-              : "Share & Challenge a Friend"}
-      </button>
+      <div className="flex gap-3">
+        <button
+          onClick={handleShare}
+          className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
+        >
+          {shareState === "loading"
+            ? "Creating link..."
+            : shareState === "copied"
+              ? "Copied!"
+              : "Challenge a Friend"}
+        </button>
+      </div>
 
       {shareState === "shown" && shareText && (
         <textarea
           readOnly
           value={shareText}
-          onClick={(e) => (e.target as HTMLTextAreaElement).select()}
+          autoFocus
+          onClick={(e) => {
+            e.preventDefault();
+            (e.target as HTMLTextAreaElement).select();
+          }}
           className="w-full max-w-md bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--text-primary)] font-mono resize-none"
           rows={6}
         />
