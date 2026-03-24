@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || "https://mtgguessr.io"
+    process.env.NEXT_PUBLIC_BASE_URL || "https://play.mtgguessr.io"
   ),
   title: "MTG Guess the Card",
   description:
