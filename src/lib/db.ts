@@ -15,9 +15,15 @@ async function initTables(db: Client): Promise<void> {
       correct INTEGER,
       question_count INTEGER NOT NULL DEFAULT 0,
       max_questions INTEGER NOT NULL DEFAULT 999,
-      time_limit_seconds INTEGER NOT NULL DEFAULT 180
+      time_limit_seconds INTEGER NOT NULL DEFAULT 180,
+      player_id TEXT
     )
   `);
+
+  // Migration for existing DBs
+  await db.execute(
+    "ALTER TABLE sessions ADD COLUMN player_id TEXT"
+  ).catch(() => {});
 
   await db.execute(`
     CREATE TABLE IF NOT EXISTS votes (

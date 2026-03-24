@@ -73,6 +73,10 @@ async function getStats() {
     "SELECT COUNT(*) as total FROM challenges"
   );
 
+  const uniquePlayers = await db.execute(
+    "SELECT COUNT(DISTINCT player_id) as count FROM sessions WHERE player_id IS NOT NULL"
+  );
+
   return {
     overview: overview.rows[0],
     today: today.rows[0],
@@ -81,6 +85,7 @@ async function getStats() {
     recentGames: recentGames.rows,
     votes: votes.rows,
     challenges: challenges.rows[0],
+    uniquePlayers: uniquePlayers.rows[0],
   };
 }
 
@@ -146,6 +151,7 @@ export default async function StatsPage() {
         <div className="text-[var(--text-secondary)]">
           {t.games_today as number} games,{" "}
           {t.wins_today as number} wins,{" "}
+          {stats.uniquePlayers.count as number} unique players tracked,{" "}
           {stats.challenges.total as number} challenges created total
         </div>
       </div>

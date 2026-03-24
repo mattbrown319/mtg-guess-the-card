@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { getRandomCard, getCardCount, getCardById, getAllCardNames } from "@/lib/cards";
 import { createGame } from "@/lib/game-store";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { v4 as uuidv4 } from "uuid";
+
+function getOrCreatePlayerId(request: NextRequest): { playerId: string; isNew: boolean } {
+  const existing = request.cookies.get("player_id")?.value;
+  if (existing) return { playerId: existing, isNew: false };
+  return { playerId: uuidv4(), isNew: true };
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,6 +21,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  const { playerId, isNew } = getOrCreatePlayerId(request);
   const body = await request.json();
   const { format, popularityTier, cardType, timeLimitSeconds, cardId, excludeIds } = body;
 
@@ -22,13 +30,22 @@ export async function POST(request: NextRequest) {
     if (!card) {
       return NextResponse.json({ error: "Card not found." }, { status: 404 });
     }
-    const game = await createGame(card, timeLimitSeconds);
-    return NextResponse.json({
+    const game = await createGame(card, timeLimitSeconds, playerId);
+    const res = NextResponse.json({
       sessionId: game.sessionId,
       timeLimitSeconds: game.timeLimitSeconds,
       maxQuestions: game.maxQuestions,
       cardId: card.id,
     });
+    if (isNew) {
+      res.cookies.set("player_id", playerId, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 365,
+      });
+    }
+    return res;
   }
 
   const filters = { format, popularityTier, cardType, excludeIds };
@@ -49,12 +66,12 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const game = await createGame(card, timeLimitSeconds);
+  const game = await createGame(card, timeLimitSeconds, playerId);
 
   // Preload card names for client-side autocomplete (skip for huge pools)
   const cardNames = count <= 10000 ? await getAllCardNames(filters) : undefined;
 
-  return NextResponse.json({
+  const res = NextResponse.json({
     sessionId: game.sessionId,
     timeLimitSeconds: game.timeLimitSeconds,
     maxQuestions: game.maxQuestions,
@@ -62,6 +79,15 @@ export async function POST(request: NextRequest) {
     cardId: card.id,
     cardNames,
   });
+  if (isNew) {
+    res.cookies.set("player_id", playerId, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "lax",
+      maxAge: 60 * 60 * 24 * 365,
+    });
+  }
+  return res;
   } catch (err) {
     console.error("Game API error:", err);
     return NextResponse.json(
