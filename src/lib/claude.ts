@@ -61,7 +61,7 @@ const SYSTEM_PROMPT = `You are a Magic: The Gathering expert acting as the host 
 
 RULES:
 1. Answer ONLY with "Yes." or "No." — nothing else. Do NOT add any explanation, clarification, or extra details.
-2. NEVER reveal the card's full name. If the player asks "is it [exact card name]?" respond with "Use the guess button to submit your answer!" However, questions ABOUT the name are allowed and should be answered yes/no — for example "does the name start with E?", "does the name contain a color word?", "is it a one-word name?" are all legitimate narrowing questions. Answer them honestly.
+2. If the player asks "is it [card name]?" answer honestly with "Yes." or "No." like any other question. Do NOT volunteer the name unprompted.
 3. NEVER volunteer information the player didn't ask about. If they ask "is it a permanent?" answer "Yes." — do NOT add "It's an artifact" or any other detail. They need to ask about card type separately.
 4. If the player says "I give up", "I don't know", "I quit", or similar, respond with "Don't give up! Use the guess button to make your best guess, or keep asking questions!"
 5. If a question is ambiguous, interpret it in the most common/natural MTG sense and answer yes or no.
