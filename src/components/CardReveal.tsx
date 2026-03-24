@@ -59,18 +59,13 @@ function buildShareText(
   return text;
 }
 
-function buildTranscriptText(
-  questions: QuestionAnswer[],
+function buildSummaryShareText(
+  shareSummary: string,
   correct: boolean,
   gaveUp: boolean | undefined,
   questionsAsked: number,
   usedHint: boolean
 ): string {
-  const lines = questions.map((qa, i) => {
-    const prefix = qa.question === "[Hint requested]" ? "Hint" : `Q${i + 1}`;
-    return `${prefix}: ${qa.question === "[Hint requested]" ? qa.answer : `${qa.question} → ${qa.answer}`}`;
-  });
-
   const result = correct
     ? `Got it in ${questionsAsked} Qs! ✅`
     : gaveUp
@@ -79,7 +74,7 @@ function buildTranscriptText(
 
   const hintText = usedHint ? " (used a hint)" : "";
 
-  return `MTG Guess the Card\n${lines.join("\n")}\n${result}${hintText}`;
+  return `MTG Guess the Card\n${result}${hintText}\nNarrowed to: ${shareSummary}`;
 }
 
 export default function CardReveal({
@@ -208,19 +203,31 @@ export default function CardReveal({
           </button>
           <button
             onClick={async () => {
-              const text = buildTranscriptText(questions, correct, gaveUp, questionsAsked, !!usedHint);
+              setTranscriptCopied(true);
               try {
-                await navigator.clipboard.writeText(text);
-                setTranscriptCopied(true);
-                setTimeout(() => setTranscriptCopied(false), 3000);
+                const res = await fetch("/api/question", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ sessionId, requestShareSummary: true }),
+                });
+                const data = await res.json();
+                if (data.shareSummary) {
+                  const text = buildSummaryShareText(data.shareSummary, correct, gaveUp, questionsAsked, !!usedHint);
+                  try {
+                    await navigator.clipboard.writeText(text);
+                  } catch {
+                    setShareText(text);
+                    setShareState("shown");
+                  }
+                }
               } catch {
-                setShareText(text);
-                setShareState("shown");
+                // Failed
               }
+              setTimeout(() => setTranscriptCopied(false), 3000);
             }}
             className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
           >
-            {transcriptCopied ? "Copied!" : "Share my Q&A"}
+            {transcriptCopied ? "Copying..." : "Share Summary"}
           </button>
         </div>
       ) : (

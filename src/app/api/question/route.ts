@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { sessionId, question, requestHint, requestSummary } = body;
+  const { sessionId, question, requestHint, requestSummary, requestShareSummary } = body;
 
   if (!sessionId) {
     return NextResponse.json(
@@ -36,6 +36,13 @@ export async function POST(request: NextRequest) {
     const { generateSummary } = await import("@/lib/claude");
     const summary = await generateSummary(game.questions);
     return NextResponse.json({ summary });
+  }
+
+  // Handle share summary requests — condensed one-liner
+  if (requestShareSummary) {
+    const { generateShareSummary } = await import("@/lib/claude");
+    const shareSummary = await generateShareSummary(game.questions);
+    return NextResponse.json({ shareSummary });
   }
 
   // Handle hint requests — allowed as long as game was active at some point

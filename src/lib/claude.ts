@@ -170,3 +170,32 @@ ${qaHistory}`,
   const textBlock = response.content.find((block) => block.type === "text");
   return textBlock ? textBlock.text : "Could not generate summary.";
 }
+
+export async function generateShareSummary(
+  previousQA: { question: string; answer: string }[]
+): Promise<string> {
+  const qaHistory = previousQA
+    .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
+    .join("\n");
+
+  const response = await client.messages.create({
+    model: "claude-sonnet-4-5-20250929",
+    max_tokens: 100,
+    system: `You write ultra-condensed one-line summaries of what a player learned about a mystery Magic: The Gathering card. Do NOT guess or reveal the card name.`,
+    messages: [
+      {
+        role: "user",
+        content: `Summarize what the player learned into ONE short line using MTG shorthand. Use abbreviations like UB, CMC, ETB. Comma-separated attributes. No full sentences. Examples:
+- "rare UB land, ETB conditionally tapped, untapped with 2+ lands"
+- "3CMC mono-white enchantment, static ability, taxes attackers"
+- "7CMC colorless artifact creature, 5/5, has keywords + static ability"
+
+Q&A:
+${qaHistory}`,
+      },
+    ],
+  });
+
+  const textBlock = response.content.find((block) => block.type === "text");
+  return textBlock ? textBlock.text : "";
+}
