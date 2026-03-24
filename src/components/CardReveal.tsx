@@ -43,19 +43,6 @@ function buildShareText(
   usedHint: boolean,
   challengeUrl?: string
 ): string {
-  // Build a visual grid showing narrowing progress
-  // Each question gets a colored square based on yes/no
-  const squares = questions.map((qa) => {
-    const a = qa.answer.trim().toLowerCase();
-    return a.startsWith("yes") ? "⬜" : "⬛";
-  });
-
-  // Break into rows of 10
-  const rows: string[] = [];
-  for (let i = 0; i < squares.length; i += 10) {
-    rows.push(squares.slice(i, i + 10).join(""));
-  }
-
   const result = correct
     ? `Got it in ${questionsAsked} Qs! ✅`
     : gaveUp
@@ -63,7 +50,7 @@ function buildShareText(
       : `Missed it after ${questionsAsked} Qs ❌`;
 
   const hintText = usedHint ? " (used a hint)" : "";
-  let text = `MTG Guess the Card\n${rows.join("\n")}\n${result}${hintText}`;
+  let text = `MTG Guess the Card\n${result}${hintText}`;
 
   if (challengeUrl) {
     text += `\nCan you beat me? ${challengeUrl}`;
