@@ -95,7 +95,7 @@ export async function answerQuestion(
   messages.push({ role: "user", content: question });
 
   const response = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
+    model: "claude-sonnet-4-6-20260318",
     max_tokens: 150,
     system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
     messages,
@@ -114,7 +114,7 @@ export async function getHint(
     .join("\n");
 
   const response = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
+    model: "claude-sonnet-4-6-20260318",
     max_tokens: 100,
     system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
     messages: [
@@ -137,7 +137,7 @@ export async function generateSummary(
     .join("\n");
 
   const response = await client.messages.create({
-    model: "claude-haiku-4-5-20251001",
+    model: "claude-sonnet-4-6-20260318",
     max_tokens: 300,
     system: `You consolidate information from a Q&A session about a mystery Magic: The Gathering card into a clean summary. Do NOT guess the card name.`,
     messages: [
