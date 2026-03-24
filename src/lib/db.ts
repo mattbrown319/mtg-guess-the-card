@@ -1,4 +1,4 @@
-import { createClient, type Client } from "@libsql/client";
+import { type Client } from "@libsql/client";
 
 let client: Client | null = null;
 let initialized: Promise<void> | null = null;
@@ -47,10 +47,18 @@ async function initTables(db: Client): Promise<void> {
 export async function getDb(): Promise<Client> {
   if (!client) {
     const url = process.env.TURSO_DATABASE_URL || "file:data/cards.db";
-    client = createClient({
-      url,
-      authToken: process.env.TURSO_AUTH_TOKEN,
-    });
+    const authToken = process.env.TURSO_AUTH_TOKEN;
+
+    if (url.startsWith("file:")) {
+      // Local dev: use the full client with native bindings
+      const { createClient } = await import("@libsql/client");
+      client = createClient({ url, authToken });
+    } else {
+      // Production (Vercel): use the HTTP-based web client
+      const { createClient } = await import("@libsql/client/web");
+      client = createClient({ url, authToken });
+    }
+
     initialized = initTables(client);
   }
   await initialized;
