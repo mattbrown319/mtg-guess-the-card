@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || "https://mtg-guess-the-card-production.up.railway.app"
+  ),
   title: "MTG Guess the Card",
   description:
     "Can you guess the Magic: The Gathering card by asking yes/no questions?",
