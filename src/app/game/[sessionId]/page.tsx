@@ -28,7 +28,7 @@ export default function GamePage({
   }, []);
 
   return (
-    <main className="h-[100dvh] overflow-hidden">
+    <main className="fixed inset-0 overflow-hidden">
       <div className="w-full h-full">
         <GameBoard
           sessionId={sessionId}
