@@ -257,7 +257,7 @@ export default function GameBoard({
       </div>
 
       {/* Q&A History — normal scrolling page content */}
-      <div className={`px-4 pt-4 ${questions.length > 0 ? "pb-40" : "pb-4"}`}>
+      <div className={`px-4 pt-4 ${questions.length > 0 ? "pb-24" : "pb-4"}`}>
         {questions.length === 0 && (
           <div className="text-[var(--text-secondary)] text-center py-3">
             <p className="text-base mb-1">A mystery card has been chosen!</p>
