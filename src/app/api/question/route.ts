@@ -63,13 +63,7 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (isGameExpired(game)) {
-    await expireGame(sessionId);
-    return NextResponse.json(
-      { error: "Time's up!", expired: true },
-      { status: 400 }
-    );
-  }
+  // Timer is enforced client-side only (server can't track paused time during AI responses)
 
   if (!question || typeof question !== "string" || question.trim().length === 0) {
     return NextResponse.json(
