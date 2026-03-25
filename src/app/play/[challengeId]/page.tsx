@@ -90,8 +90,8 @@ export default function ChallengePage({
   }
 
   return (
-    <main className="fixed inset-0 overflow-hidden">
-      <div className="w-full h-full">
+    <main>
+      <div className="w-full">
         {sessionId && (
           <GameBoard
             sessionId={sessionId}
