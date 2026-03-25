@@ -70,7 +70,7 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
         break;
       case "well-known":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 50");
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
         break;
       case "medium":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 2000");
@@ -133,7 +133,7 @@ export async function getCardCount(filters: CardFilters): Promise<number> {
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
         break;
       case "well-known":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 50");
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
         break;
       case "medium":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 2000");
@@ -175,7 +175,7 @@ export async function getAllCardNames(filters: CardFilters): Promise<string[]> {
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
         break;
       case "well-known":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 50");
+        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
         break;
       case "medium":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 2000");
