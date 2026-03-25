@@ -101,6 +101,16 @@ export default function Home() {
         addRecentCardName(data.cardName);
       }
 
+      // Store game settings for "Play Again"
+      try {
+        sessionStorage.setItem("gameSettings", JSON.stringify({
+          format: format || undefined,
+          popularityTier: popularityTier || undefined,
+          cardType: cardType || undefined,
+          timeLimitSeconds: timeLimit || undefined,
+        }));
+      } catch {}
+
       // Store card names in sessionStorage for client-side autocomplete
       if (data.cardNames) {
         try {

@@ -29,6 +29,7 @@ interface CardRevealProps {
   gaveUp?: boolean;
   usedHint?: boolean;
   onPlayAgain: () => void;
+  onChangeSettings: () => void;
   onVote: (vote: "fun" | "not_fun") => void;
   questions: QuestionAnswer[];
   cardId?: string;
@@ -86,6 +87,7 @@ export default function CardReveal({
   gaveUp,
   usedHint,
   onPlayAgain,
+  onChangeSettings,
   onVote,
   questions,
   cardId,
@@ -198,9 +200,15 @@ export default function CardReveal({
           onClick={handleShare}
           className="flex-1 bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 rounded-xl transition-colors cursor-pointer text-sm"
         >
-          {shareState === "loading" ? "..." : "Challenge a Friend"}
+          {shareState === "loading" ? "..." : "Challenge"}
         </button>
       </div>
+      <button
+        onClick={onChangeSettings}
+        className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] cursor-pointer"
+      >
+        Change settings
+      </button>
 
       {/* Share text area (appears after clicking Challenge) */}
       {shareText && (

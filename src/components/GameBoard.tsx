@@ -220,7 +220,43 @@ export default function GameBoard({
     }
   }
 
-  function handlePlayAgain() {
+  async function handlePlayAgain() {
+    try {
+      const stored = sessionStorage.getItem("gameSettings");
+      if (!stored) {
+        window.location.href = "/";
+        return;
+      }
+      const settings = JSON.parse(stored);
+      const excludeNames = JSON.parse(localStorage.getItem("recentCardNames") || "[]");
+
+      const res = await fetch("/api/game", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...settings, excludeNames: excludeNames.length > 0 ? excludeNames : undefined }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        window.location.href = "/";
+        return;
+      }
+
+      if (data.cardName) {
+        const recent = excludeNames;
+        if (!recent.includes(data.cardName)) recent.unshift(data.cardName);
+        localStorage.setItem("recentCardNames", JSON.stringify(recent.slice(0, 50)));
+      }
+      if (data.cardNames) {
+        sessionStorage.setItem("cardNames", JSON.stringify(data.cardNames));
+      }
+
+      window.location.href = `/game/${data.sessionId}?t=${settings.timeLimitSeconds || 300}&q=${data.maxQuestions}&c=${data.cardId}`;
+    } catch {
+      window.location.href = "/";
+    }
+  }
+
+  function handleChangeSettings() {
     window.location.href = "/";
   }
 
@@ -234,6 +270,7 @@ export default function GameBoard({
           gaveUp={reveal.gaveUp}
           usedHint={!!hint}
           onPlayAgain={handlePlayAgain}
+          onChangeSettings={handleChangeSettings}
           onVote={handleVote}
           questions={questions}
           cardId={cardId}
