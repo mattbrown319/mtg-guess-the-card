@@ -57,10 +57,13 @@ export default function GameBoard({
   const [summary, setSummary] = useState<string | null>(null);
   const [startedAt] = useState(Date.now());
   const qaEndRef = useRef<HTMLDivElement>(null);
+  const qaContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    qaEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [questions]);
+    if (qaContainerRef.current) {
+      qaContainerRef.current.scrollTop = qaContainerRef.current.scrollHeight;
+    }
+  }, [questions, hint]);
 
   const fetchSummary = useCallback(async () => {
     try {
@@ -255,7 +258,7 @@ export default function GameBoard({
       </div>
 
       {/* Q&A History — scrollable, takes remaining space */}
-      <div className="flex-1 overflow-y-auto p-4">
+      <div ref={qaContainerRef} className="flex-1 overflow-y-auto p-4">
         {questions.length === 0 ? (
           <div className="text-[var(--text-secondary)] text-center py-12">
             <p className="text-lg mb-2">A mystery card has been chosen!</p>
