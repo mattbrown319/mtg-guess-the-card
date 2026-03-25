@@ -238,6 +238,7 @@ export default function GameBoard({
         <Timer
           startedAt={startedAt}
           timeLimitSeconds={timeLimitSeconds}
+          paused={questionLoading}
           onExpire={handleExpire}
         />
         <div className="text-right">
@@ -314,13 +315,13 @@ export default function GameBoard({
             disabled={false}
             loading={questionLoading}
           />
-          <div className="flex gap-2 justify-between">
+          <div className="flex gap-2 justify-between mt-3">
             <div>
               {questions.length >= 5 && (
                 <button
                   onClick={handleHint}
                   disabled={questionLoading}
-                  className="text-sm text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer"
+                  className="text-xs text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer py-1"
                 >
                   Need a hint?
                 </button>
@@ -329,7 +330,7 @@ export default function GameBoard({
             <button
               onClick={handleGiveUp}
               disabled={guessLoading}
-              className="text-sm text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer"
+              className="text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
             >
               Give up
             </button>

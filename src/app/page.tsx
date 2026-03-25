@@ -18,7 +18,7 @@ const POPULARITY_TIERS = [
   { value: "popular", label: "Iconic / Well-Known" },
   { value: "well-known", label: "Moderate" },
   { value: "medium", label: "Deep Cuts" },
-  { value: "all", label: "All Cards" },
+  { value: "all", label: "All Cards (Expert)" },
   { value: "obscure", label: "Ultra Obscure" },
 ];
 
@@ -211,14 +211,12 @@ export default function Home() {
           {loading ? "Starting..." : "Start Game"}
         </button>
 
-        <div className="text-center">
-          <a
-            href="/create"
-            className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
-          >
-            Or create a challenge for a specific card &rarr;
-          </a>
-        </div>
+        <a
+          href="/create"
+          className="w-full block text-center bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-3 px-6 rounded-xl transition-colors"
+        >
+          Challenge a Friend with a Specific Card
+        </a>
       </div>
     </main>
   );

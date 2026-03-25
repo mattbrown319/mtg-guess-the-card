@@ -1,21 +1,40 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface TimerProps {
   startedAt: number;
   timeLimitSeconds: number;
+  paused: boolean;
   onExpire: () => void;
 }
 
 export default function Timer({
   startedAt,
   timeLimitSeconds,
+  paused,
   onExpire,
 }: TimerProps) {
+  const pausedTimeRef = useRef(0);
+  const pauseStartRef = useRef<number | null>(null);
+
+  // Track paused time
+  useEffect(() => {
+    if (paused) {
+      pauseStartRef.current = Date.now();
+    } else if (pauseStartRef.current) {
+      pausedTimeRef.current += Date.now() - pauseStartRef.current;
+      pauseStartRef.current = null;
+    }
+  }, [paused]);
+
   const getRemaining = useCallback(() => {
     if (timeLimitSeconds === 0) return Infinity;
-    const elapsed = (Date.now() - startedAt) / 1000;
+    const currentPause = pauseStartRef.current
+      ? Date.now() - pauseStartRef.current
+      : 0;
+    const elapsed =
+      (Date.now() - startedAt - pausedTimeRef.current - currentPause) / 1000;
     return Math.max(0, timeLimitSeconds - elapsed);
   }, [startedAt, timeLimitSeconds]);
 
@@ -25,16 +44,18 @@ export default function Timer({
     if (timeLimitSeconds === 0) return;
 
     const interval = setInterval(() => {
-      const r = getRemaining();
-      setRemaining(r);
-      if (r <= 0) {
-        clearInterval(interval);
-        onExpire();
+      if (!paused) {
+        const r = getRemaining();
+        setRemaining(r);
+        if (r <= 0) {
+          clearInterval(interval);
+          onExpire();
+        }
       }
     }, 100);
 
     return () => clearInterval(interval);
-  }, [timeLimitSeconds, getRemaining, onExpire]);
+  }, [timeLimitSeconds, getRemaining, onExpire, paused]);
 
   if (timeLimitSeconds === 0) {
     return (
@@ -54,7 +75,9 @@ export default function Timer({
           ? "text-[var(--error)] animate-pulse"
           : isLow
             ? "text-[var(--warning)]"
-            : "text-[var(--text-primary)]"
+            : paused
+              ? "text-[var(--text-secondary)]"
+              : "text-[var(--text-primary)]"
       }`}
     >
       {minutes}:{seconds.toString().padStart(2, "0")}

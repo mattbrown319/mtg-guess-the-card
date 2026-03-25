@@ -27,7 +27,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <div className="flex-1">{children}</div>
+        <footer className="text-center text-xs text-[var(--text-secondary)] py-4 px-6 opacity-60">
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Not affiliated with Wizards of the Coast.
+        </footer>
+      </body>
     </html>
   );
 }
