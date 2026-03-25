@@ -257,16 +257,16 @@ export default function GameBoard({
         </div>
       </div>
 
-      {/* Q&A History — scrollable, takes remaining space */}
-      <div ref={qaContainerRef} className="flex-1 overflow-y-auto p-4">
+      {/* Q&A History — scrollable, grows as questions are added */}
+      <div ref={qaContainerRef} className={`${questions.length > 0 ? "flex-1" : ""} overflow-y-auto p-4`}>
         {questions.length === 0 ? (
-          <div className="text-[var(--text-secondary)] text-center py-12">
-            <p className="text-lg mb-2">A mystery card has been chosen!</p>
+          <div className="text-[var(--text-secondary)] text-center py-4">
+            <p className="text-base mb-1">A mystery card has been chosen!</p>
             <p className="text-sm">
               Ask yes/no questions to narrow it down.
             </p>
             <p className="text-sm mt-1">
-              When you think you know it, just ask &ldquo;Is it [card name]?&rdquo;
+              When you know it, ask &ldquo;Is it [card name]?&rdquo;
             </p>
           </div>
         ) : (
