@@ -56,10 +56,12 @@ export default function GameBoard({
   const [hint, setHint] = useState("");
   const [summary, setSummary] = useState<string | null>(null);
   const [startedAt] = useState(Date.now());
-  const qaEndRef = useRef<HTMLDivElement>(null);
+  const qaContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    qaEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+    if (qaContainerRef.current) {
+      qaContainerRef.current.scrollTop = qaContainerRef.current.scrollHeight;
+    }
   }, [questions, hint]);
 
   const fetchSummary = useCallback(async () => {
@@ -241,10 +243,14 @@ export default function GameBoard({
     );
   }
 
+  // Everything in one flex column, no fixed positioning
   return (
-    <div className="max-w-2xl mx-auto">
-      {/* Header: Timer + Stats */}
-      <div className="sticky top-0 z-10 flex items-center justify-between px-4 py-2 border-b border-[var(--border)] bg-[var(--bg-primary)]">
+    <div
+      className="flex flex-col max-w-2xl mx-auto"
+      style={{ height: "100dvh" }}
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-4 py-2 border-b border-[var(--border)] shrink-0">
         <Timer
           startedAt={startedAt}
           timeLimitSeconds={timeLimitSeconds}
@@ -256,17 +262,13 @@ export default function GameBoard({
         </div>
       </div>
 
-      {/* Q&A History — normal scrolling page content */}
-      <div className={`px-4 pt-4 ${questions.length > 0 ? "pb-24" : "pb-4"}`}>
+      {/* Q&A area — grows to fill available space, scrolls internally */}
+      <div ref={qaContainerRef} className="flex-1 overflow-y-auto px-4 py-2 min-h-0">
         {questions.length === 0 && (
           <div className="text-[var(--text-secondary)] text-center py-3">
             <p className="text-base mb-1">A mystery card has been chosen!</p>
-            <p className="text-sm">
-              Ask yes/no questions to narrow it down.
-            </p>
-            <p className="text-sm mt-1">
-              When you know it, ask &ldquo;Is it [card name]?&rdquo;
-            </p>
+            <p className="text-sm">Ask yes/no questions to narrow it down.</p>
+            <p className="text-sm mt-1">When you know it, ask &ldquo;Is it [card name]?&rdquo;</p>
           </div>
         )}
 
@@ -275,18 +277,12 @@ export default function GameBoard({
             {questions.map((qa, i) => (
               <div key={i} className="space-y-1">
                 <div className="flex gap-2">
-                  <span className="text-[var(--accent)] font-medium shrink-0 text-sm">
-                    Q{i + 1}:
-                  </span>
+                  <span className="text-[var(--accent)] font-medium shrink-0 text-sm">Q{i + 1}:</span>
                   <span className="text-sm">{qa.question}</span>
                 </div>
                 <div className="flex gap-2 pl-2">
-                  <span className="text-[var(--text-secondary)] shrink-0 text-sm">
-                    &rarr;
-                  </span>
-                  <span className="text-[var(--text-secondary)] text-sm">
-                    {qa.answer}
-                  </span>
+                  <span className="text-[var(--text-secondary)] shrink-0 text-sm">&rarr;</span>
+                  <span className="text-[var(--text-secondary)] text-sm">{qa.answer}</span>
                 </div>
               </div>
             ))}
@@ -303,79 +299,69 @@ export default function GameBoard({
         {error && (
           <p className="text-[var(--error)] text-sm text-center mt-2">{error}</p>
         )}
-
-        <div ref={qaEndRef} />
       </div>
 
-      {/* Bottom bar — sticky to bottom of viewport */}
-      <div className="fixed bottom-0 left-0 right-0 z-20 border-t border-[var(--border)] bg-[var(--bg-primary)]">
-        <div className="max-w-2xl mx-auto px-4 py-3">
-          {phase === "asking" && (
-            <div className="space-y-2">
-              <QuestionInput
-                onAsk={handleAsk}
-                disabled={false}
-                loading={questionLoading}
-              />
-              <div className="flex justify-between">
-                <div>
-                  {questions.length >= 5 && (
-                    <button
-                      onClick={handleHint}
-                      disabled={questionLoading}
-                      className="text-xs text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer py-1"
-                    >
-                      Hint
-                    </button>
-                  )}
-                </div>
-                <button
-                  onClick={handleGiveUp}
-                  disabled={guessLoading}
-                  className="text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
-                >
-                  Give up
-                </button>
+      {/* Input area — always at bottom, never fixed, part of the flex flow */}
+      <div className="border-t border-[var(--border)] px-4 py-3 shrink-0">
+        {phase === "asking" && (
+          <div className="space-y-2">
+            <QuestionInput
+              onAsk={handleAsk}
+              disabled={false}
+              loading={questionLoading}
+            />
+            <div className="flex justify-between">
+              <div>
+                {questions.length >= 5 && (
+                  <button
+                    onClick={handleHint}
+                    disabled={questionLoading}
+                    className="text-xs text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer py-1"
+                  >
+                    Hint
+                  </button>
+                )}
               </div>
-            </div>
-          )}
-
-          {phase === "guessing" && (
-            <div className="space-y-2">
-              <div className="text-center text-[var(--warning)] font-medium text-sm">
-                Time&apos;s up! Make your guess
-              </div>
-              <GuessInput
-                onGuess={handleGuess}
-                disabled={false}
-                loading={guessLoading}
-                cardNames={cardNames}
-              />
               <button
                 onClick={handleGiveUp}
                 disabled={guessLoading}
-                className="w-full text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
+                className="text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
               >
-                Give up — show me the card
+                Give up
               </button>
-
-              {summary ? (
-                <div className="bg-[var(--bg-secondary)] rounded-lg p-3 border border-[var(--border)]">
-                  <div className="text-xs font-medium text-[var(--accent)] mb-1">
-                    What you know:
-                  </div>
-                  <div className="text-xs text-[var(--text-secondary)] whitespace-pre-line">
-                    {summary}
-                  </div>
-                </div>
-              ) : questions.length > 0 ? (
-                <div className="text-xs text-[var(--text-secondary)] text-center">
-                  Generating summary...
-                </div>
-              ) : null}
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {phase === "guessing" && (
+          <div className="space-y-2">
+            <div className="text-center text-[var(--warning)] font-medium text-sm">
+              Time&apos;s up! Make your guess
+            </div>
+            <GuessInput
+              onGuess={handleGuess}
+              disabled={false}
+              loading={guessLoading}
+              cardNames={cardNames}
+            />
+            <button
+              onClick={handleGiveUp}
+              disabled={guessLoading}
+              className="w-full text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
+            >
+              Give up — show me the card
+            </button>
+
+            {summary ? (
+              <div className="bg-[var(--bg-secondary)] rounded-lg p-3 border border-[var(--border)]">
+                <div className="text-xs font-medium text-[var(--accent)] mb-1">What you know:</div>
+                <div className="text-xs text-[var(--text-secondary)] whitespace-pre-line">{summary}</div>
+              </div>
+            ) : questions.length > 0 ? (
+              <div className="text-xs text-[var(--text-secondary)] text-center">Generating summary...</div>
+            ) : null}
+          </div>
+        )}
       </div>
     </div>
   );

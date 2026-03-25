@@ -28,8 +28,8 @@ export default function GamePage({
   }, []);
 
   return (
-    <main>
-      <div className="w-full">
+    <main style={{ height: "100dvh", overflow: "hidden" }}>
+      <div className="w-full h-full">
         <GameBoard
           sessionId={sessionId}
           timeLimitSeconds={timeLimit}
