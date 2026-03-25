@@ -200,7 +200,7 @@ export default function CardReveal({
           onClick={handleShare}
           className="flex-1 bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 rounded-xl transition-colors cursor-pointer text-sm"
         >
-          {shareState === "loading" ? "..." : "Challenge"}
+          {shareState === "loading" ? "..." : "Challenge a Friend"}
         </button>
       </div>
       <button
