@@ -28,11 +28,8 @@ export default function GamePage({
   }, []);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-6 pt-12">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          Guess the Card
-        </h1>
+    <main className="h-[100dvh] overflow-hidden">
+      <div className="w-full h-full">
         <GameBoard
           sessionId={sessionId}
           timeLimitSeconds={timeLimit}

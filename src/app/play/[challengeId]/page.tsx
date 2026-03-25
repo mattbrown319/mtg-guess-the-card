@@ -90,16 +90,8 @@ export default function ChallengePage({
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-start p-6 pt-12">
-      <div className="w-full max-w-2xl">
-        <h1 className="text-2xl font-bold text-center mb-2">
-          Guess the Card
-        </h1>
-        {creatorInfo && (
-          <p className="text-center text-sm text-[var(--text-secondary)] mb-6">
-            Challenge! Your friend {creatorInfo.correct ? `got it in ${creatorInfo.questions} questions` : `couldn't get it in ${creatorInfo.questions} questions`}. Can you do better?
-          </p>
-        )}
+    <main className="h-[100dvh] overflow-hidden">
+      <div className="w-full h-full">
         {sessionId && (
           <GameBoard
             sessionId={sessionId}
