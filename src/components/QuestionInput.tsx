@@ -17,7 +17,9 @@ export default function QuestionInput({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (!disabled && !loading) {
+    // Only auto-focus on desktop — on mobile the keyboard pop-up disrupts the layout
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (!disabled && !loading && !isMobile) {
       inputRef.current?.focus();
     }
   }, [disabled, loading]);
