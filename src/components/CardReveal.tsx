@@ -163,136 +163,93 @@ export default function CardReveal({
   }
 
   return (
-    <div className="flex flex-col items-center gap-6 animate-[fadeIn_0.5s_ease-in]">
-      <div className={`text-3xl font-bold ${headingColor}`}>{heading}</div>
-
+    <div className="flex flex-col items-center gap-3 py-4">
+      {/* Result + question count */}
       <div className="text-center">
-        <div className="text-xl font-semibold">{card.name}</div>
-        <div className="text-[var(--text-secondary)] text-sm mt-1">
-          {card.type_line} &bull; {card.set_name}
-        </div>
+        <div className={`text-2xl font-bold ${headingColor}`}>{heading}</div>
         {questionsAsked > 0 && (
           <div className="text-[var(--text-secondary)] text-sm mt-1">
             {correct
-              ? `Guessed in ${questionsAsked} question${questionsAsked !== 1 ? "s" : ""}`
+              ? `${questionsAsked} question${questionsAsked !== 1 ? "s" : ""}`
               : `${questionsAsked} question${questionsAsked !== 1 ? "s" : ""} asked`}
           </div>
         )}
       </div>
 
+      {/* Card image — the image contains name, type, set, artist */}
       {card.image_uri_normal && (
-        <div className="relative">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={card.image_uri_normal}
-            alt={card.name}
-            className="rounded-xl shadow-2xl max-w-[300px] w-full"
-          />
-          <div className="text-xs text-[var(--text-secondary)] mt-2 text-center">
-            Art by {card.artist}
-          </div>
-        </div>
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={card.image_uri_normal}
+          alt={card.name}
+          className="rounded-xl shadow-2xl max-w-[250px] w-full"
+        />
       )}
 
-      {/* Share */}
-      {!shareText ? (
-        <div className="flex gap-3">
-          <button
-            onClick={handleShare}
-            className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
-          >
-            {shareState === "loading" ? "Creating link..." : "Challenge a Friend"}
-          </button>
-          <button
-            onClick={async () => {
-              setTranscriptCopied(true);
-              try {
-                const res = await fetch("/api/question", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ sessionId, requestShareSummary: true }),
-                });
-                const data = await res.json();
-                if (data.shareSummary) {
-                  const text = buildSummaryShareText(data.shareSummary, correct, gaveUp, questionsAsked, questions);
-                  try {
-                    await navigator.clipboard.writeText(text);
-                  } catch {
-                    setShareText(text);
-                    setShareState("shown");
-                  }
-                }
-              } catch {
-                // Failed
-              }
-              setTimeout(() => setTranscriptCopied(false), 3000);
-            }}
-            className="bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 px-6 rounded-xl transition-colors cursor-pointer"
-          >
-            {transcriptCopied ? "Copying..." : "Share Summary"}
-          </button>
-        </div>
-      ) : (
-        <div className="w-full max-w-md space-y-2">
+      {/* Action buttons — all visible without scrolling */}
+      <div className="flex gap-2 w-full max-w-sm">
+        <button
+          onClick={onPlayAgain}
+          className="flex-1 bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-semibold py-2.5 rounded-xl transition-colors cursor-pointer text-sm"
+        >
+          Play Again
+        </button>
+        <button
+          onClick={handleShare}
+          className="flex-1 bg-[var(--bg-card)] border border-[var(--border)] hover:border-[var(--accent)] text-[var(--text-primary)] font-medium py-2.5 rounded-xl transition-colors cursor-pointer text-sm"
+        >
+          {shareState === "loading" ? "..." : "Challenge a Friend"}
+        </button>
+      </div>
+
+      {/* Share text area (appears after clicking Challenge) */}
+      {shareText && (
+        <div className="w-full max-w-sm space-y-2">
           <textarea
             readOnly
             value={shareText}
             onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-            className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-sm text-[var(--text-primary)] font-mono resize-none"
-            rows={6}
+            className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--text-primary)] font-mono resize-none"
+            rows={4}
           />
           <button
             onClick={async () => {
               try {
                 await navigator.clipboard.writeText(shareText);
                 setShareState("copied");
-                setTimeout(() => setShareState("idle"), 3000);
+                setTimeout(() => setShareState("shown"), 3000);
               } catch {
-                // Select the text as fallback
                 const textarea = document.querySelector("textarea");
                 textarea?.select();
               }
             }}
-            className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium py-2 px-4 rounded-lg transition-colors cursor-pointer text-sm"
+            className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium py-2 rounded-lg transition-colors cursor-pointer text-sm"
           >
             {shareState === "copied" ? "Copied!" : "Copy to Clipboard"}
           </button>
         </div>
       )}
 
-      {/* Vote */}
-      <div className="flex flex-col items-center gap-2">
-        <div className="text-sm text-[var(--text-secondary)]">
-          Was this card a good pick?
+      {/* Vote — compact inline */}
+      {!voted ? (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[var(--text-secondary)]">How was this card?</span>
+          <button
+            onClick={() => handleVote("fun")}
+            className="px-3 py-1 rounded-lg border border-[var(--border)] hover:border-[var(--success)] hover:text-[var(--success)] text-[var(--text-secondary)] transition-colors text-xs cursor-pointer"
+          >
+            Good
+          </button>
+          <button
+            onClick={() => handleVote("not_fun")}
+            className="px-3 py-1 rounded-lg border border-[var(--border)] hover:border-[var(--error)] hover:text-[var(--error)] text-[var(--text-secondary)] transition-colors text-xs cursor-pointer"
+          >
+            Obscure
+          </button>
         </div>
-        {voted ? (
-          <div className="text-sm text-[var(--text-secondary)]">
-            Thanks for the feedback!
-          </div>
-        ) : (
-          <div className="flex gap-3">
-            <button
-              onClick={() => handleVote("fun")}
-              className="px-4 py-2 rounded-lg border border-[var(--border)] hover:border-[var(--success)] hover:text-[var(--success)] text-[var(--text-secondary)] transition-colors text-sm cursor-pointer"
-            >
-              Good card
-            </button>
-            <button
-              onClick={() => handleVote("not_fun")}
-              className="px-4 py-2 rounded-lg border border-[var(--border)] hover:border-[var(--error)] hover:text-[var(--error)] text-[var(--text-secondary)] transition-colors text-sm cursor-pointer"
-            >
-              Too obscure
-            </button>
-          </div>
-        )}
-      </div>
-
-      <button
-        onClick={onPlayAgain}
-        className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-semibold py-3 px-8 rounded-xl transition-colors text-lg cursor-pointer"
-      >
-        Play Again
-      </button>
+      ) : (
+        <div className="text-xs text-[var(--text-secondary)]">Thanks!</div>
+      )}
     </div>
   );
 }
