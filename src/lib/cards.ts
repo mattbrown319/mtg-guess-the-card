@@ -93,7 +93,7 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
   }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";
-  const sql = `SELECT * FROM cards ${where} ORDER BY RANDOM() * SQRT(COALESCE(popularity_score, 50000)) LIMIT 1`;
+  const sql = `SELECT * FROM cards ${where} ORDER BY RANDOM() LIMIT 1`;
 
   const result = await db.execute({ sql, args });
   return result.rows.length > 0 ? rowToCard(result.rows[0]) : null;

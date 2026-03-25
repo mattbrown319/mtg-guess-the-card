@@ -118,6 +118,16 @@ export default function GameBoard({
         { question, answer: data.answer },
       ]);
 
+      if (data.correctGuess) {
+        setReveal({
+          correct: true,
+          card: data.card,
+          questionsAsked: data.questionNumber,
+        });
+        setPhase("revealed");
+        return;
+      }
+
       if (data.questionsRemaining === 0) {
         transitionToGuessing();
       }

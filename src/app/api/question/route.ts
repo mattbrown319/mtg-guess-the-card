@@ -110,13 +110,43 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Check if the AI detected a correct card name guess
+  const correctGuess = answer.includes("[CORRECT_GUESS]");
+  const cleanAnswer = answer.replace("[CORRECT_GUESS]", "").trim();
+
   const result = await addQuestion(sessionId, {
     question: question.trim(),
-    answer,
+    answer: cleanAnswer,
   });
 
   if (!result.success) {
     return NextResponse.json({ error: result.error }, { status: 400 });
+  }
+
+  if (correctGuess) {
+    const { submitGuess } = await import("@/lib/game-store");
+    await submitGuess(sessionId, game.card.name);
+    return NextResponse.json({
+      answer: cleanAnswer,
+      questionNumber: game.questionCount + 1,
+      questionsRemaining: game.maxQuestions - game.questionCount - 1,
+      correctGuess: true,
+      card: {
+        name: game.card.name,
+        mana_cost: game.card.mana_cost,
+        type_line: game.card.type_line,
+        oracle_text: game.card.oracle_text,
+        rarity: game.card.rarity,
+        set_name: game.card.set_name,
+        artist: game.card.artist,
+        image_uri_normal: game.card.image_uri_normal,
+        image_uri_art_crop: game.card.image_uri_art_crop,
+        colors: game.card.colors,
+        keywords: game.card.keywords,
+        power: game.card.power,
+        toughness: game.card.toughness,
+      },
+    });
   }
 
   return NextResponse.json({
