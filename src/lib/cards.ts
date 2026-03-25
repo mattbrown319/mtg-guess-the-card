@@ -37,7 +37,7 @@ export interface CardFilters {
   format?: string;
   popularityTier?: string;
   cardType?: string;
-  excludeIds?: string[];
+  excludeNames?: string[];
 }
 
 export async function getRandomCard(filters: CardFilters): Promise<Card | null> {
@@ -86,10 +86,10 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
     args.push(`%${filters.cardType}%`);
   }
 
-  if (filters.excludeIds && filters.excludeIds.length > 0) {
-    const placeholders = filters.excludeIds.map(() => "?").join(",");
-    conditions.push(`id NOT IN (${placeholders})`);
-    args.push(...filters.excludeIds);
+  if (filters.excludeNames && filters.excludeNames.length > 0) {
+    const placeholders = filters.excludeNames.map(() => "?").join(",");
+    conditions.push(`name NOT IN (${placeholders})`);
+    args.push(...filters.excludeNames);
   }
 
   const where = conditions.length > 0 ? `WHERE ${conditions.join(" AND ")}` : "";

@@ -50,21 +50,22 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  function getRecentCardIds(): string[] {
+  function getRecentCardNames(): string[] {
     try {
-      const stored = localStorage.getItem("recentCardIds");
+      const stored = localStorage.getItem("recentCardNames");
       return stored ? JSON.parse(stored) : [];
     } catch {
       return [];
     }
   }
 
-  function addRecentCardId(cardId: string) {
+  function addRecentCardName(name: string) {
     try {
-      const recent = getRecentCardIds();
-      recent.unshift(cardId);
-      // Keep last 50 cards
-      localStorage.setItem("recentCardIds", JSON.stringify(recent.slice(0, 50)));
+      const recent = getRecentCardNames();
+      if (!recent.includes(name)) {
+        recent.unshift(name);
+      }
+      localStorage.setItem("recentCardNames", JSON.stringify(recent.slice(0, 50)));
     } catch {
       // localStorage unavailable
     }
@@ -75,7 +76,7 @@ export default function Home() {
     setError("");
 
     try {
-      const excludeIds = getRecentCardIds();
+      const excludeNames = getRecentCardNames();
 
       const res = await fetch("/api/game", {
         method: "POST",
@@ -85,7 +86,7 @@ export default function Home() {
           popularityTier: popularityTier || undefined,
           cardType: cardType || undefined,
           timeLimitSeconds: timeLimit || undefined,
-          excludeIds: excludeIds.length > 0 ? excludeIds : undefined,
+          excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
         }),
       });
 
@@ -95,8 +96,8 @@ export default function Home() {
         return;
       }
 
-      if (data.cardId) {
-        addRecentCardId(data.cardId);
+      if (data.cardName) {
+        addRecentCardName(data.cardName);
       }
 
       // Store card names in sessionStorage for client-side autocomplete
@@ -217,6 +218,9 @@ export default function Home() {
         >
           Challenge a Friend with a Specific Card
         </a>
+        <div className="text-center text-xs text-[var(--text-secondary)] pt-4 opacity-60">
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Not affiliated with Wizards of the Coast. &bull; v0.22
+        </div>
       </div>
     </main>
   );

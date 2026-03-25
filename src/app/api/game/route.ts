@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
 
   const { playerId, isNew } = getOrCreatePlayerId(request);
   const body = await request.json();
-  const { format, popularityTier, cardType, timeLimitSeconds, cardId, excludeIds } = body;
+  const { format, popularityTier, cardType, timeLimitSeconds, cardId, excludeNames } = body;
 
   if (cardId) {
     const card = await getCardById(cardId);
@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
     return res;
   }
 
-  const filters = { format, popularityTier, cardType, excludeIds };
+  const filters = { format, popularityTier, cardType, excludeNames };
 
   const count = await getCardCount(filters);
   if (count === 0) {
@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
     maxQuestions: game.maxQuestions,
     cardPool: count,
     cardId: card.id,
+    cardName: card.name,
     cardNames,
   });
   if (isNew) {
