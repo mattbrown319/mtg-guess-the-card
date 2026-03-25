@@ -11,11 +11,11 @@ interface CardResult {
 }
 
 const TIME_LIMITS = [
-  { value: 60, label: "60 seconds" },
-  { value: 90, label: "90 seconds" },
   { value: 120, label: "2 minutes" },
   { value: 180, label: "3 minutes" },
   { value: 300, label: "5 minutes" },
+  { value: 600, label: "10 minutes" },
+  { value: 1200, label: "20 minutes" },
   { value: 0, label: "No limit" },
 ];
 
@@ -23,7 +23,7 @@ export default function CreateChallenge() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<CardResult[]>([]);
   const [selectedCard, setSelectedCard] = useState<CardResult | null>(null);
-  const [timeLimit, setTimeLimit] = useState(180);
+  const [timeLimit, setTimeLimit] = useState(300);
   const [challengeUrl, setChallengeUrl] = useState("");
   const [creating, setCreating] = useState(false);
   const [copied, setCopied] = useState(false);

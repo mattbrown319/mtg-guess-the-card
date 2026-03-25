@@ -3,7 +3,7 @@ import { getDb } from "./db";
 import type { Card, GameState, QuestionAnswer } from "@/types";
 
 const MAX_QUESTIONS = 999;
-const DEFAULT_TIME_LIMIT = 180;
+const DEFAULT_TIME_LIMIT = 300;
 
 export async function createGame(
   card: Card,

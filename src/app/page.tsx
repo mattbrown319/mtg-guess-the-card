@@ -34,10 +34,11 @@ const CARD_TYPES = [
 ];
 
 const TIME_LIMITS = [
-  { value: 60, label: "60 seconds" },
-  { value: 90, label: "90 seconds" },
   { value: 120, label: "2 minutes" },
   { value: 180, label: "3 minutes" },
+  { value: 300, label: "5 minutes" },
+  { value: 600, label: "10 minutes" },
+  { value: 1200, label: "20 minutes" },
   { value: 0, label: "No limit" },
 ];
 
@@ -46,7 +47,7 @@ export default function Home() {
   const [format, setFormat] = useState("");
   const [popularityTier, setPopularityTier] = useState("well-known");
   const [cardType, setCardType] = useState("");
-  const [timeLimit, setTimeLimit] = useState(180);
+  const [timeLimit, setTimeLimit] = useState(300);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
