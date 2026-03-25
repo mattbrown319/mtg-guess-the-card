@@ -226,7 +226,7 @@ export default function GameBoard({
 
   if (phase === "revealed" && reveal) {
     return (
-      <div className="p-4 max-w-2xl mx-auto">
+      <div className="p-4 max-w-2xl mx-auto overflow-y-auto" style={{ height: "100dvh" }}>
         <CardReveal
           correct={reveal.correct}
           card={reveal.card}
@@ -257,8 +257,17 @@ export default function GameBoard({
           paused={questionLoading}
           onExpire={handleExpire}
         />
-        <div className="text-sm text-[var(--text-secondary)]">
-          Qs: {questions.length}
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-[var(--text-secondary)]">
+            Qs: {questions.length}
+          </span>
+          <button
+            onClick={handleGiveUp}
+            disabled={guessLoading}
+            className="text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer"
+          >
+            Give up
+          </button>
         </div>
       </div>
 
@@ -310,26 +319,17 @@ export default function GameBoard({
               disabled={false}
               loading={questionLoading}
             />
-            <div className="flex justify-between">
-              <div>
-                {questions.length >= 5 && (
-                  <button
-                    onClick={handleHint}
-                    disabled={questionLoading}
-                    className="text-xs text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer py-1"
-                  >
-                    Hint
-                  </button>
-                )}
+            {questions.length >= 5 && (
+              <div className="flex justify-center">
+                <button
+                  onClick={handleHint}
+                  disabled={questionLoading}
+                  className="text-xs text-[var(--warning)] hover:opacity-80 disabled:opacity-50 cursor-pointer py-1"
+                >
+                  Hint
+                </button>
               </div>
-              <button
-                onClick={handleGiveUp}
-                disabled={guessLoading}
-                className="text-xs text-[var(--text-secondary)] hover:text-[var(--error)] disabled:opacity-50 cursor-pointer py-1"
-              >
-                Give up
-              </button>
-            </div>
+            )}
           </div>
         )}
 
