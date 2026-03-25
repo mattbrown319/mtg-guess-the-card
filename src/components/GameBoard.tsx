@@ -243,8 +243,8 @@ export default function GameBoard({
   }
 
   return (
-    <div className="flex flex-col h-[100dvh] w-full max-w-2xl mx-auto">
-      {/* Header: Timer + Stats — compact, fixed top */}
+    <div className={`flex flex-col w-full max-w-2xl mx-auto ${questions.length > 0 ? "h-[100dvh]" : ""}`}>
+      {/* Header: Timer + Stats — compact */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-[var(--border)]">
         <Timer
           startedAt={startedAt}
@@ -257,10 +257,10 @@ export default function GameBoard({
         </div>
       </div>
 
-      {/* Q&A History — scrollable, grows as questions are added */}
-      <div ref={qaContainerRef} className={`${questions.length > 0 ? "flex-1" : ""} overflow-y-auto p-4`}>
+      {/* Q&A History — scrollable once questions exist */}
+      <div ref={qaContainerRef} className={`${questions.length > 0 ? "flex-1 overflow-y-auto" : ""} p-4`}>
         {questions.length === 0 ? (
-          <div className="text-[var(--text-secondary)] text-center py-4">
+          <div className="text-[var(--text-secondary)] text-center py-3">
             <p className="text-base mb-1">A mystery card has been chosen!</p>
             <p className="text-sm">
               Ask yes/no questions to narrow it down.
