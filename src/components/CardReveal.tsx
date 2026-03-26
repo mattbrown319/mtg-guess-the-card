@@ -258,6 +258,26 @@ export default function CardReveal({
       ) : (
         <div className="text-xs text-[var(--text-secondary)]">Thanks!</div>
       )}
+
+      {/* Feedback & Support */}
+      <div className="flex gap-4">
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSfMW2_KF_votq1XMjx2aDvw1HrtpnLTSzoTycskg4rwhwVrmA/viewform"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+        >
+          Feedback
+        </a>
+        <a
+          href="https://buymeacoffee.com/mtgguessr"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+        >
+          Support the game
+        </a>
+      </div>
     </div>
   );
 }
