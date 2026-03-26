@@ -15,11 +15,8 @@ const FORMATS = [
 ];
 
 const POPULARITY_TIERS = [
-  { value: "popular", label: "Iconic / Well-Known" },
-  { value: "well-known", label: "Moderate" },
-  { value: "medium", label: "Deep Cuts" },
-  { value: "all", label: "All Cards (Expert)" },
-  { value: "obscure", label: "Ultra Obscure" },
+  { value: "popular", label: "Well-Known Cards (844)" },
+  { value: "all", label: "All Cards — Expert (33,000+)" },
 ];
 
 const CARD_TYPES = [
@@ -45,7 +42,7 @@ const TIME_LIMITS = [
 export default function Home() {
   const router = useRouter();
   const [format, setFormat] = useState("");
-  const [popularityTier, setPopularityTier] = useState("well-known");
+  const [popularityTier, setPopularityTier] = useState("popular");
   const [cardType, setCardType] = useState("");
   const [timeLimit, setTimeLimit] = useState(300);
   const [loading, setLoading] = useState(false);
