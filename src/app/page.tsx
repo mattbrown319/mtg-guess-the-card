@@ -15,7 +15,7 @@ const FORMATS = [
 ];
 
 const POPULARITY_TIERS = [
-  { value: "popular", label: "Well-Known Cards (844)" },
+  { value: "popular", label: "Well-Known Cards (1,000)" },
   { value: "all", label: "All Cards — Expert (33,000+)" },
 ];
 
