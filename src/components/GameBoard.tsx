@@ -58,11 +58,25 @@ export default function GameBoard({
   const [startedAt] = useState(Date.now());
   const qaContainerRef = useRef<HTMLDivElement>(null);
 
+  // Scroll Q&A to bottom when new content arrives
   useEffect(() => {
     if (qaContainerRef.current) {
       qaContainerRef.current.scrollTop = qaContainerRef.current.scrollHeight;
     }
   }, [questions, hint]);
+
+  // Re-scroll when keyboard opens/closes (viewport resize)
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+    const handleResize = () => {
+      if (qaContainerRef.current) {
+        qaContainerRef.current.scrollTop = qaContainerRef.current.scrollHeight;
+      }
+    };
+    vv.addEventListener("resize", handleResize);
+    return () => vv.removeEventListener("resize", handleResize);
+  }, []);
 
   const fetchSummary = useCallback(async () => {
     try {
