@@ -67,7 +67,7 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
   if (filters.popularityTier) {
     switch (filters.popularityTier) {
       case "popular":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
+        conditions.push("is_iconic = 1");
         break;
       case "well-known":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
@@ -130,7 +130,7 @@ export async function getCardCount(filters: CardFilters): Promise<number> {
   if (filters.popularityTier) {
     switch (filters.popularityTier) {
       case "popular":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
+        conditions.push("is_iconic = 1");
         break;
       case "well-known":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
@@ -172,7 +172,7 @@ export async function getAllCardNames(filters: CardFilters): Promise<string[]> {
   if (filters.popularityTier) {
     switch (filters.popularityTier) {
       case "popular":
-        conditions.push("popularity_score IS NOT NULL AND popularity_score <= 50 AND num_printings >= 5");
+        conditions.push("is_iconic = 1");
         break;
       case "well-known":
         conditions.push("popularity_score IS NOT NULL AND popularity_score <= 500");
