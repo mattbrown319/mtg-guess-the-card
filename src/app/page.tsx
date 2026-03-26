@@ -230,7 +230,7 @@ export default function Home() {
           Challenge a Friend with a Specific Card
         </a>
         <div className="text-center text-xs text-[var(--text-secondary)] pt-4 opacity-60">
-          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Not affiliated with Wizards of the Coast. &bull; v0.28
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.33
         </div>
       </div>
     </main>
