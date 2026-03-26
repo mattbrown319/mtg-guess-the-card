@@ -121,10 +121,13 @@ export async function getHint(
         content: `Give the player ONE new fact about the card they haven't discovered yet. Respond with ONLY the fact — no preamble.
 
 CRITICAL RULES FOR HINTS:
+- ABSOLUTELY NEVER reveal the card's name. Not even partially. Not even if there's nothing else left to hint.
 - NEVER reveal the card's signature mechanic, unique ability, or defining characteristic. Those are what make the card identifiable — giving them away ruins the game.
 - Instead, give MUNDANE attributes: mana cost, color, card type, rarity, power/toughness, set era, artist name, or a generic keyword like flying or trample.
-- Good hints: "It costs 3 mana." / "It's from the 1990s." / "It's mythic rare." / "It has 5 toughness."
-- BAD hints (too revealing): "It involves a subgame." / "You flip it onto the battlefield." / "It has protection from everything." / "It shuffles your library into your deck."
+- You can also quote flavor text from the card if it has any.
+- Good hints: "It costs 3 mana." / "It's from the 1990s." / "It's mythic rare." / "It has 5 toughness." / "Its flavor text mentions a journey."
+- BAD hints (too revealing): "It involves a subgame." / "You flip it onto the battlefield." / "It has protection from everything." / "It's called [anything]."
+- If the player has already discovered all mundane facts and you have nothing left to hint besides the card name or its defining mechanic, respond with: "No more hints available — you've got all the info you need!"
 
 Conversation so far:\n${qaHistory || "No questions asked yet."}`,
       },
