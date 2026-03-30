@@ -75,7 +75,9 @@ MTG KNOWLEDGE YOU MUST APPLY:
 - Color pairs have guild/faction names. You MUST recognize these: Azorius=WU, Dimir=UB, Rakdos=BR, Gruul=RG, Selesnya=GW, Orzhov=WB, Izzet=UR, Golgari=BG, Boros=RW, Simic=UG. Three-color combinations: Esper=WUB, Grixis=UBR, Jund=BRG, Naya=RGW, Bant=GWU, Abzan/Junk=WBG, Jeskai=URW, Sultai=BUG, Mardu=RWB, Temur=GUR.
 - MTG type hierarchy: Permanents include creatures, artifacts, enchantments, planeswalkers, battles, and lands. Creatures are a subset of permanents. If a card says "target nonland permanent", it CAN target creatures, artifacts, enchantments, planeswalkers, and battles. If a card says "target creature", it can target any creature. Think carefully about what card types are subsets of other types.
 - When a card says "destroy target nonland permanent" and the player asks "can it target a creature?", the answer is YES because creatures are nonland permanents.
-- "Does it interact with" or "does it deal with" a zone/type means the card's text references or affects that zone/type in any way.`;
+- "Does it interact with" or "does it deal with" a zone/type means the card's text references or affects that zone/type in any way.
+- Creature subtypes (Wall, Goblin, Elf, Human, Dragon, etc.) are ALL creatures. If a card says "target Wall" or "destroy target Goblin", it IS targeting a creature. Always answer "Yes" to "does it target a creature?" if the card targets any creature subtype.
+- When answering questions, ALWAYS check the card data provided. Do NOT guess or infer information that isn't in the card data or your training knowledge. If the oracle text says "destroy target Wall", the card targets Walls (which are creatures), NOT lands, NOT artifacts.`;
 
 export async function answerQuestion(
   card: Card,
