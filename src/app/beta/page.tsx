@@ -149,6 +149,9 @@ export default function BetaHome() {
         >
           &larr; Back to classic mode
         </a>
+        <div className="text-center text-xs text-[var(--text-secondary)] pt-2 opacity-60">
+          v0.39-beta
+        </div>
       </div>
     </main>
   );
