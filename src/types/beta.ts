@@ -1,5 +1,6 @@
 export interface CardAttributes {
   colors: string[] | null;
+  colorIdentity: string[] | null;
   types: string[] | null;
   subtypes: string[] | null;
   supertypes: string[] | null;
@@ -16,6 +17,7 @@ export interface CardAttributes {
 export function emptyAttributes(): CardAttributes {
   return {
     colors: null,
+    colorIdentity: null,
     types: null,
     subtypes: null,
     supertypes: null,

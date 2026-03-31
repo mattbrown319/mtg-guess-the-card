@@ -10,7 +10,8 @@ ADDITIONAL INSTRUCTION FOR STRUCTURED OUTPUT:
 After your Yes/No answer, you MUST append a JSON block tagged [ATTRS:{...}] containing any card attributes that are NOW newly confirmed by this specific question and answer. Only include attributes where THIS exchange provides NEW information not previously established.
 
 Use this exact schema (only include fields with new information):
-- "colors": array of confirmed color letters, e.g. ["R"] or ["W","U"]
+- "colors": array of confirmed color letters of the card itself, e.g. ["R"] or ["W","U"]. Lands have no colors.
+- "colorIdentity": array of colors the card is associated with (includes mana it produces). E.g., a UB land has colors:[] but colorIdentity:["U","B"]
 - "types": array of confirmed card types, e.g. ["creature"] or ["instant"]
 - "subtypes": array of confirmed subtypes, e.g. ["goblin","wizard"]
 - "supertypes": array of confirmed supertypes, e.g. ["legendary"]

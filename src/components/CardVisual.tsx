@@ -86,6 +86,8 @@ function buildTypeLine(attrs: CardAttributes): string {
 }
 
 function buildManaCost(attrs: CardAttributes): string {
+  // Lands don't have mana costs
+  if (attrs.types?.some(t => t.toLowerCase() === "land")) return "";
   if (attrs.manaCost) return attrs.manaCost;
   if (attrs.cmc !== null) return `CMC ${attrs.cmc}`;
   return "?";
@@ -112,8 +114,12 @@ export default function CardVisual({
   revealedName,
   revealedArt,
 }: CardVisualProps) {
-  const frameColor = getFrameColor(attributes.colors);
-  const textColor = getTextColor(attributes.colors);
+  // Use colorIdentity for frame color if colors is empty (e.g., lands)
+  const displayColors = (attributes.colors && attributes.colors.length > 0)
+    ? attributes.colors
+    : attributes.colorIdentity;
+  const frameColor = getFrameColor(displayColors);
+  const textColor = getTextColor(displayColors);
   const typeLine = buildTypeLine(attributes);
   const manaCost = buildManaCost(attributes);
   const textBox = buildTextBox(attributes);
