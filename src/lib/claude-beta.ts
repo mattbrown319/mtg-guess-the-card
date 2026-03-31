@@ -23,10 +23,15 @@ Use this exact schema (only include fields with new information):
 - "rarity": string if confirmed, e.g. "rare"
 - "isMulticolor": boolean if confirmed
 
+Important: include ALL attributes confirmed by this exchange. If the player asks "is it 1UG?" and you answer "Yes.", return the full mana cost AND cmc: [ATTRS:{"manaCost":"{1}{U}{G}","cmc":3}]. If the player confirms power and toughness (e.g., "2/2?" → "Yes."), return BOTH: [ATTRS:{"power":"2","toughness":"2"}].
+
 Examples:
 - Player asks "is it a creature?" you answer "Yes." → append [ATTRS:{"types":["creature"]}]
 - Player asks "is it red?" you answer "Yes." → append [ATTRS:{"colors":["R"]}]
 - Player asks "CMC 3?" you answer "Yes." → append [ATTRS:{"cmc":3}]
+- Player asks "1RR?" you answer "Yes." → append [ATTRS:{"manaCost":"{1}{R}{R}","cmc":3}]
+- Player asks "2 power?" you answer "Yes." → append [ATTRS:{"power":"2"}]
+- Player asks "power equal to toughness?" you answer "Yes." AND power is known to be 2 → append [ATTRS:{"toughness":"2"}]
 - Player asks "does it have flying?" you answer "No." → append [ATTRS:{}] (no new info to reveal)
 - Player asks "legendary?" you answer "Yes." → append [ATTRS:{"supertypes":["legendary"]}]
 

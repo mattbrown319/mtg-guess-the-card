@@ -46,15 +46,32 @@ function getRarityColor(rarity: string | null): string {
   }
 }
 
+// MTG type ordering convention
+const TYPE_ORDER = ["tribal", "legendary", "basic", "snow", "world",
+  "artifact", "enchantment", "creature", "land", "planeswalker",
+  "instant", "sorcery", "battle", "kindred"];
+
 function buildTypeLine(attrs: CardAttributes): string {
   const parts: string[] = [];
 
   if (attrs.supertypes) {
-    parts.push(...attrs.supertypes.map(s => s.charAt(0).toUpperCase() + s.slice(1)));
+    // Sort supertypes by convention
+    const sorted = [...attrs.supertypes].sort((a, b) => {
+      const ai = TYPE_ORDER.indexOf(a.toLowerCase());
+      const bi = TYPE_ORDER.indexOf(b.toLowerCase());
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+    parts.push(...sorted.map(s => s.charAt(0).toUpperCase() + s.slice(1)));
   }
 
-  if (attrs.types) {
-    parts.push(...attrs.types.map(t => t.charAt(0).toUpperCase() + t.slice(1)));
+  if (attrs.types && attrs.types.length > 0) {
+    // Sort types by convention (Artifact Creature, not Creature Artifact)
+    const sorted = [...attrs.types].sort((a, b) => {
+      const ai = TYPE_ORDER.indexOf(a.toLowerCase());
+      const bi = TYPE_ORDER.indexOf(b.toLowerCase());
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    });
+    parts.push(...sorted.map(t => t.charAt(0).toUpperCase() + t.slice(1)));
   } else {
     parts.push("???");
   }
@@ -100,9 +117,11 @@ export default function CardVisual({
   const typeLine = buildTypeLine(attributes);
   const manaCost = buildManaCost(attributes);
   const textBox = buildTextBox(attributes);
-  const isCreature = attributes.types?.some(t =>
-    t.toLowerCase() === "creature"
-  );
+  const isCreature = attributes.types === null
+    ? null  // unknown
+    : attributes.types.some(t => t.toLowerCase() === "creature");
+  const hasPT = attributes.power !== null || attributes.toughness !== null;
+  const showPT = hasPT || isCreature === true || isCreature === null;
 
   return (
     <div
@@ -151,7 +170,7 @@ export default function CardVisual({
       </div>
 
       {/* Power/Toughness */}
-      {(isCreature || isCreature === undefined) && (
+      {showPT && (
         <div className={`flex justify-end px-2 pb-1 ${textColor}`}>
           <span className="text-xs font-bold">
             {attributes.power ?? "?"}/{attributes.toughness ?? "?"}
