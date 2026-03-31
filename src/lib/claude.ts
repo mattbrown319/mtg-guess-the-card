@@ -3,7 +3,7 @@ import type { Card } from "@/types";
 
 const client = new Anthropic();
 
-function cardToContext(card: Card): string {
+export function cardToContext(card: Card): string {
   const parts: string[] = [
     `Name: ${card.name}`,
     `Mana Cost: ${card.mana_cost || "None"}`,
@@ -55,7 +55,7 @@ function cardToContext(card: Card): string {
   return parts.join("\n");
 }
 
-const SYSTEM_PROMPT = `You are a Magic: The Gathering expert acting as the host of a "Guess the Card" game. A player is trying to identify a specific MTG card by asking yes/no questions.
+export const SYSTEM_PROMPT = `You are a Magic: The Gathering expert acting as the host of a "Guess the Card" game. A player is trying to identify a specific MTG card by asking yes/no questions.
 
 RULES:
 1. Answer ONLY with "Yes." or "No." — nothing else. Do NOT add any explanation, clarification, or extra details.
