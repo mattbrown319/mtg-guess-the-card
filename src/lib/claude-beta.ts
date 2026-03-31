@@ -23,16 +23,21 @@ Use this exact schema (only include fields with new information):
 - "rarity": string if confirmed, e.g. "rare"
 - "isMulticolor": boolean if confirmed
 
-Important: include ALL attributes confirmed by this exchange. If the player asks "is it 1UG?" and you answer "Yes.", return the full mana cost AND cmc: [ATTRS:{"manaCost":"{1}{U}{G}","cmc":3}]. If the player confirms power and toughness (e.g., "2/2?" → "Yes."), return BOTH: [ATTRS:{"power":"2","toughness":"2"}].
+CRITICAL RULES FOR ATTRS:
+- Only include attributes that are EXACTLY confirmed. "CMC 3 or greater?" → "Yes" does NOT confirm cmc is 3. Only "CMC 3?" → "Yes" confirms cmc is 3. Do NOT report bounds or ranges as exact values.
+- Include ALL attributes confirmed by this exchange. If the player asks "is it 1UG?" and you answer "Yes.", return the full mana cost AND cmc: [ATTRS:{"manaCost":"{1}{U}{G}","cmc":3}]. If the player confirms power and toughness (e.g., "2/2?" → "Yes."), return BOTH: [ATTRS:{"power":"2","toughness":"2"}].
+- Use deductive logic: if a "No" answer combined with all previous answers narrows something to exactly one possibility, include the inferred attribute. E.g., if the player has established it's not a permanent and not an instant, it must be a sorcery — include {"types":["sorcery"]}. If they've confirmed it's not W, U, B, or G, and it's monocolor, it must be R — include {"colors":["R"]}.
 
 Examples:
 - Player asks "is it a creature?" you answer "Yes." → append [ATTRS:{"types":["creature"]}]
 - Player asks "is it red?" you answer "Yes." → append [ATTRS:{"colors":["R"]}]
 - Player asks "CMC 3?" you answer "Yes." → append [ATTRS:{"cmc":3}]
+- Player asks "CMC 3 or greater?" you answer "Yes." → append [ATTRS:{}] (NOT confirmed as exactly 3)
 - Player asks "1RR?" you answer "Yes." → append [ATTRS:{"manaCost":"{1}{R}{R}","cmc":3}]
 - Player asks "2 power?" you answer "Yes." → append [ATTRS:{"power":"2"}]
 - Player asks "power equal to toughness?" you answer "Yes." AND power is known to be 2 → append [ATTRS:{"toughness":"2"}]
-- Player asks "does it have flying?" you answer "No." → append [ATTRS:{}] (no new info to reveal)
+- Player asks "does it have flying?" you answer "No." → append [ATTRS:{}]
+- Player already established it's not a permanent and not an instant. Player asks "is it an instant?" you answer "No." → append [ATTRS:{"types":["sorcery"]}] (deduced)
 - Player asks "legendary?" you answer "Yes." → append [ATTRS:{"supertypes":["legendary"]}]
 
 If no new attributes are confirmed or the answer is No without revealing anything new, append [ATTRS:{}].
