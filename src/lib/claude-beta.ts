@@ -6,7 +6,9 @@ const client = new Anthropic();
 
 const BETA_ADDITION = `
 
-ADDITIONAL INSTRUCTION FOR STRUCTURED OUTPUT:
+OVERRIDE TO RULE 1: In this version, you MUST append additional structured data after your Yes/No answer. Your response format is: "Yes. [ATTRS:{...}]" or "No. [ATTRS:{...}]". The [ATTRS:...] block is REQUIRED on every response. This overrides the "nothing else" part of Rule 1.
+
+STRUCTURED OUTPUT INSTRUCTIONS:
 After your Yes/No answer, you MUST append a JSON block tagged [ATTRS:{...}] containing any card attributes that are NOW newly confirmed by this specific question and answer. Only include attributes where THIS exchange provides NEW information not previously established.
 
 Use this exact schema (only include fields with new information):
