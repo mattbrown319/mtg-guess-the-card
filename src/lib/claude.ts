@@ -77,7 +77,8 @@ MTG KNOWLEDGE YOU MUST APPLY:
 - When a card says "destroy target nonland permanent" and the player asks "can it target a creature?", the answer is YES because creatures are nonland permanents.
 - "Does it interact with" or "does it deal with" a zone/type means the card's text references or affects that zone/type in any way.
 - Creature subtypes (Wall, Goblin, Elf, Human, Dragon, etc.) are ALL creatures. If a card says "target Wall" or "destroy target Goblin", it IS targeting a creature. Always answer "Yes" to "does it target a creature?" if the card targets any creature subtype.
-- When answering questions, ALWAYS check the card data provided. Do NOT guess or infer information that isn't in the card data or your training knowledge. If the oracle text says "destroy target Wall", the card targets Walls (which are creatures), NOT lands, NOT artifacts.`;
+- When answering questions, ALWAYS check the card data provided. Do NOT guess or infer information that isn't in the card data or your training knowledge. If the oracle text says "destroy target Wall", the card targets Walls (which are creatures), NOT lands, NOT artifacts.
+- Think about what the card FUNCTIONALLY does, not just what words appear in the oracle text. If a card untaps an attacking creature and prevents its combat damage, it effectively "removes it from combat" even if those exact words aren't on the card. If a card exiles a creature and returns it, it effectively "blinks" or "flickers" it. Answer based on function, not just literal text matching.`;
 
 export async function answerQuestion(
   card: Card,
