@@ -73,14 +73,19 @@ export async function answerQuestionBeta(
   let attrs: Record<string, unknown> = {};
   let answer = raw;
 
+  console.log("[BETA RAW]", raw);
+
   if (attrsMatch) {
     answer = raw.replace(attrsMatch[0], "").trim();
     try {
       attrs = JSON.parse(attrsMatch[1]);
-    } catch {
-      // Failed to parse — return empty attrs
+      console.log("[BETA ATTRS]", attrs);
+    } catch (e) {
+      console.error("[BETA ATTRS PARSE FAIL]", attrsMatch[1], e);
       attrs = {};
     }
+  } else {
+    console.warn("[BETA NO ATTRS FOUND IN]", raw);
   }
 
   return { answer, attrs };
