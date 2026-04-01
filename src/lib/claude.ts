@@ -11,7 +11,7 @@ export function cardToContext(card: Card): string {
     `Type Line: ${card.type_line}`,
     `Colors: ${card.colors.length > 0 ? card.colors.join(", ") : "Colorless"}`,
     `Color Identity: ${card.color_identity.length > 0 ? card.color_identity.join(", ") : "Colorless"}`,
-    `Rarity: ${card.rarity}`,
+    `Rarity (this printing): ${card.rarity} — note: rarity may differ across printings. Use your training knowledge for the card's most common/original rarity if asked.`,
     `Artist: ${card.artist}`,
   ];
 
