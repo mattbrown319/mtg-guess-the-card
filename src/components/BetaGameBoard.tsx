@@ -286,6 +286,7 @@ export default function BetaGameBoard({
           questions={questions}
           cardId={cardId}
           sessionId={sessionId}
+          timeLimitSeconds={timeLimitSeconds}
         />
       </div>
     );

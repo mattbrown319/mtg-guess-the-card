@@ -34,6 +34,7 @@ interface CardRevealProps {
   questions: QuestionAnswer[];
   cardId?: string;
   sessionId: string;
+  timeLimitSeconds?: number;
 }
 
 function buildShareText(
@@ -92,6 +93,7 @@ export default function CardReveal({
   questions,
   cardId,
   sessionId,
+  timeLimitSeconds,
 }: CardRevealProps) {
   const [voted, setVoted] = useState<"fun" | "not_fun" | null>(null);
   const [shareState, setShareState] = useState<
@@ -131,7 +133,7 @@ export default function CardReveal({
             creatorSessionId: sessionId,
             creatorQuestions: questionsAsked,
             creatorCorrect: correct,
-            timeLimit: 300,
+            timeLimit: timeLimitSeconds || 300,
           }),
         });
 

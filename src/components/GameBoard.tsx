@@ -289,6 +289,7 @@ export default function GameBoard({
           questions={questions}
           cardId={cardId}
           sessionId={sessionId}
+          timeLimitSeconds={timeLimitSeconds}
         />
       </div>
     );
