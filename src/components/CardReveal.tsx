@@ -131,6 +131,7 @@ export default function CardReveal({
             creatorSessionId: sessionId,
             creatorQuestions: questionsAsked,
             creatorCorrect: correct,
+            timeLimit: 300,
           }),
         });
 

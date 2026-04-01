@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       creatorSessionId || null,
       creatorQuestions || null,
       creatorCorrect ? 1 : 0,
-      timeLimit || 180,
+      timeLimit || 300,
     ],
   });
 
