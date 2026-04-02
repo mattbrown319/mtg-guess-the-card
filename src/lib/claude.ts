@@ -96,7 +96,7 @@ export async function answerQuestion(
   messages.push({ role: "user", content: question });
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 150,
     system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
     messages,
@@ -115,7 +115,7 @@ export async function getHint(
     .join("\n");
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 100,
     system: `${SYSTEM_PROMPT}\n\nThe card the player is trying to guess:\n${cardToContext(card)}`,
     messages: [
@@ -149,7 +149,7 @@ export async function generateSummary(
     .join("\n");
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 300,
     system: `You consolidate information from a Q&A session about a mystery Magic: The Gathering card into a clean summary. Do NOT guess the card name.`,
     messages: [
@@ -183,7 +183,7 @@ export async function generateShareSummary(
     .join("\n");
 
   const response = await client.messages.create({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-haiku-4-5-20251001",
     max_tokens: 100,
     system: `You write ultra-condensed one-line summaries of what a player learned about a mystery Magic: The Gathering card. Do NOT guess or reveal the card name.`,
     messages: [
