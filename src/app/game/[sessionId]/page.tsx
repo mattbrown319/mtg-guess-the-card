@@ -11,7 +11,7 @@ export default function GamePage({
 }) {
   const { sessionId } = use(params);
   const searchParams = useSearchParams();
-  const timeLimit = Number(searchParams.get("t")) || 180;
+  const timeLimit = searchParams.get("t") !== null ? Number(searchParams.get("t")) : 300;
   const maxQuestions = Number(searchParams.get("q")) || 999;
   const cardId = searchParams.get("c") || undefined;
   const [cardNames, setCardNames] = useState<string[] | undefined>(undefined);
