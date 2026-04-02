@@ -264,7 +264,7 @@ export default function GameBoard({
         sessionStorage.setItem("cardNames", JSON.stringify(data.cardNames));
       }
 
-      window.location.href = `/game/${data.sessionId}?t=${settings.timeLimitSeconds || 300}&q=${data.maxQuestions}&c=${data.cardId}`;
+      window.location.href = `/game/${data.sessionId}?t=${settings.timeLimitSeconds ?? 300}&q=${data.maxQuestions}&c=${data.cardId}`;
     } catch {
       window.location.href = "/";
     }

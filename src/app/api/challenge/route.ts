@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       creatorSessionId || null,
       creatorQuestions || null,
       creatorCorrect ? 1 : 0,
-      timeLimit || 300,
+      timeLimit ?? 300,
     ],
   });
 
@@ -52,6 +52,6 @@ export async function GET(request: NextRequest) {
     cardId: row.card_id,
     creatorQuestions: row.creator_questions,
     creatorCorrect: row.creator_correct === 1,
-    timeLimit: row.time_limit || 180,
+    timeLimit: row.time_limit ?? 300,
   });
 }

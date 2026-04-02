@@ -261,7 +261,7 @@ export default function BetaGameBoard({
       if (data.cardNames) {
         sessionStorage.setItem("cardNames", JSON.stringify(data.cardNames));
       }
-      window.location.href = `/beta/${data.sessionId}?t=${settings.timeLimitSeconds || 300}&q=${data.maxQuestions}&c=${data.cardId}`;
+      window.location.href = `/beta/${data.sessionId}?t=${settings.timeLimitSeconds ?? 300}&q=${data.maxQuestions}&c=${data.cardId}`;
     } catch {
       window.location.href = "/beta";
     }

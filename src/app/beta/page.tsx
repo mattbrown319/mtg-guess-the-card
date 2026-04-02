@@ -41,7 +41,7 @@ export default function BetaHome() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           popularityTier,
-          timeLimitSeconds: timeLimit || undefined,
+          timeLimitSeconds: timeLimit,
           excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
         }),
       });
@@ -63,7 +63,7 @@ export default function BetaHome() {
       try {
         sessionStorage.setItem("gameSettings", JSON.stringify({
           popularityTier,
-          timeLimitSeconds: timeLimit || undefined,
+          timeLimitSeconds: timeLimit,
         }));
         if (data.cardNames) {
           sessionStorage.setItem("cardNames", JSON.stringify(data.cardNames));
