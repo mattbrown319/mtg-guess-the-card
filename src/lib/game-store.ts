@@ -13,7 +13,7 @@ export async function createGame(
   const db = await getDb();
   const sessionId = uuidv4();
   const now = Date.now();
-  const timeLimit = timeLimitSeconds || DEFAULT_TIME_LIMIT;
+  const timeLimit = timeLimitSeconds !== undefined && timeLimitSeconds !== null ? timeLimitSeconds : DEFAULT_TIME_LIMIT;
 
   await db.execute({
     sql: `INSERT INTO sessions (session_id, card_json, started_at, max_questions, time_limit_seconds, player_id)

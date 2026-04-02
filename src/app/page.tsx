@@ -83,7 +83,7 @@ export default function Home() {
           format: format || undefined,
           popularityTier: popularityTier || undefined,
           cardType: cardType || undefined,
-          timeLimitSeconds: timeLimit || undefined,
+          timeLimitSeconds: timeLimit,
           excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
         }),
       });
@@ -104,7 +104,7 @@ export default function Home() {
           format: format || undefined,
           popularityTier: popularityTier || undefined,
           cardType: cardType || undefined,
-          timeLimitSeconds: timeLimit || undefined,
+          timeLimitSeconds: timeLimit,
         }));
       } catch {}
 
