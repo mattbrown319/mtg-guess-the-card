@@ -383,18 +383,18 @@ export default function CardReveal({
       {/* Vote — compact inline */}
       {!voted ? (
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[var(--text-secondary)]">How was this card?</span>
+          <span className="text-xs text-[var(--text-secondary)]">Was this fun?</span>
           <button
             onClick={() => handleVote("fun")}
             className="px-3 py-1 rounded-lg border border-[var(--border)] hover:border-[var(--success)] hover:text-[var(--success)] text-[var(--text-secondary)] transition-colors text-xs cursor-pointer"
           >
-            Good
+            Yes
           </button>
           <button
             onClick={() => handleVote("not_fun")}
             className="px-3 py-1 rounded-lg border border-[var(--border)] hover:border-[var(--error)] hover:text-[var(--error)] text-[var(--text-secondary)] transition-colors text-xs cursor-pointer"
           >
-            Obscure
+            No
           </button>
         </div>
       ) : (
