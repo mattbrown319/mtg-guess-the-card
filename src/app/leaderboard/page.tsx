@@ -11,15 +11,15 @@ async function getLeaderboardData() {
   // Unique wins = count distinct card names won by each player
   const allTime = await db.execute(`
     SELECT player_initials as name,
-           COUNT(DISTINCT json_extract(card_json, '$.name')) as unique_wins,
+           COUNT(DISTINCT CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN json_extract(card_json, '$.name') END) as unique_wins,
            COUNT(CASE WHEN correct = 1 THEN 1 END) as total_wins,
            COUNT(CASE WHEN status IN ('guessed','timeout') THEN 1 END) as total_games,
-           ROUND(AVG(CASE WHEN correct = 1 THEN question_count END), 1) as avg_qs
+           ROUND(AVG(CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN question_count END), 1) as avg_qs
     FROM sessions
     WHERE player_initials IS NOT NULL
     AND status IN ('guessed', 'timeout')
     GROUP BY player_id
-    HAVING total_wins >= 1
+    HAVING unique_wins >= 1
     ORDER BY unique_wins DESC
     LIMIT 20
   `);
@@ -36,7 +36,7 @@ async function getLeaderboardData() {
       AND status IN ('guessed', 'timeout')
       AND started_at > ?
       GROUP BY player_id
-      HAVING total_wins >= 1
+      HAVING unique_wins >= 1
       ORDER BY unique_wins DESC
       LIMIT 20
     `,
@@ -55,7 +55,7 @@ async function getLeaderboardData() {
       AND status IN ('guessed', 'timeout')
       AND started_at > ?
       GROUP BY player_id
-      HAVING total_wins >= 1
+      HAVING unique_wins >= 1
       ORDER BY unique_wins DESC
       LIMIT 20
     `,
