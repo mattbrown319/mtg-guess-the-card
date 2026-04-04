@@ -54,6 +54,7 @@ async function initTables(db: Client): Promise<void> {
   // Migrations for existing DBs
   await db.execute("ALTER TABLE challenges ADD COLUMN time_limit INTEGER DEFAULT 180").catch(() => {});
   await db.execute("ALTER TABLE sessions ADD COLUMN player_initials TEXT").catch(() => {});
+  await db.execute("ALTER TABLE sessions ADD COLUMN elapsed_seconds INTEGER").catch(() => {});
 }
 
 export async function getDb(): Promise<Client> {

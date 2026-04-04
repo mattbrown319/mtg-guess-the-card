@@ -31,6 +31,7 @@ interface CardRevealProps {
   onPlayAgain: () => void;
   onChangeSettings: () => void;
   onVote: (vote: "fun" | "not_fun") => void;
+  elapsedSeconds?: number;
   questions: QuestionAnswer[];
   cardId?: string;
   sessionId: string;
@@ -91,6 +92,7 @@ export default function CardReveal({
   onChangeSettings,
   onVote,
   questions,
+  elapsedSeconds,
   cardId,
   sessionId,
   timeLimitSeconds,
@@ -105,7 +107,7 @@ export default function CardReveal({
   });
   const [initialsInput, setInitialsInput] = useState("");
   const [initialsSaved, setInitialsSaved] = useState(!!initials);
-  const [leaderboard, setLeaderboard] = useState<{name: string; playerId: string; uniqueWins: number; totalGames: number; avgQs: number}[]>([]);
+  const [leaderboard, setLeaderboard] = useState<{name: string; playerId: string; uniqueWins: number; totalGames: number; avgQs: number; fastest: number | null}[]>([]);
   const [showQuestions, setShowQuestions] = useState(false);
   const [shareState, setShareState] = useState<
     "idle" | "loading" | "copied" | "shown"
@@ -201,6 +203,14 @@ export default function CardReveal({
             {correct
               ? `${questionsAsked} question${questionsAsked !== 1 ? "s" : ""}`
               : `${questionsAsked} question${questionsAsked !== 1 ? "s" : ""} asked`}
+            {elapsedSeconds !== undefined && (
+              <span>
+                {" "}&bull;{" "}
+                {elapsedSeconds < 60
+                  ? `${elapsedSeconds}s`
+                  : `${Math.floor(elapsedSeconds / 60)}m ${elapsedSeconds % 60}s`}
+              </span>
+            )}
           </div>
         )}
       </div>
@@ -283,7 +293,10 @@ export default function CardReveal({
                   }`}
                 >
                   <span>{i + 1}. {entry.name}</span>
-                  <span>{entry.uniqueWins} wins &bull; {String(entry.avgQs)} avg Qs</span>
+                  <span>
+                    {entry.uniqueWins} wins
+                    {entry.fastest ? ` · ${entry.fastest < 60 ? `${entry.fastest}s` : `${Math.floor(entry.fastest / 60)}m${entry.fastest % 60}s`} best` : ""}
+                  </span>
                 </div>
               ))}
             </div>
@@ -339,7 +352,7 @@ export default function CardReveal({
 
       {/* Q&A History toggle */}
       {questions.length > 0 && (
-        <div className="w-full max-w-sm">
+        <div className="w-full max-w-sm text-center">
           <button
             onClick={() => setShowQuestions(!showQuestions)}
             className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] cursor-pointer"

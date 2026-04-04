@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { sessionId, cardName, giveUp } = body;
+  const { sessionId, cardName, giveUp, elapsedSeconds } = body;
 
   if (!sessionId) {
     return NextResponse.json(
@@ -43,6 +43,15 @@ export async function POST(request: NextRequest) {
       { error: "Game is no longer active." },
       { status: 400 }
     );
+  }
+
+  // Store elapsed time if provided
+  if (elapsedSeconds !== undefined) {
+    const db = await import("@/lib/db").then(m => m.getDb());
+    await db.execute({
+      sql: "UPDATE sessions SET elapsed_seconds = ? WHERE session_id = ?",
+      args: [Math.round(elapsedSeconds), sessionId],
+    });
   }
 
   return NextResponse.json({

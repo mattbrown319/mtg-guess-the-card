@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { sessionId, question, requestHint, requestSummary, requestShareSummary } = body;
+  const { sessionId, question, requestHint, requestSummary, requestShareSummary, elapsedSeconds } = body;
 
   if (!sessionId) {
     return NextResponse.json(
@@ -122,6 +122,14 @@ export async function POST(request: NextRequest) {
   if (correctGuess) {
     const { submitGuess } = await import("@/lib/game-store");
     await submitGuess(sessionId, game.card.name);
+    // Store elapsed time
+    if (elapsedSeconds !== undefined) {
+      const db = await import("@/lib/db").then(m => m.getDb());
+      await db.execute({
+        sql: "UPDATE sessions SET elapsed_seconds = ? WHERE session_id = ?",
+        args: [Math.round(elapsedSeconds), sessionId],
+      });
+    }
     return NextResponse.json({
       answer: cleanAnswer,
       questionNumber: game.questionCount + 1,

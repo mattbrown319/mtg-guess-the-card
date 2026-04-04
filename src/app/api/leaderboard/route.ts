@@ -11,7 +11,8 @@ export async function GET() {
              COUNT(DISTINCT CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN json_extract(card_json, '$.name') END) as unique_wins,
              COUNT(CASE WHEN correct = 1 THEN 1 END) as total_wins,
              COUNT(CASE WHEN status IN ('guessed','timeout') THEN 1 END) as total_games,
-             ROUND(AVG(CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN question_count END), 1) as avg_qs
+             ROUND(AVG(CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN question_count END), 1) as avg_qs,
+             MIN(CASE WHEN correct = 1 AND questions_json NOT LIKE '%Hint requested%' THEN elapsed_seconds END) as fastest
       FROM sessions
       WHERE player_initials IS NOT NULL
       AND status IN ('guessed', 'timeout')
@@ -31,6 +32,7 @@ export async function GET() {
       uniqueWins: r.unique_wins,
       totalGames: r.total_games,
       avgQs: r.avg_qs,
+      fastest: r.fastest,
     })),
   });
 }

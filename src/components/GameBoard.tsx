@@ -29,6 +29,7 @@ interface RevealData {
   };
   questionsAsked: number;
   gaveUp?: boolean;
+  elapsedSeconds?: number;
 }
 
 type Phase = "asking" | "guessing" | "revealed";
@@ -113,7 +114,7 @@ export default function GameBoard({
       const res = await fetch("/api/question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, question }),
+        body: JSON.stringify({ sessionId, question, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) }),
       });
 
       const data = await res.json();
@@ -137,6 +138,7 @@ export default function GameBoard({
           correct: true,
           card: data.card,
           questionsAsked: data.questionNumber,
+          elapsedSeconds: Math.round((Date.now() - startedAt) / 1000),
         });
         setPhase("revealed");
         return;
@@ -180,7 +182,7 @@ export default function GameBoard({
       const res = await fetch("/api/guess", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, cardName }),
+        body: JSON.stringify({ sessionId, cardName, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) }),
       });
 
       const data = await res.json();
@@ -190,7 +192,7 @@ export default function GameBoard({
         return;
       }
 
-      setReveal(data);
+      setReveal({ ...data, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) });
       setPhase("revealed");
     } catch {
       setError("Network error. Try again.");
@@ -206,14 +208,14 @@ export default function GameBoard({
       const res = await fetch("/api/guess", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId, giveUp: true }),
+        body: JSON.stringify({ sessionId, giveUp: true, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Failed to give up");
         return;
       }
-      setReveal({ ...data, gaveUp: true });
+      setReveal({ ...data, gaveUp: true, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) });
       setPhase("revealed");
     } catch {
       setError("Network error. Try again.");
@@ -283,6 +285,7 @@ export default function GameBoard({
           questionsAsked={reveal.questionsAsked}
           gaveUp={reveal.gaveUp}
           usedHint={!!hint}
+          elapsedSeconds={reveal.elapsedSeconds}
           onPlayAgain={handlePlayAgain}
           onChangeSettings={handleChangeSettings}
           onVote={handleVote}
