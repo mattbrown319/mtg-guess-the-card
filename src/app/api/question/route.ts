@@ -92,8 +92,10 @@ export async function POST(request: NextRequest) {
   }
 
   let answer: string;
+  const tLLM = Date.now();
   try {
     answer = await answerQuestion(game.card, question.trim(), game.questions);
+    console.log(`[QUESTION] LLM response: ${Date.now() - tLLM}ms, Qs in history: ${game.questions.length}`);
   } catch (err: unknown) {
     console.error("Claude API error:", err);
     const message =
