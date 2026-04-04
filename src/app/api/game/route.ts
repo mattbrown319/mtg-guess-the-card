@@ -52,35 +52,25 @@ export async function POST(request: NextRequest) {
   const t0 = Date.now();
   const filters = { format, popularityTier, cardType, excludeNames };
 
-  const count = await getCardCount(filters);
+  const card = await getRandomCard(filters);
   const t1 = Date.now();
-  console.log(`[GAME] getCardCount: ${t1 - t0}ms`);
-  if (count === 0) {
+  console.log(`[GAME] getRandomCard: ${t1 - t0}ms`);
+  if (!card) {
     return NextResponse.json(
       { error: "No cards match those filters. Try different settings." },
       { status: 400 }
     );
   }
 
-  const card = await getRandomCard(filters);
-  const t2 = Date.now();
-  console.log(`[GAME] getRandomCard: ${t2 - t1}ms`);
-  if (!card) {
-    return NextResponse.json(
-      { error: "Could not find a card. Try again." },
-      { status: 500 }
-    );
-  }
-
   const game = await createGame(card, timeLimitSeconds, playerId, playerInitials);
-  const t3 = Date.now();
-  console.log(`[GAME] createGame: ${t3 - t2}ms`);
+  const t2 = Date.now();
+  console.log(`[GAME] createGame: ${t2 - t1}ms`);
 
-  // Preload card names for client-side autocomplete (skip for huge pools)
-  const cardNames = count <= 10000 ? await getAllCardNames(filters) : undefined;
-  const t4 = Date.now();
-  console.log(`[GAME] getAllCardNames: ${t4 - t3}ms (${cardNames?.length ?? 0} names)`);
-  console.log(`[GAME] Total: ${t4 - t0}ms`);
+  // Preload card names for client-side autocomplete
+  const cardNames = popularityTier === "popular" ? await getAllCardNames(filters) : undefined;
+  const t3 = Date.now();
+  console.log(`[GAME] getAllCardNames: ${t3 - t2}ms (${cardNames?.length ?? 0} names)`);
+  console.log(`[GAME] Total: ${t3 - t0}ms`);
 
   const res = NextResponse.json({
     sessionId: game.sessionId,
