@@ -48,13 +48,41 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [leaderboard, setLeaderboard] = useState<{name: string; uniqueWins: number; fastest: number | null}[]>([]);
+  const [prefetchedGame, setPrefetchedGame] = useState<Record<string, unknown> | null>(null);
+  const [prefetchSettings, setPrefetchSettings] = useState("");
 
+  // Fetch leaderboard and prefetch first game on page load
   useEffect(() => {
     fetch("/api/leaderboard")
       .then(r => r.json())
       .then(data => setLeaderboard(data.daily || []))
       .catch(() => {});
+    // Prefetch a game with default settings to warm the DB connection
+    prefetchGame("popular", 300);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  function prefetchGame(tier: string, time: number) {
+    const settingsKey = `${tier}:${time}`;
+    setPrefetchSettings(settingsKey);
+    const excludeNames = getRecentCardNames();
+    fetch("/api/game", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        popularityTier: tier,
+        timeLimitSeconds: time,
+        excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
+      }),
+    })
+      .then(r => r.json())
+      .then(data => {
+        if (data.sessionId) {
+          setPrefetchedGame(data);
+        }
+      })
+      .catch(() => {});
+  }
 
   function getRecentCardNames(): string[] {
     try {
@@ -82,24 +110,30 @@ export default function Home() {
     setError("");
 
     try {
-      const excludeNames = getRecentCardNames();
+      // Use prefetched game if settings match
+      const currentSettingsKey = `${popularityTier}:${timeLimit}`;
+      let data = null;
 
-      const res = await fetch("/api/game", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          format: format || undefined,
-          popularityTier: popularityTier || undefined,
-          cardType: cardType || undefined,
-          timeLimitSeconds: timeLimit,
-          excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
-        }),
-      });
+      if (prefetchedGame && prefetchSettings === currentSettingsKey) {
+        data = prefetchedGame;
+        setPrefetchedGame(null);
+      } else {
+        const excludeNames = getRecentCardNames();
+        const res = await fetch("/api/game", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            popularityTier: popularityTier || undefined,
+            timeLimitSeconds: timeLimit,
+            excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
+          }),
+        });
 
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Failed to start game");
-        return;
+        data = await res.json();
+        if (!res.ok) {
+          setError(data.error || "Failed to start game");
+          return;
+        }
       }
 
       if (data.cardName) {
@@ -240,7 +274,7 @@ export default function Home() {
           </a>
         </div>
         <div className="text-center text-xs text-[var(--text-secondary)] pt-2 opacity-60">
-          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.60
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.61
         </div>
       </div>
     </main>
