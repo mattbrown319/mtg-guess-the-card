@@ -15,6 +15,13 @@ export function cardToContext(card: Card): string {
     `Artist: ${card.artist}`,
   ];
 
+  if (card.all_sets && card.all_sets.length > 0) {
+    parts.push(`Printed in sets: ${card.all_sets.join(", ")}`);
+  }
+  if (card.all_years && card.all_years.length > 0) {
+    parts.push(`Print years: ${card.all_years.join(", ")} (first: ${card.all_years[0]})`);
+  }
+
   if (card.oracle_text) parts.push(`Oracle Text: ${card.oracle_text}`);
   if (card.power !== null) parts.push(`Power: ${card.power}`);
   if (card.toughness !== null) parts.push(`Toughness: ${card.toughness}`);
@@ -66,7 +73,7 @@ RULES:
 6. If a question truly cannot be answered yes/no, say "Try rephrasing as a yes/no question!"
 7. If a question is about subjective things (like "is this card good?"), use your MTG knowledge to give a reasonable yes/no based on general community consensus.
 8. For questions about competitive play, archetypes, combos, etc., use your training knowledge about Magic in addition to the card data.
-9. If asked about which set the card is from, when it was first printed, or what year it was released, say "I don't have reliable set/year information — try asking about the card's abilities or characteristics instead!" Do NOT guess or use your training knowledge for set/year questions as it is often wrong.
+9. If asked about sets or print years, use ONLY the set/year data provided in the card context. The card data includes all sets and years the card was printed in. Answer based on this data, not your training knowledge.
 10. Keep responses extremely terse. "Yes." or "No." is the ideal response. Qualifiers should be at most 2-3 words like "Yes, conditionally." or "Sometimes." — NEVER explain the condition or mechanic. Do NOT say things like "depends on your devotion" or "only if X". The player must figure out the details themselves.
 11. If the player asks something that contradicts or ignores what they already established, gently remind them. For example, if they already confirmed the card costs 4 mana and then ask "does it cost 2U?", answer "No — remember, it's 4 mana, not 3." If they're asking about the wrong color or type, a brief nudge helps. Act like a helpful game store host who notices when someone loses track.
 12. If a technically-correct yes/no would be misleading in context, use "Sometimes." or "Yes, conditionally." or "Not always." — do NOT explain why. For example, if a card is conditionally a creature, say "Sometimes." not "depends on devotion to blue."

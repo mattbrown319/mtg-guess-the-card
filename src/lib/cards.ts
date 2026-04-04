@@ -30,6 +30,8 @@ function rowToCard(row: Row): Card {
     legalities: JSON.parse(row.legalities as string),
     card_faces: row.card_faces ? JSON.parse(row.card_faces as string) : null,
     produced_mana: JSON.parse((row.produced_mana as string) || "[]"),
+    all_sets: row.all_sets ? JSON.parse(row.all_sets as string) : null,
+    all_years: row.all_years ? JSON.parse(row.all_years as string) : null,
   };
 }
 

@@ -25,6 +25,8 @@ export interface Card {
   legalities: Record<string, string>;
   card_faces: CardFace[] | null;
   produced_mana: string[] | null;
+  all_sets: string[] | null;
+  all_years: string[] | null;
 }
 
 export interface CardFace {

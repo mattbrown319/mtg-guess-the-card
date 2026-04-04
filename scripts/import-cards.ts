@@ -34,20 +34,34 @@ async function downloadJson(url: string, label: string): Promise<unknown[]> {
   return JSON.parse(text);
 }
 
-function countPrintings(defaultCards: unknown[]): Map<string, number> {
-  console.log("Counting printings per card...");
-  const counts = new Map<string, number>();
+interface PrintingData {
+  count: number;
+  sets: Set<string>;
+  years: Set<string>;
+}
+
+function countPrintings(defaultCards: unknown[]): Map<string, PrintingData> {
+  console.log("Counting printings and collecting sets per card...");
+  const data = new Map<string, PrintingData>();
   for (const raw of defaultCards) {
     const card = raw as Record<string, unknown>;
     const oracleId = card.oracle_id as string;
     if (!oracleId) continue;
-    // Only count English, paper printings
     if (card.lang !== "en") continue;
     if (card.digital === true) continue;
-    counts.set(oracleId, (counts.get(oracleId) || 0) + 1);
+
+    if (!data.has(oracleId)) {
+      data.set(oracleId, { count: 0, sets: new Set(), years: new Set() });
+    }
+    const d = data.get(oracleId)!;
+    d.count++;
+    const setName = card.set_name as string;
+    if (setName) d.sets.add(setName);
+    const releasedAt = card.released_at as string;
+    if (releasedAt) d.years.add(releasedAt.slice(0, 4));
   }
-  console.log(`Counted printings for ${counts.size} unique cards`);
-  return counts;
+  console.log(`Collected printing data for ${data.size} unique cards`);
+  return data;
 }
 
 function createDatabase(): Database.Database {
@@ -84,6 +98,8 @@ function createDatabase(): Database.Database {
       penny_rank INTEGER,
       num_printings INTEGER DEFAULT 1,
       popularity_score REAL,
+      all_sets TEXT,
+      all_years TEXT,
       flavor_text TEXT,
       image_uri_normal TEXT,
       image_uri_art_crop TEXT,
@@ -156,21 +172,21 @@ function computePopularity(
 function importCards(
   db: Database.Database,
   cards: unknown[],
-  printingCounts: Map<string, number>
+  printingCounts: Map<string, PrintingData>
 ): void {
   const insert = db.prepare(`
     INSERT INTO cards (
       id, oracle_id, name, layout, mana_cost, cmc, type_line, oracle_text,
       colors, color_identity, keywords, power, toughness, loyalty,
       rarity, set_code, set_name, released_at, artist, edhrec_rank,
-      penny_rank, num_printings, popularity_score,
+      penny_rank, num_printings, popularity_score, all_sets, all_years,
       flavor_text, image_uri_normal, image_uri_art_crop, legalities,
       card_faces, produced_mana
     ) VALUES (
       @id, @oracle_id, @name, @layout, @mana_cost, @cmc, @type_line, @oracle_text,
       @colors, @color_identity, @keywords, @power, @toughness, @loyalty,
       @rarity, @set_code, @set_name, @released_at, @artist, @edhrec_rank,
-      @penny_rank, @num_printings, @popularity_score,
+      @penny_rank, @num_printings, @popularity_score, @all_sets, @all_years,
       @flavor_text, @image_uri_normal, @image_uri_art_crop, @legalities,
       @card_faces, @produced_mana
     )
@@ -244,7 +260,10 @@ function importCards(
     const oracleId = card.oracle_id as string;
     const edhrecRank = (card.edhrec_rank as number) || null;
     const pennyRank = (card.penny_rank as number) || null;
-    const numPrintings = printingCounts.get(oracleId) || 1;
+    const printingData = printingCounts.get(oracleId);
+    const numPrintings = printingData?.count || 1;
+    const allSets = printingData ? JSON.stringify(Array.from(printingData.sets).sort()) : "[]";
+    const allYears = printingData ? JSON.stringify(Array.from(printingData.years).sort()) : "[]";
     const rarity = card.rarity as string;
     const typeLine = card.type_line as string;
     const legalities = (card.legalities || {}) as Record<string, string>;
@@ -275,6 +294,8 @@ function importCards(
         penny_rank: pennyRank,
         num_printings: numPrintings,
         popularity_score: 5000, // Known but boring to guess
+        all_sets: allSets,
+        all_years: allYears,
         flavor_text: (card.flavor_text as string) || null,
         image_uri_normal: imageNormal,
         image_uri_art_crop: imageArtCrop,
@@ -323,6 +344,8 @@ function importCards(
       penny_rank: pennyRank,
       num_printings: numPrintings,
       popularity_score: popularityScore,
+      all_sets: allSets,
+      all_years: allYears,
       flavor_text: (card.flavor_text as string) || null,
       image_uri_normal: imageNormal,
       image_uri_art_crop: imageArtCrop,
