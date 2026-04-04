@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface CardData {
   name: string;
@@ -105,11 +105,25 @@ export default function CardReveal({
   });
   const [initialsInput, setInitialsInput] = useState("");
   const [initialsSaved, setInitialsSaved] = useState(!!initials);
+  const [leaderboard, setLeaderboard] = useState<{name: string; playerId: string; uniqueWins: number; totalGames: number; avgQs: number}[]>([]);
   const [shareState, setShareState] = useState<
     "idle" | "loading" | "copied" | "shown"
   >("idle");
   const [shareText, setShareText] = useState("");
   const [transcriptCopied, setTranscriptCopied] = useState(false);
+
+  // Fetch leaderboard on mount
+  useEffect(() => {
+    fetch("/api/leaderboard")
+      .then(r => r.json())
+      .then(data => setLeaderboard(data.daily || []))
+      .catch(() => {});
+  }, []);
+
+  // Get current player ID from cookie
+  const currentPlayerId = typeof document !== "undefined"
+    ? document.cookie.split(";").find(c => c.trim().startsWith("player_id="))?.split("=")[1]?.trim()
+    : undefined;
 
   const heading = correct
     ? "You got it!"
@@ -190,45 +204,6 @@ export default function CardReveal({
         )}
       </div>
 
-      {/* Initials prompt — only on wins, only if not already set */}
-      {correct && !initialsSaved && (
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-[var(--text-secondary)]">Enter initials for leaderboard:</span>
-          <input
-            type="text"
-            value={initialsInput}
-            onChange={(e) => setInitialsInput(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4))}
-            placeholder="ABC"
-            maxLength={4}
-            className="w-16 bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-2 py-1 text-center text-sm text-[var(--text-primary)] uppercase"
-          />
-          <button
-            onClick={async () => {
-              if (!initialsInput) return;
-              try {
-                await fetch("/api/initials", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({ initials: initialsInput }),
-                });
-                setInitials(initialsInput);
-                setInitialsSaved(true);
-              } catch {}
-            }}
-            disabled={!initialsInput}
-            className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-50 text-white text-xs px-3 py-1 rounded cursor-pointer"
-          >
-            Save
-          </button>
-        </div>
-      )}
-      {correct && initialsSaved && initials && (
-        <div className="text-xs text-[var(--text-secondary)]">
-          Playing as <span className="font-bold text-[var(--accent)]">{initials}</span> &bull;{" "}
-          <a href="/leaderboard" className="underline hover:text-[var(--accent)]">Leaderboard</a>
-        </div>
-      )}
-
       {/* Card image — the image contains name, type, set, artist */}
       {card.image_uri_normal && (
         // eslint-disable-next-line @next/next/no-img-element
@@ -286,6 +261,78 @@ export default function CardReveal({
           >
             {shareState === "copied" ? "Copied!" : "Copy to Clipboard"}
           </button>
+        </div>
+      )}
+
+      {/* Leaderboard — today's top players */}
+      {correct && (
+        <div className="w-full max-w-sm bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold text-[var(--text-secondary)]">Today&apos;s Leaderboard</span>
+            <a href="/leaderboard" className="text-xs text-[var(--accent)] hover:underline">Full board &rarr;</a>
+          </div>
+
+          {leaderboard.length > 0 ? (
+            <div className="space-y-1">
+              {leaderboard.slice(0, 5).map((entry, i) => (
+                <div
+                  key={i}
+                  className={`flex items-center justify-between text-xs py-0.5 ${
+                    entry.playerId === currentPlayerId ? "text-[var(--accent)] font-bold" : "text-[var(--text-secondary)]"
+                  }`}
+                >
+                  <span>{i + 1}. {entry.name}</span>
+                  <span>{entry.uniqueWins} wins &bull; {String(entry.avgQs)} avg Qs</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-xs text-[var(--text-secondary)] text-center py-2">
+              No entries yet today — be the first!
+            </div>
+          )}
+
+          {/* Initials prompt */}
+          {!initialsSaved ? (
+            <div className="flex items-center gap-2 mt-3 pt-2 border-t border-[var(--border)]">
+              <span className="text-xs text-[var(--text-secondary)]">Add your name:</span>
+              <input
+                type="text"
+                value={initialsInput}
+                onChange={(e) => setInitialsInput(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4))}
+                placeholder="ABC"
+                maxLength={4}
+                autoComplete="off"
+                className="w-16 bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-2 py-1 text-center text-xs text-[var(--text-primary)] uppercase"
+              />
+              <button
+                onClick={async () => {
+                  if (!initialsInput) return;
+                  try {
+                    await fetch("/api/initials", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({ initials: initialsInput }),
+                    });
+                    setInitials(initialsInput);
+                    setInitialsSaved(true);
+                    // Refresh leaderboard
+                    const r = await fetch("/api/leaderboard");
+                    const data = await r.json();
+                    setLeaderboard(data.daily || []);
+                  } catch {}
+                }}
+                disabled={!initialsInput}
+                className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-50 text-white text-xs px-3 py-1 rounded cursor-pointer"
+              >
+                Save
+              </button>
+            </div>
+          ) : (
+            <div className="text-xs text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
+              Playing as <span className="font-bold text-[var(--accent)]">{initials}</span>
+            </div>
+          )}
         </div>
       )}
 
