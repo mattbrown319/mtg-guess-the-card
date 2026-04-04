@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
     sessionId: game.sessionId,
     timeLimitSeconds: game.timeLimitSeconds,
     maxQuestions: game.maxQuestions,
-    cardPool: count,
     cardId: card.id,
     cardName: card.name,
     cardNames,
