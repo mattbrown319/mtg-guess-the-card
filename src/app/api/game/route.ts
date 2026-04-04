@@ -66,10 +66,7 @@ export async function POST(request: NextRequest) {
   const t2 = Date.now();
   console.log(`[GAME] createGame: ${t2 - t1}ms`);
 
-  // Preload card names for client-side autocomplete
-  const cardNames = popularityTier === "popular" ? await getAllCardNames(filters) : undefined;
   const t3 = Date.now();
-  console.log(`[GAME] getAllCardNames: ${t3 - t2}ms (${cardNames?.length ?? 0} names)`);
   console.log(`[GAME] Total: ${t3 - t0}ms`);
 
   const res = NextResponse.json({
@@ -78,7 +75,6 @@ export async function POST(request: NextRequest) {
     maxQuestions: game.maxQuestions,
     cardId: card.id,
     cardName: card.name,
-    cardNames,
   });
   if (isNew) {
     res.cookies.set("player_id", playerId, {

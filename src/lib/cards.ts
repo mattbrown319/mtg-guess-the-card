@@ -49,16 +49,6 @@ export async function getRandomCard(filters: CardFilters): Promise<Card | null> 
 
   conditions.push("image_uri_normal IS NOT NULL");
 
-  // Exclude cards not legal in any major format (Un-cards, etc.)
-  conditions.push(`(
-    json_extract(legalities, '$.commander') IN ('legal', 'restricted', 'banned')
-    OR json_extract(legalities, '$.modern') IN ('legal', 'restricted', 'banned')
-    OR json_extract(legalities, '$.legacy') IN ('legal', 'restricted', 'banned')
-    OR json_extract(legalities, '$.vintage') IN ('legal', 'restricted', 'banned')
-    OR json_extract(legalities, '$.standard') IN ('legal', 'restricted', 'banned')
-    OR json_extract(legalities, '$.pioneer') IN ('legal', 'restricted', 'banned')
-  )`);
-
   if (filters.format) {
     conditions.push(
       `json_extract(legalities, '$.' || ?) IN ('legal', 'restricted')`
