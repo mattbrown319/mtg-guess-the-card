@@ -106,6 +106,7 @@ export default function CardReveal({
   const [initialsInput, setInitialsInput] = useState("");
   const [initialsSaved, setInitialsSaved] = useState(!!initials);
   const [leaderboard, setLeaderboard] = useState<{name: string; playerId: string; uniqueWins: number; totalGames: number; avgQs: number}[]>([]);
+  const [showQuestions, setShowQuestions] = useState(false);
   const [shareState, setShareState] = useState<
     "idle" | "loading" | "copied" | "shown"
   >("idle");
@@ -331,6 +332,36 @@ export default function CardReveal({
           ) : (
             <div className="text-xs text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
               Playing as <span className="font-bold text-[var(--accent)]">{initials}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Q&A History toggle */}
+      {questions.length > 0 && (
+        <div className="w-full max-w-sm">
+          <button
+            onClick={() => setShowQuestions(!showQuestions)}
+            className="text-xs text-[var(--text-secondary)] hover:text-[var(--accent)] cursor-pointer"
+          >
+            {showQuestions ? "Hide my questions" : `Show my questions (${questions.length})`}
+          </button>
+          {showQuestions && (
+            <div className="mt-2 bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-3 max-h-60 overflow-y-auto">
+              <div className="space-y-2">
+                {questions.filter(qa => qa.question !== "[Hint requested]").map((qa, i) => (
+                  <div key={i} className="space-y-0.5">
+                    <div className="flex gap-2">
+                      <span className="text-[var(--accent)] font-medium shrink-0 text-xs">Q{i + 1}:</span>
+                      <span className="text-xs">{qa.question}</span>
+                    </div>
+                    <div className="flex gap-2 pl-2">
+                      <span className="text-[var(--text-secondary)] shrink-0 text-xs">&rarr;</span>
+                      <span className="text-[var(--text-secondary)] text-xs">{qa.answer}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
