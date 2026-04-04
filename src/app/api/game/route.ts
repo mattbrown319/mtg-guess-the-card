@@ -22,6 +22,7 @@ export async function POST(request: NextRequest) {
   }
 
   const { playerId, isNew } = getOrCreatePlayerId(request);
+  const playerInitials = request.cookies.get("player_initials")?.value;
   const body = await request.json();
   const { format, popularityTier, cardType, timeLimitSeconds, cardId, excludeNames } = body;
 
@@ -30,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!card) {
       return NextResponse.json({ error: "Card not found." }, { status: 404 });
     }
-    const game = await createGame(card, timeLimitSeconds, playerId);
+    const game = await createGame(card, timeLimitSeconds, playerId, playerInitials);
     const res = NextResponse.json({
       sessionId: game.sessionId,
       timeLimitSeconds: game.timeLimitSeconds,

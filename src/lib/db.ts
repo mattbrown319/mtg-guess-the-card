@@ -16,7 +16,8 @@ async function initTables(db: Client): Promise<void> {
       question_count INTEGER NOT NULL DEFAULT 0,
       max_questions INTEGER NOT NULL DEFAULT 999,
       time_limit_seconds INTEGER NOT NULL DEFAULT 180,
-      player_id TEXT
+      player_id TEXT,
+      player_initials TEXT
     )
   `);
 
@@ -50,10 +51,9 @@ async function initTables(db: Client): Promise<void> {
     )
   `);
 
-  // Add time_limit column if it doesn't exist (migration for existing DBs)
-  await db.execute(
-    "ALTER TABLE challenges ADD COLUMN time_limit INTEGER DEFAULT 180"
-  ).catch(() => {});
+  // Migrations for existing DBs
+  await db.execute("ALTER TABLE challenges ADD COLUMN time_limit INTEGER DEFAULT 180").catch(() => {});
+  await db.execute("ALTER TABLE sessions ADD COLUMN player_initials TEXT").catch(() => {});
 }
 
 export async function getDb(): Promise<Client> {

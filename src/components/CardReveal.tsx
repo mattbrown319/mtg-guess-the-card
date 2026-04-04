@@ -96,6 +96,15 @@ export default function CardReveal({
   timeLimitSeconds,
 }: CardRevealProps) {
   const [voted, setVoted] = useState<"fun" | "not_fun" | null>(null);
+  const [initials, setInitials] = useState(() => {
+    if (typeof document !== "undefined") {
+      const cookie = document.cookie.split(";").find(c => c.trim().startsWith("player_initials="));
+      return cookie ? cookie.split("=")[1].trim() : "";
+    }
+    return "";
+  });
+  const [initialsInput, setInitialsInput] = useState("");
+  const [initialsSaved, setInitialsSaved] = useState(!!initials);
   const [shareState, setShareState] = useState<
     "idle" | "loading" | "copied" | "shown"
   >("idle");
@@ -180,6 +189,45 @@ export default function CardReveal({
           </div>
         )}
       </div>
+
+      {/* Initials prompt — only on wins, only if not already set */}
+      {correct && !initialsSaved && (
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-[var(--text-secondary)]">Enter initials for leaderboard:</span>
+          <input
+            type="text"
+            value={initialsInput}
+            onChange={(e) => setInitialsInput(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 4))}
+            placeholder="ABC"
+            maxLength={4}
+            className="w-16 bg-[var(--bg-secondary)] border border-[var(--border)] rounded px-2 py-1 text-center text-sm text-[var(--text-primary)] uppercase"
+          />
+          <button
+            onClick={async () => {
+              if (!initialsInput) return;
+              try {
+                await fetch("/api/initials", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ initials: initialsInput }),
+                });
+                setInitials(initialsInput);
+                setInitialsSaved(true);
+              } catch {}
+            }}
+            disabled={!initialsInput}
+            className="bg-[var(--accent)] hover:bg-[var(--accent-hover)] disabled:opacity-50 text-white text-xs px-3 py-1 rounded cursor-pointer"
+          >
+            Save
+          </button>
+        </div>
+      )}
+      {correct && initialsSaved && initials && (
+        <div className="text-xs text-[var(--text-secondary)]">
+          Playing as <span className="font-bold text-[var(--accent)]">{initials}</span> &bull;{" "}
+          <a href="/leaderboard" className="underline hover:text-[var(--accent)]">Leaderboard</a>
+        </div>
+      )}
 
       {/* Card image — the image contains name, type, set, artist */}
       {card.image_uri_normal && (

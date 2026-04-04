@@ -194,6 +194,12 @@ export default function Home() {
         </a>
         <div className="flex justify-center gap-4 pt-2">
           <a
+            href="/leaderboard"
+            className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
+          >
+            Leaderboard
+          </a>
+          <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSfMW2_KF_votq1XMjx2aDvw1HrtpnLTSzoTycskg4rwhwVrmA/viewform"
             target="_blank"
             rel="noopener noreferrer"
