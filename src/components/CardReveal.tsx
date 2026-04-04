@@ -276,7 +276,7 @@ export default function CardReveal({
       )}
 
       {/* Leaderboard — today's top players */}
-      {correct && (
+      {(
         <div className="w-full max-w-sm bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-3">
           <div className="flex items-center justify-between mb-2">
             <span className="text-xs font-semibold text-[var(--text-secondary)]">Today&apos;s Leaderboard</span>
@@ -306,8 +306,8 @@ export default function CardReveal({
             </div>
           )}
 
-          {/* Initials prompt */}
-          {!initialsSaved ? (
+          {/* Initials prompt — only on wins */}
+          {correct && !initialsSaved ? (
             <div className="flex items-center gap-2 mt-3 pt-2 border-t border-[var(--border)]">
               <span className="text-xs text-[var(--text-secondary)]">Add your name:</span>
               <input
@@ -342,11 +342,11 @@ export default function CardReveal({
                 Save
               </button>
             </div>
-          ) : (
+          ) : initialsSaved && initials ? (
             <div className="text-xs text-[var(--text-secondary)] mt-2 pt-2 border-t border-[var(--border)]">
               Playing as <span className="font-bold text-[var(--accent)]">{initials}</span>
             </div>
-          )}
+          ) : null}
         </div>
       )}
 
