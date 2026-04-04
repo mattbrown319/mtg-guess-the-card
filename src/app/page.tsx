@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const FORMATS = [
@@ -47,6 +47,14 @@ export default function Home() {
   const [timeLimit, setTimeLimit] = useState(300);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [leaderboard, setLeaderboard] = useState<{name: string; uniqueWins: number; fastest: number | null}[]>([]);
+
+  useEffect(() => {
+    fetch("/api/leaderboard")
+      .then(r => r.json())
+      .then(data => setLeaderboard(data.daily || []))
+      .catch(() => {});
+  }, []);
 
   function getRecentCardNames(): string[] {
     try {
@@ -192,14 +200,29 @@ export default function Home() {
         >
           Challenge a Friend with a Specific Card
         </a>
+        {/* Today's Leaderboard */}
+        {leaderboard.length > 0 && (
+          <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold">Today&apos;s Leaderboard</span>
+              <a href="/leaderboard" className="text-xs text-[var(--accent)] hover:underline">Full board &rarr;</a>
+            </div>
+            <div className="space-y-1">
+              {leaderboard.slice(0, 5).map((entry, i) => (
+                <div key={i} className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
+                  <span>{i + 1}. <span className="font-mono font-bold">{entry.name}</span></span>
+                  <span>
+                    {entry.uniqueWins} wins
+                    {entry.fastest ? ` · ${entry.fastest < 60 ? `${entry.fastest}s` : `${Math.floor(entry.fastest / 60)}m${entry.fastest % 60}s`} best` : ""}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex justify-center gap-4 pt-2">
-          <a
-            href="/leaderboard"
-            className="text-sm text-[var(--text-secondary)] hover:text-[var(--accent)] transition-colors"
-          >
-            Leaderboard
-          </a>
-          <a
+	  <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSfMW2_KF_votq1XMjx2aDvw1HrtpnLTSzoTycskg4rwhwVrmA/viewform"
             target="_blank"
             rel="noopener noreferrer"
@@ -217,7 +240,7 @@ export default function Home() {
           </a>
         </div>
         <div className="text-center text-xs text-[var(--text-secondary)] pt-2 opacity-60">
-          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.56
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.57
         </div>
       </div>
     </main>

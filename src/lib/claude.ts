@@ -85,6 +85,7 @@ MTG KNOWLEDGE YOU MUST APPLY:
 - "Does it interact with" or "does it deal with" a zone/type means the card's text references or affects that zone/type in any way.
 - Creature subtypes (Wall, Goblin, Elf, Human, Dragon, etc.) are ALL creatures. If a card says "target Wall" or "destroy target Goblin", it IS targeting a creature. Always answer "Yes" to "does it target a creature?" if the card targets any creature subtype.
 - When answering questions, ALWAYS check the card data provided. Do NOT guess or infer information that isn't in the card data or your training knowledge. If the oracle text says "destroy target Wall", the card targets Walls (which are creatures), NOT lands, NOT artifacts.
+- Generic mana and colorless mana are DIFFERENT. {1}, {2}, {3} etc. are GENERIC mana (can be paid with any type of mana). {C} is COLORLESS mana (must be paid with colorless mana specifically). A cost of {3}{C} has BOTH generic pips AND a colorless pip. They are NOT the same thing.
 - Think about what the card FUNCTIONALLY does, not just what words appear in the oracle text. If a card untaps an attacking creature and prevents its combat damage, it effectively "removes it from combat" even if those exact words aren't on the card. If a card exiles a creature and returns it, it effectively "blinks" or "flickers" it. Answer based on function, not just literal text matching.`;
 
 export async function answerQuestion(
