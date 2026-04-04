@@ -42,7 +42,34 @@ export interface CardFilters {
   excludeNames?: string[];
 }
 
+// Cache iconic card IDs in memory to avoid ORDER BY RANDOM() on Turso
+let iconicCardIds: string[] | null = null;
+
+async function getIconicCardIds(): Promise<string[]> {
+  if (iconicCardIds) return iconicCardIds;
+  const db = await getDb();
+  const result = await db.execute("SELECT id FROM cards WHERE is_iconic = 1 AND image_uri_normal IS NOT NULL");
+  iconicCardIds = result.rows.map(r => r.id as string);
+  console.log(`[CACHE] Loaded ${iconicCardIds.length} iconic card IDs`);
+  return iconicCardIds;
+}
+
 export async function getRandomCard(filters: CardFilters): Promise<Card | null> {
+  // Fast path for iconic tier: pick from cached IDs
+  if (filters.popularityTier === "popular" && !filters.format && !filters.cardType) {
+    const ids = await getIconicCardIds();
+    const excludeSet = new Set(filters.excludeNames || []);
+    // Pick random ID, retry if excluded (by name, checked after fetch)
+    for (let attempt = 0; attempt < 10; attempt++) {
+      const randomId = ids[Math.floor(Math.random() * ids.length)];
+      const card = await getCardById(randomId);
+      if (card && !excludeSet.has(card.name)) return card;
+    }
+    // Fallback: just return any card
+    const randomId = ids[Math.floor(Math.random() * ids.length)];
+    return getCardById(randomId);
+  }
+
   const db = await getDb();
   const conditions: string[] = [];
   const args: (string | number)[] = [];
