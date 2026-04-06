@@ -8,17 +8,61 @@ interface QuestionContext {
   answer: string;
 }
 
+export interface QueryLogEntry {
+  sessionId: string;
+  cardName: string;
+  question: string;
+  translatedQuery: string | null;
+  queryKind: string | null;
+  validationErrors: string | null;
+  outcome: string;
+  reasonCode: string | null;
+  usedContext: boolean;
+  translateLatencyMs: number | null;
+  totalLatencyMs: number;
+}
+
+async function persistLog(entry: QueryLogEntry): Promise<void> {
+  try {
+    const { getDb } = await import("@/lib/db");
+    const db = await getDb();
+    await db.execute({
+      sql: `INSERT INTO query_logs (session_id, card_name, question, translated_query, query_kind, validation_errors, outcome, reason_code, used_context, translate_latency_ms, total_latency_ms, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        entry.sessionId, entry.cardName, entry.question,
+        entry.translatedQuery, entry.queryKind, entry.validationErrors,
+        entry.outcome, entry.reasonCode, entry.usedContext ? 1 : 0,
+        entry.translateLatencyMs, entry.totalLatencyMs, Date.now(),
+      ],
+    });
+  } catch (e) {
+    console.error("[QE] Failed to persist log:", e);
+  }
+}
+
 export async function processQuestion(
   card: NormalizedCard,
   question: string,
-  context: QuestionContext[]
+  context: QuestionContext[],
+  sessionId?: string
 ): Promise<EngineResult> {
   const t0 = Date.now();
 
   // Step 1: Check for direct name guess (deterministic, no LLM needed)
   const nameGuessResult = checkNameGuess(card, question);
   if (nameGuessResult) {
-    console.log(`[QE] Name guess: "${question}" → ${nameGuessResult.outcome} (${Date.now() - t0}ms)`);
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Name guess: "${question}" → ${nameGuessResult.outcome} (${totalMs}ms)`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: null, queryKind: "name_equals_local",
+        validationErrors: null, outcome: nameGuessResult.outcome,
+        reasonCode: nameGuessResult.reasonCode || null,
+        usedContext: false, translateLatencyMs: null, totalLatencyMs: totalMs,
+      });
+    }
     return nameGuessResult;
   }
 
@@ -27,8 +71,18 @@ export async function processQuestion(
   const tTranslate = Date.now();
 
   if (!translation.envelope) {
-    console.log(`[QE] Translation failed: ${translation.parseError} (${tTranslate - t0}ms)`);
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Translation failed: ${translation.parseError} (${totalMs}ms)`);
     console.log(`[QE] Raw output: ${translation.rawOutput.slice(0, 200)}`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: translation.rawOutput.slice(0, 500), queryKind: null,
+        validationErrors: translation.parseError || null, outcome: "refund",
+        reasonCode: "TRANSLATION_FAILED", usedContext: context.length > 0,
+        translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+      });
+    }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
@@ -39,8 +93,18 @@ export async function processQuestion(
   // Step 3: Validate
   const validation = validateEnvelope(translation.envelope);
   if (!validation.valid) {
-    console.log(`[QE] Validation failed: ${validation.errors.join("; ")} (${Date.now() - t0}ms)`);
-    console.log(`[QE] Query was: ${JSON.stringify(translation.envelope.query)}`);
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Validation failed: ${validation.errors.join("; ")} (${totalMs}ms)`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: JSON.stringify(translation.envelope.query),
+        queryKind: translation.envelope.query.kind,
+        validationErrors: validation.errors.join("; "), outcome: "refund",
+        reasonCode: "SEMANTIC_VALIDATION_FAILED", usedContext: translation.envelope.meta?.usedContext || false,
+        translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+      });
+    }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
@@ -51,7 +115,17 @@ export async function processQuestion(
 
   // Step 4: Check for unsupported
   if (translation.envelope.query.kind === "unsupported" || !translation.envelope.meta.supported) {
-    console.log(`[QE] Unsupported query (${Date.now() - t0}ms)`);
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Unsupported query (${totalMs}ms)`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: "unsupported",
+        validationErrors: null, outcome: "refund",
+        reasonCode: "UNSUPPORTED_QUERY_KIND", usedContext: translation.envelope.meta?.usedContext || false,
+        translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+      });
+    }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
@@ -64,7 +138,18 @@ export async function processQuestion(
   const truthValue = evaluate(translation.envelope.query, card);
 
   if (truthValue === null) {
-    console.log(`[QE] Evaluator returned null for kind=${translation.envelope.query.kind} (${Date.now() - t0}ms)`);
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Evaluator returned null for kind=${translation.envelope.query.kind} (${totalMs}ms)`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: JSON.stringify(translation.envelope.query),
+        queryKind: translation.envelope.query.kind, validationErrors: null,
+        outcome: "refund", reasonCode: "UNKNOWN_QUERY_KIND",
+        usedContext: translation.envelope.meta?.usedContext || false,
+        translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+      });
+    }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
@@ -84,6 +169,17 @@ export async function processQuestion(
   // Check if this was a correct name guess via name_equals
   const isCorrectGuess = translation.envelope.query.kind === "name_equals"
     && truthValue === "yes";
+
+  if (sessionId) {
+    persistLog({
+      sessionId, cardName: card.name, question,
+      translatedQuery: JSON.stringify(translation.envelope.query),
+      queryKind: translation.envelope.query.kind, validationErrors: null,
+      outcome, reasonCode: isCorrectGuess ? "CORRECT_GUESS" : null,
+      usedContext: translation.envelope.meta?.usedContext || false,
+      translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+    });
+  }
 
   return {
     outcome,

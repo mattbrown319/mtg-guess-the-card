@@ -98,7 +98,8 @@ export async function POST(request: NextRequest) {
   const result = await processQuestion(
     normalizedCard,
     question.trim(),
-    game.questions
+    game.questions,
+    sessionId
   );
 
   // Handle refund — don't count the question

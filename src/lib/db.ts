@@ -55,6 +55,30 @@ async function initTables(db: Client): Promise<void> {
   await db.execute("ALTER TABLE challenges ADD COLUMN time_limit INTEGER DEFAULT 180").catch(() => {});
   await db.execute("ALTER TABLE sessions ADD COLUMN player_initials TEXT").catch(() => {});
   await db.execute("ALTER TABLE sessions ADD COLUMN elapsed_seconds INTEGER").catch(() => {});
+
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS query_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id TEXT NOT NULL,
+      card_name TEXT NOT NULL,
+      question TEXT NOT NULL,
+      translated_query TEXT,
+      query_kind TEXT,
+      validation_errors TEXT,
+      outcome TEXT NOT NULL,
+      reason_code TEXT,
+      used_context INTEGER DEFAULT 0,
+      translate_latency_ms INTEGER,
+      total_latency_ms INTEGER,
+      created_at INTEGER NOT NULL
+    )
+  `);
+  await db.execute(
+    "CREATE INDEX IF NOT EXISTS idx_query_logs_session ON query_logs(session_id)"
+  ).catch(() => {});
+  await db.execute(
+    "CREATE INDEX IF NOT EXISTS idx_query_logs_outcome ON query_logs(outcome)"
+  ).catch(() => {});
 }
 
 export async function getDb(): Promise<Client> {
