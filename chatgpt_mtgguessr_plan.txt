@@ -1,0 +1,781 @@
+# Structured Query Engine — Implementation Plan (v1)
+
+## Status: Agreed scope after review by Claude Code + ChatGPT + Matt
+
+This plan reflects the trimmed v1 scope agreed upon after collaborative review.
+The full architecture is preserved in structure but scope is cut for fast shipping.
+
+---
+
+## 1. Goal
+
+Replace direct LLM answering with a deterministic structured-query pipeline:
+
+1. Normalize card data into an evaluator-friendly shape (once per game, cached).
+2. Translate each user question into a structured JSON query (Haiku).
+3. Validate the JSON locally (Zod).
+4. Evaluate it deterministically against the normalized card.
+5. Return one of:
+
+   * `yes`
+   * `no`
+   * `sometimes`
+   * `refund`
+
+The system should optimize for:
+
+* factual correctness
+* low cost
+* fast runtime
+* debuggability
+* clean extensibility
+* strict MTG technical truth where supported
+
+Wrong answers are worse than refunds. If translation or evaluation is not trustworthy, refund the question rather than guessing.
+
+---
+
+## 2. Core architecture
+
+### 2.1 Runtime pipeline (v1)
+
+For each question:
+
+1. Load normalized card for current game (cached from game start).
+2. Call Haiku once to translate question → structured JSON.
+3. Validate JSON with Zod (schema validation).
+4. Run semantic validation against supported query kinds.
+5. If invalid or unsupported → return `refund`.
+6. Evaluate validated query against normalized card.
+7. Return `yes` / `no` / `sometimes`.
+8. Log everything.
+
+Normal case: one LLM call.
+If translation fails: zero evaluation, immediate refund.
+
+### 2.2 Deferred for vNext
+
+* Local fast-path parser — CUT. Haiku is cheap and fast enough. One path owns translation.
+* Haiku repair pass — CUT for v1. If first translation is invalid, refund.
+* Sonnet fallback — CUT for v1. Measure refund rate first, add if needed.
+* Confidence-based routing — CUT for v1. Log confidence if Haiku provides it, but don't branch on it.
+
+---
+
+## 3. Result model
+
+Use a formal engine result instead of raw strings.
+
+```ts
+type EngineOutcome = "yes" | "no" | "sometimes" | "refund";
+
+interface EngineResult {
+  outcome: EngineOutcome;
+  playerMessage: string; // "Yes." | "No." | "Sometimes." | refund message
+  reasonCode?: string;
+  translatedQuery?: StructuredQueryEnvelope;
+  evaluatorTrace?: string; // lightweight trace for logging
+}
+```
+
+### 3.1 Refund reasons
+
+Use explicit refund reason codes:
+
+* `TRANSLATION_FAILED` — Haiku returned non-JSON or unparseable output
+* `INVALID_JSON` — JSON parsed but failed Zod validation
+* `UNKNOWN_QUERY_KIND` — query kind not in registry
+* `UNSUPPORTED_QUERY_KIND` — query kind recognized but not implemented yet
+* `MISSING_REQUIRED_ARGUMENT` — valid kind but missing required fields
+* `UNSUPPORTED_SUBJECTIVE` — question about playability, metagame, etc.
+* `UNSUPPORTED_ART_VISUAL` — question about card art or appearance
+* `SEMANTIC_VALIDATION_FAILED` — valid structure but semantically nonsensical
+
+Refund means:
+
+* do not increment question count
+* do log the event with reason code
+* do return a player-friendly message: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)"
+
+---
+
+## 4. Data normalization
+
+Normalize once per game at game start, cache in memory. No separate DB table.
+No per-question normalization.
+
+### 4.1 When to normalize
+
+When a game is created (or on first question if lazy), load the raw card from Turso,
+normalize it, and cache the normalized version in the game session or in-memory.
+
+### 4.2 Normalized shape
+
+```ts
+interface NormalizedFace {
+  name: string;
+  manaCost: string | null;
+  cmc: number | null;
+  typeLine: string;
+  oracleText: string | null;
+  colors: string[];
+  power: string | null;
+  toughness: string | null;
+  loyalty: string | null;
+  keywords: string[];
+}
+
+interface NormalizedCard {
+  id: string;
+  oracleId: string;
+  name: string;
+  layout: string;
+
+  manaCost: string | null;
+  cmc: number;
+  typeLine: string;
+  oracleText: string | null;
+
+  colors: string[];
+  colorIdentity: string[];
+  keywords: string[];
+
+  power: string | null;
+  toughness: string | null;
+  loyalty: string | null;
+
+  rarity: string;
+  artist: string;
+  flavorText: string | null;
+
+  legalities: Record<string, string>;
+  producedMana: string[];
+  allSets: string[];
+  allYears: number[];
+
+  cardFaces: NormalizedFace[];
+  hasFaces: boolean;
+
+  // convenience / precomputed fields
+  typeTokens: string[];       // ["Legendary", "Enchantment", "Creature"]
+  subtypeTokens: string[];    // ["God"]
+  supertypeTokens: string[];  // ["Legendary"]
+  nameLower: string;
+  allFaceNamesLower: string[];
+
+  oracleTextLower: string | null;
+  allOracleTextCombined: string; // all faces' oracle text joined
+
+  numericPower: number | null;
+  numericToughness: number | null;
+  powerIsVariable: boolean;   // true if power is "*"
+  toughnessIsVariable: boolean;
+
+  // precomputed boolean flags
+  entersTappedTextPresent: boolean;
+  targetWordPresent: boolean;
+}
+```
+
+### 4.3 Derived preprocess helpers
+
+Precompute at normalization time:
+
+* parsed mana symbols from mana cost (array of symbols like ["{1}", "{R}", "{R}"])
+* color count
+* keyword set (lowercase, for case-insensitive matching)
+* type/subtype/supertype sets (parsed from type_line)
+* face-level and combined oracle text blobs (lowercased)
+* set of all valid names including face names (lowercased)
+
+Keep normalization structural, not semantic. Do not bake "meaning" into it.
+
+---
+
+## 5. Query representation
+
+Use JSON, not a custom language.
+
+### 5.1 Envelope format
+
+```ts
+interface StructuredQueryEnvelope {
+  query: StructuredQuery;
+  meta: {
+    supported: boolean;
+    usedContext: boolean;
+    warnings: string[];
+    translatorModel: "haiku";  // v1 only uses Haiku
+  };
+}
+```
+
+Note: confidence field deferred for v1. Log raw model output for later analysis.
+
+### 5.2 Query AST
+
+Use a logical tree because compound questions occur ("is it red or blue?", "is it a creature and legendary?").
+
+```ts
+type StructuredQuery =
+  | { kind: "and"; clauses: StructuredQuery[] }
+  | { kind: "or"; clauses: StructuredQuery[] }
+  | { kind: "not"; clause: StructuredQuery }
+  | AtomicQuery
+  | { kind: "unsupported" };
+```
+
+### 5.3 Atomic queries — v1 scope
+
+Only the query kinds listed below are implemented in v1.
+All others should produce `{ kind: "unsupported" }` → refund.
+
+```ts
+type AtomicQuery =
+  // --- Direct resolvers (Phase 1) ---
+  // Type
+  | { kind: "type_contains"; value: string }
+  | { kind: "subtype_contains"; value: string }
+  | { kind: "supertype_contains"; value: string }
+  | { kind: "has_any_subtype" }
+  | { kind: "has_multiple_card_types" }
+
+  // Color
+  | { kind: "color_contains"; value: "W" | "U" | "B" | "R" | "G" }
+  | { kind: "color_count_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+  | { kind: "color_identity_contains"; value: "W" | "U" | "B" | "R" | "G" }
+  | { kind: "guild_equals"; value: string }
+  | { kind: "shard_wedge_equals"; value: string }
+
+  // CMC
+  | { kind: "cmc_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+
+  // Mana cost
+  | { kind: "mana_cost_equals"; value: string }
+  | { kind: "mana_cost_contains_symbol"; value: string }
+  | { kind: "mana_cost_has_generic"; value?: number | null }
+
+  // Power / Toughness
+  | { kind: "power_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+  | { kind: "toughness_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+  | { kind: "power_vs_toughness"; relation: "<" | "<=" | "=" | ">=" | ">" }
+
+  // Keywords
+  | { kind: "keyword_contains"; value: string }
+  | { kind: "keyword_count_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+
+  // Rarity
+  | { kind: "rarity_equals"; value: string }
+
+  // Legality
+  | { kind: "legality_equals"; format: string; value: string }
+
+  // Printing
+  | { kind: "printed_in_set"; value: string }
+  | { kind: "printed_in_year_compare"; operator: "=" | "<" | "<=" | ">" | ">="; value: number }
+
+  // Name
+  | { kind: "name_equals"; value: string }
+  | { kind: "name_contains"; value: string }
+
+  // Mana production
+  | { kind: "produces_mana" }
+  | { kind: "produces_mana_color"; value: "W" | "U" | "B" | "R" | "G" | "C" }
+  | { kind: "produces_any_color" }
+  | { kind: "produces_multiple_colors" }
+
+  // --- Derived resolvers (v1 subset) ---
+  | { kind: "is_permanent" }
+  | { kind: "creates_tokens" }
+  | { kind: "enters_tapped" }
+  | { kind: "can_enter_untapped" }
+  | { kind: "targets" }
+  | { kind: "triggered_ability" }
+  | { kind: "activated_ability" }
+  | { kind: "etb_ability" }
+  | { kind: "has_mana_ability" }
+  | { kind: "has_non_mana_ability" };
+```
+
+### 5.4 Deferred query kinds (vNext)
+
+These are defined in the architecture but NOT implemented in v1.
+Translator should emit `{ kind: "unsupported" }` for these:
+
+* `creates_token_type`, `ramp`, `reanimate`, `sacrifice_effect`
+* `fetches_land`, `fetches_basic_land`, `cantrip`
+* `death_trigger`, `modal`, `removal`, `evasion`
+* `additional_cost`, `alternate_cost`, `replacement_effect`
+* `adds_counters`, `puts_minus_counters`
+* `grants_keyword`, `grants_stat_bonus`, `stat_bonus_contains`
+* `has_named_mechanic`, `filters_mana`
+* `card_advantage`, `card_selection`, `extra_turn`
+
+---
+
+## 6. Truth semantics
+
+Use three-valued logic internally.
+
+### 6.1 Truth values
+
+```ts
+type TruthValue = "yes" | "no" | "sometimes";
+```
+
+### 6.2 Truth table
+
+#### AND
+
+* yes + yes = yes
+* yes + no = no
+* yes + sometimes = sometimes
+* no + anything = no
+* sometimes + sometimes = sometimes
+
+#### OR
+
+* yes + anything = yes
+* no + no = no
+* no + sometimes = sometimes
+* sometimes + sometimes = sometimes
+
+#### NOT
+
+* not yes = no
+* not no = yes
+* not sometimes = sometimes
+
+This allows:
+
+* Thassa "is it a creature?" → sometimes
+* "is it a creature and blue?" → sometimes (sometimes AND yes)
+* "is it blue or a creature?" → yes (yes OR sometimes)
+
+---
+
+## 7. Query kind registry
+
+Build the system around a query-kind registry.
+
+Each query kind declares:
+
+* `kind` — unique string identifier
+* `layer` — `direct` | `pattern_derived` | `semantic_derived`
+* `canReturnSometimes` — boolean
+* `description` — human-readable
+* `examples` — example player questions
+* `edgeCases` — known tricky scenarios
+
+```ts
+interface QueryKindDefinition {
+  kind: string;
+  layer: "direct" | "pattern_derived" | "semantic_derived";
+  canReturnSometimes: boolean;
+  description: string;
+  examples: string[];
+  edgeCases: string[];
+}
+```
+
+The registry is the source of truth for what the engine supports.
+The translator prompt is generated from the registry (or at least stays in sync with it).
+
+---
+
+## 8. v1 query kinds
+
+### Direct resolvers (implement first — covers ~80% of questions)
+
+1. `name_equals` / `name_contains`
+2. `type_contains` / `subtype_contains` / `supertype_contains`
+3. `has_any_subtype` / `has_multiple_card_types`
+4. `color_contains` / `color_count_compare` / `color_identity_contains`
+5. `guild_equals` / `shard_wedge_equals`
+6. `cmc_compare`
+7. `mana_cost_equals` / `mana_cost_contains_symbol` / `mana_cost_has_generic`
+8. `power_compare` / `toughness_compare` / `power_vs_toughness`
+9. `keyword_contains` / `keyword_count_compare`
+10. `rarity_equals`
+11. `legality_equals`
+12. `printed_in_set` / `printed_in_year_compare`
+13. `produces_mana` / `produces_mana_color` / `produces_any_color` / `produces_multiple_colors`
+
+### Derived resolvers (implement second — covers another ~10%)
+
+1. `is_permanent` — NOT (type contains Instant OR type contains Sorcery)
+2. `creates_tokens` — oracle_text pattern matching for "create" + "token"
+3. `enters_tapped` — oracle_text contains "enters tapped" or "enters the battlefield tapped"
+4. `can_enter_untapped` — oracle_text contains conditional untapped entry
+5. `targets` — oracle_text contains "target" in ability text (not reminder text)
+6. `triggered_ability` — oracle_text contains "when" or "whenever" or "at the beginning"
+7. `activated_ability` — oracle_text contains "{" cost "}" followed by ":"
+8. `etb_ability` — oracle_text contains "enters" trigger pattern
+9. `has_mana_ability` — oracle_text contains "Add {" mana pattern
+10. `has_non_mana_ability` — has abilities that are not mana abilities
+
+### Refund immediately (v1)
+
+* Subjective questions (playability, metagame, popularity)
+* Art/visual questions
+* Price/value questions
+* Open-ended questions ("what is it?", "tell me about it")
+* Any query kind not in the v1 registry
+
+---
+
+## 9. Resolver guidance
+
+### 9.1 Direct resolvers
+
+Simple and deterministic. No substring hacks where a rules concept is intended.
+
+### 9.2 Pattern-derived resolvers
+
+Deterministic text/structural patterns. Examples: `creates_tokens`, `enters_tapped`.
+
+### 9.3 Semantic-derived resolvers
+
+Need carefully defined rule modules. Examples: `targets`, `has_mana_ability`.
+These should live in explicit rule modules with clear definitions and tests.
+
+---
+
+## 10. MTG rules policy
+
+Default to strict MTG technical truth for supported query kinds.
+
+Player-facing responses are clean: Yes. / No. / Sometimes. / refund message.
+Store strict reasoning internally via reason codes and evaluator traces.
+
+### 10.1 Important rules to encode
+
+#### Color vs color identity
+* Lands are colorless (colors = []) unless oracle text says otherwise
+* Color identity includes mana symbols in cost and rules text
+* "is it blue?" → check colors array, not color identity
+
+#### Permanent
+* Permanent = NOT (Instant or Sorcery)
+* Do not check for the word "permanent" in oracle text
+
+#### Conditional type / status
+* Thassa "is it a creature?" → `sometimes` (oracle text says "isn't a creature" conditionally)
+* DFC: type may differ between faces
+
+#### DFC handling
+* Top-level fields may be null for DFCs — use card_faces data
+* Name guesses should match full name OR either face name
+* Type/color/keyword checks should consider both faces (use OR logic across faces)
+
+#### Generic mana vs colorless mana
+* {1}, {2}, {3} etc. = generic (can be paid with any mana)
+* {C} = colorless (must be paid with colorless mana)
+* These are NOT the same thing
+
+#### Targets
+* "target" must appear in the card's actual rules text as a targeting word
+* Reminder text containing "target" does not count
+* Mana Drain targets a spell (on the stack), not a permanent
+
+#### ETB ability
+* "enters the battlefield as" is NOT an ETB triggered ability (it's a replacement effect)
+* "When [this] enters" IS an ETB triggered ability
+
+---
+
+## 11. Translation layer
+
+### 11.1 Model strategy (v1)
+
+Default and only translator: **Haiku**.
+No repair pass. No Sonnet fallback. No confidence branching.
+
+If Haiku produces invalid output → refund.
+Measure refund rate. Add repair/Sonnet in vNext only if data shows it's needed.
+
+### 11.2 Translation contract
+
+The model must:
+
+* output only JSON matching the StructuredQueryEnvelope schema
+* choose only from allowed query kinds listed in the prompt
+* never invent new kinds
+* never answer the question directly
+* never infer card truth
+* map the user question into a query representation only
+* output `{ kind: "unsupported" }` if the question can't be mapped
+
+### 11.3 Envelope metadata (v1)
+
+```json
+{
+  "query": { ... },
+  "meta": {
+    "supported": true,
+    "usedContext": false,
+    "warnings": [],
+    "translatorModel": "haiku"
+  }
+}
+```
+
+Confidence field deferred. Log raw model output for future analysis.
+
+---
+
+## 12. Context handling
+
+Supply limited conversation context to help the translator resolve ambiguous questions.
+
+Context helps with:
+* "2 or less?" (CMC? Power? — context from prior questions disambiguates)
+* "any other color?" (implies asking about additional colors beyond what's confirmed)
+* bare follow-ups like "red?" after a series of color questions
+
+Supply to translator:
+* Last 3-5 translated questions and their outcomes
+* Do NOT supply full raw Q&A history (too long, too expensive)
+
+Context should not rewrite prior truth. It only aids translation.
+
+---
+
+## 13. Validation
+
+### 13.1 Schema validation (Zod)
+
+Reject malformed JSON or wrong field shapes.
+Parse the LLM output through a Zod schema for `StructuredQueryEnvelope`.
+
+### 13.2 Semantic validation
+
+Reject valid JSON that still doesn't make sense:
+
+* Unknown query kind (not in registry)
+* `color_contains: "Blue"` instead of `"U"`
+* Empty AND/OR clauses
+* Missing required arguments
+* Mana cost strings not in Scryfall notation
+
+---
+
+## 14. Fallback chain (v1 — simplified)
+
+1. Haiku translation
+2. Zod schema validation
+3. Semantic validation
+4. If valid → evaluate → return result
+5. If invalid at any step → refund
+
+That's it for v1. No repair, no Sonnet, no retry.
+
+### Deferred for vNext
+
+* Haiku repair pass (re-prompt with validation errors)
+* Sonnet rescue (for high-value questions Haiku can't translate)
+* Confidence-based routing
+
+---
+
+## 15. Logging
+
+Log from day one. The main unknown is translator quality.
+
+### 15.1 Per-question log
+
+Log to console (Railway captures these) and optionally to a DB table:
+
+* session_id
+* question text
+* card name
+* translator model ("haiku")
+* raw LLM output
+* parsed query (or null if parsing failed)
+* validation result (pass/fail + errors)
+* final outcome (yes/no/sometimes/refund)
+* reason code (for refunds)
+* total latency (ms)
+* translation latency (ms)
+
+### 15.2 Key metrics to watch
+
+* Haiku first-pass schema-valid rate — how often does Haiku produce valid JSON?
+* Haiku first-pass semantic-valid rate — how often is the JSON also semantically correct?
+* Refund rate overall — what % of questions get refunded?
+* Refund rate by reason code — which failure modes are most common?
+* Query kind frequency — which kinds does the translator use most?
+
+These determine whether we need repair/Sonnet/more query kinds.
+
+---
+
+## 16. Testing strategy
+
+### 16.1 Resolver unit tests
+
+For each query kind, test against real card data:
+* Positive cases (card should match)
+* Negative cases (card should not match)
+* Edge cases (DFCs, variable P/T, conditional types)
+
+### 16.2 End-to-end regression fixtures
+
+Curated set of historically painful cards:
+
+* Thought-Knot Seer — generic vs colorless mana
+* Thassa, God of the Sea — conditional creature, "sometimes"
+* Delver of Secrets // Insectile Aberration — DFC, different P/T per face
+* Maze of Ith — functional combat removal, no "target creature" text
+* Mana Drain — targets a spell, not a permanent
+* Skyclave Apparition — P/T comparison
+* Chord of Calling — {X}{G}{G}{G} mana cost
+* Seat of the Synod — artifact land, produces blue
+* Goblin Masons — targets Walls (which are creatures)
+* Lightning Bolt — simple baseline
+* Jeska's Will — set/year data
+* Rishadan Port — set/year data
+
+### 16.3 Translation harness (vNext)
+
+Defer offline translation testing against historical questions to vNext.
+For v1, test manually with the regression fixtures above.
+
+---
+
+## 17. Code structure
+
+```txt
+src/
+  lib/
+    query-engine/
+      index.ts                  // main entry point: processQuestion()
+      types.ts                  // NormalizedCard, StructuredQuery, EngineResult, etc.
+      schemas.ts                // Zod schemas for validation
+      registry.ts               // query kind registry + definitions
+      normalize.ts              // raw Card → NormalizedCard
+      translator.ts             // Haiku LLM call + JSON parsing
+      translator-prompt.ts      // system prompt for Haiku translator
+      validator.ts              // semantic validation
+      evaluator.ts              // AST evaluator + three-valued logic
+      truth.ts                  // TruthValue type + AND/OR/NOT functions
+
+      resolvers/
+        direct/
+          type.ts
+          color.ts
+          cmc.ts
+          mana-cost.ts
+          pt.ts
+          keyword.ts
+          rarity.ts
+          legality.ts
+          printing.ts
+          name.ts
+          mana-production.ts
+        derived/
+          permanent.ts
+          targets.ts
+          tokens.ts
+          enters-tapped.ts
+          ability-types.ts      // triggered, activated, etb, mana/non-mana
+
+  app/
+    api/
+      question-v2/route.ts     // new endpoint using query engine
+```
+
+Build as a new API route (`/api/question-v2`) to run alongside the existing
+`/api/question` during testing. Switch the client to use v2 when ready.
+
+---
+
+## 18. API integration
+
+### 18.1 `POST /api/question-v2`
+
+* Load game session + card
+* Normalize card (or use cached normalized version)
+* Extract limited context from Q&A history
+* Call query engine: `processQuestion(normalizedCard, question, context)`
+* If outcome is `refund`: do NOT increment question count
+* If outcome is `yes`/`no`/`sometimes`: store Q&A, increment count
+* Check for correct name guess deterministically (no LLM `[CORRECT_GUESS]` needed)
+* Log everything
+* Return result to client
+
+### 18.2 Guess detection (deterministic)
+
+If the query is `name_equals` and evaluates to `yes`:
+* Auto-end the game (same as current `[CORRECT_GUESS]` behavior)
+* No LLM involvement needed for name matching
+
+---
+
+## 19. Implementation order
+
+### Step 1 — Infrastructure
+* `types.ts` — NormalizedCard, StructuredQuery, AtomicQuery, EngineResult
+* `truth.ts` — TruthValue + AND/OR/NOT
+* `normalize.ts` — raw Card → NormalizedCard
+* `schemas.ts` — Zod schemas
+
+### Step 2 — Evaluator + Direct Resolvers
+* `evaluator.ts` — AST walker using three-valued logic
+* `registry.ts` — query kind definitions
+* All direct resolvers (type, color, cmc, mana cost, P/T, keywords, rarity, legality, printing, name, mana production)
+
+### Step 3 — Derived Resolvers
+* `is_permanent`, `creates_tokens`, `enters_tapped`, `can_enter_untapped`
+* `targets`, `triggered_ability`, `activated_ability`, `etb_ability`
+* `has_mana_ability`, `has_non_mana_ability`
+
+### Step 4 — Translator + Validation
+* `translator-prompt.ts` — system prompt listing all supported query kinds
+* `translator.ts` — call Haiku, parse JSON output
+* `validator.ts` — semantic validation
+* `index.ts` — wire it all together as `processQuestion()`
+
+### Step 5 — API Route + Integration
+* `question-v2/route.ts` — new endpoint
+* Update client to use `/api/question-v2`
+* Deterministic name guess detection
+
+### Step 6 — Logging + Manual Testing
+* Per-question console logging
+* Test against regression fixture cards
+* Monitor refund rate
+
+---
+
+## 20. Non-goals for v1
+
+Do not try to solve these in v1:
+
+* Art/image questions — refund
+* Subjective goodness/playability — refund
+* Metagame prevalence — refund
+* Price/value — refund
+* Popularity/fame — refund
+* Open-ended chat or explanations — refund
+* Contradiction reconciliation — refund
+* Long-form card summaries — refund
+* Local fast-path parser — unnecessary, Haiku is fast/cheap enough
+* Sonnet fallback — measure first
+* Repair prompts — measure first
+* Confidence routing — measure first
+* Normalized DB table — in-memory is sufficient
+* Broader semantic categories (removal, ramp, reanimate, evasion, card advantage, etc.) — vNext
+
+---
+
+## 21. Success criteria
+
+1. Questions about card attributes (type, color, CMC, P/T, keywords, mana cost) are answered with 100% accuracy
+2. Questions about sets/years are answered with 100% accuracy using all_sets/all_years data
+3. Subjective/unsupported questions get a clean refund instead of a wrong answer
+4. Refund rate is under 15% of all questions (measure and iterate)
+5. Player win rate improves from ~27% (current Haiku direct) toward ~46% (Sonnet-era baseline)
+6. API cost stays at Haiku level (~$0.004/game)
+7. Response latency stays under 2 seconds (Haiku ~200ms + evaluation ~1ms)
+8. All regression fixture cards pass (Thought-Knot Seer, Thassa, Delver, etc.)
