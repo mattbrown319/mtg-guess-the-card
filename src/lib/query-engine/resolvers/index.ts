@@ -20,12 +20,15 @@ const DIRECT_KINDS = new Set([
 ]);
 
 const DERIVED_KINDS = new Set([
+  // Layer 2a — pattern-derived (implemented)
   "is_permanent", "creates_tokens", "enters_tapped", "can_enter_untapped",
-  "targets", "triggered_ability", "activated_ability", "etb_ability",
-  "has_mana_ability", "has_non_mana_ability",
+  "triggered_ability", "activated_ability", "etb_ability",
+  "has_mana_ability", "has_non_mana_ability", "is_modal",
+  // Layer 2b — semantic-derived (require oracle semantic extraction)
+  // These return null (→ refund) until the extraction layer is built
   "draws_cards", "deals_damage", "gains_life", "causes_life_loss",
   "destroys_permanents", "exiles", "causes_discard", "searches_library",
-  "interacts_with_graveyard", "sacrifice_effect", "is_modal",
+  "interacts_with_graveyard", "sacrifice_effect", "targets",
 ]);
 
 export function resolveAtomicQuery(

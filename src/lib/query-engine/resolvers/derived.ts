@@ -162,109 +162,29 @@ export function resolveDerivedQuery(
       return "no";
     }
 
-    // ==================== DRAWS CARDS ====================
-    case "draws_cards": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "draw a card", "draw X cards", "draws a card", "draw cards"
-      if (/\bdraws?\s+(a\s+)?cards?\b/.test(text)) return "yes";
-      // "you may draw", "that player draws"
-      if (/\bdraw\b/.test(text) && /\bcards?\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== DEALS DAMAGE ====================
-    case "deals_damage": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "deals X damage", "deal damage", "deals damage"
-      if (/\bdeals?\s+(\d+\s+)?damage\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== GAINS LIFE ====================
-    case "gains_life": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "gain X life", "gains life", "you gain"
-      if (/\bgains?\s+(\d+\s+)?life\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== CAUSES LIFE LOSS ====================
-    case "causes_life_loss": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "loses X life", "lose life", "pay X life"
-      if (/\b(loses?\s+(\d+\s+)?life|pay\s+(\d+\s+)?life)\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== DESTROYS PERMANENTS ====================
-    case "destroys_permanents": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "destroy target", "destroy all", "destroys"
-      if (/\bdestroys?\s+(target|all|each|a|the)\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== EXILES ====================
-    case "exiles": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "exile target", "exile all", "exile it", "exile that card", "exiles"
-      if (/\bexiles?\s+(target|all|each|a|the|it|that|this)\b/.test(text)) return "yes";
-      // "exile cards from", "exile the top"
-      if (/\bexile\s+(cards?\s+from|the\s+top)\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== CAUSES DISCARD ====================
-    case "causes_discard": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "discard a card", "discards", "each player discards"
-      if (/\bdiscards?\s/.test(text)) return "yes";
-      if (/\bdiscard\s+(a|their|that|this|cards)\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== SEARCHES LIBRARY ====================
-    case "searches_library": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "search your library", "search their library", "search target player's library"
-      if (/\bsearch\b.*\blibrary\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== INTERACTS WITH GRAVEYARD ====================
-    case "interacts_with_graveyard": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "graveyard" in rules text (not reminder text)
-      if (/\bgraveyard\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== SACRIFICE EFFECT ====================
-    case "sacrifice_effect": {
-      if (!card.oracleTextLower) return "no";
-      const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "sacrifice a", "sacrifice target", "sacrifice it", "sacrifice ~"
-      if (/\bsacrifice\b/.test(text)) return "yes";
-      return "no";
-    }
-
-    // ==================== IS MODAL ====================
+    // ==================== IS MODAL (Layer 2a — pattern is unambiguous) ====================
     case "is_modal": {
       if (!card.oracleTextLower) return "no";
       const text = card.allOracleTextCombined.replace(/\([^)]*\)/g, "").toLowerCase();
-      // "choose one", "choose two", "choose any number"
       if (/\bchoose\s+(one|two|three|any|up\s+to)\b/.test(text)) return "yes";
       return "no";
     }
+
+    // ==================== Layer 2b — Semantic-derived ====================
+    // These require oracle semantic extraction (action vs trigger vs reference).
+    // Until that layer is built, return null → refund.
+    // DO NOT use naive substring matching here.
+    case "draws_cards":
+    case "deals_damage":
+    case "gains_life":
+    case "causes_life_loss":
+    case "destroys_permanents":
+    case "exiles":
+    case "causes_discard":
+    case "searches_library":
+    case "interacts_with_graveyard":
+    case "sacrifice_effect":
+      return null; // → refund until oracle-semantics.ts is implemented
 
     default:
       return null;

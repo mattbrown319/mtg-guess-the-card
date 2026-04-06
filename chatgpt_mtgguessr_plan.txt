@@ -401,18 +401,45 @@ The translator prompt is generated from the registry (or at least stays in sync 
 12. `printed_in_set` / `printed_in_year_compare`
 13. `produces_mana` / `produces_mana_color` / `produces_any_color` / `produces_multiple_colors`
 
-### Derived resolvers (implement second — covers another ~10%)
+### Layer 2a — Pattern-derived resolvers
+
+These use deterministic text/structural patterns where the pattern is close to the meaning.
+No ambiguity between action/trigger/reference.
 
 1. `is_permanent` — NOT (type contains Instant OR type contains Sorcery)
-2. `creates_tokens` — oracle_text pattern matching for "create" + "token"
-3. `enters_tapped` — oracle_text contains "enters tapped" or "enters the battlefield tapped"
-4. `can_enter_untapped` — oracle_text contains conditional untapped entry
-5. `targets` — oracle_text contains "target" in ability text (not reminder text)
-6. `triggered_ability` — oracle_text contains "when" or "whenever" or "at the beginning"
-7. `activated_ability` — oracle_text contains "{" cost "}" followed by ":"
-8. `etb_ability` — oracle_text contains "enters" trigger pattern
-9. `has_mana_ability` — oracle_text contains "Add {" mana pattern
-10. `has_non_mana_ability` — has abilities that are not mana abilities
+2. `creates_tokens` — oracle_text pattern: "create" + "token" in effect position
+3. `enters_tapped` — oracle_text pattern: "enters tapped" or "enters the battlefield tapped"
+4. `can_enter_untapped` — oracle_text conditional untapped entry
+5. `triggered_ability` — oracle_text contains "when" or "whenever" or "at the beginning"
+6. `activated_ability` — oracle_text contains cost:effect pattern
+7. `etb_ability` — oracle_text contains "enters" trigger pattern
+8. `has_mana_ability` — oracle_text contains "Add {" mana pattern
+9. `has_non_mana_ability` — has abilities that are not mana abilities
+10. `is_modal` — oracle_text contains "choose one/two/any" or bulleted modes
+
+### Layer 2b — Semantic-derived resolvers (require oracle semantic extraction)
+
+These questions CANNOT be answered by naive substring matching because the same word
+can appear as an action, a trigger condition, or a mere reference:
+
+- "Draw a card." → ACTION (the card draws cards)
+- "Whenever a player draws a card..." → TRIGGER CONDITION (the card reacts to drawing)
+- "If you drew two cards this turn..." → REFERENCE (the card checks if drawing happened)
+- "for each card drawn this way" → REFERENCE
+
+**These resolvers require an oracle semantic extraction pass (see section 9.3).**
+
+Layer 2b query kinds:
+1. `draws_cards` — does the card's effect cause card draw (not just trigger on it)
+2. `deals_damage` — does the card's effect deal damage
+3. `gains_life` — does the card's effect gain life
+4. `destroys_permanents` — does the card's effect destroy things
+5. `exiles` — does the card's effect exile things
+6. `causes_discard` — does the card's effect cause discard
+7. `searches_library` — does the card's effect search a library
+8. `interacts_with_graveyard` — does the card reference/affect the graveyard
+9. `sacrifice_effect` — does the card involve sacrifice
+10. `targets` — does the card/ability target something (not just reference targeting)
 
 ### Refund immediately (v1)
 
@@ -420,24 +447,85 @@ The translator prompt is generated from the registry (or at least stays in sync 
 * Art/visual questions
 * Price/value questions
 * Open-ended questions ("what is it?", "tell me about it")
+* Broad/vague questions like "does it interact with creatures?" (until tightly defined)
 * Any query kind not in the v1 registry
 
 ---
 
 ## 9. Resolver guidance
 
-### 9.1 Direct resolvers
+### 9.1 Layer 1 — Direct resolvers
 
-Simple and deterministic. No substring hacks where a rules concept is intended.
+Simple and deterministic. Check structured card fields directly.
+No text searching. No substring hacks where a rules concept is intended.
 
-### 9.2 Pattern-derived resolvers
+### 9.2 Layer 2a — Pattern-derived resolvers
 
-Deterministic text/structural patterns. Examples: `creates_tokens`, `enters_tapped`.
+Deterministic text/structural patterns where the pattern IS the meaning.
+Examples: `creates_tokens`, `enters_tapped`, `is_modal`, `has_mana_ability`.
+These can use regex against oracle text because the pattern is unambiguous.
 
-### 9.3 Semantic-derived resolvers
+### 9.3 Layer 2b — Semantic-derived resolvers (CRITICAL ARCHITECTURE)
 
-Need carefully defined rule modules. Examples: `targets`, `has_mana_ability`.
-These should live in explicit rule modules with clear definitions and tests.
+These require a **deterministic oracle text semantic extraction pass** that runs
+at normalization time. The extraction splits oracle text into clauses and classifies
+each clause's semantic role:
+
+```ts
+interface OracleSemanticSummary {
+  actions: Set<string>;        // things the card's effects DO
+  triggersOn: Set<string>;     // conditions that trigger abilities
+  references: Set<string>;     // things merely referenced in rules text
+  modes: {
+    hasChooseOne: boolean;
+    hasBulletedModes: boolean;
+  };
+}
+```
+
+**Clause classification heuristics:**
+
+Trigger-condition clauses (usually begin with):
+- "when", "whenever", "at" → describes conditions, NOT actions
+- Example: "Whenever a player draws a card..." → triggersOn: "cards_drawn"
+  NOT actions: "draw_cards"
+
+Activated ability clauses:
+- cost: effect pattern → the EFFECT part contains actions
+- Example: "{T}: Draw a card." → actions: "draw_cards"
+
+Imperative effect clauses:
+- Verbs performed by the spell/ability
+- Example: "Draw two cards." → actions: "draw_cards"
+- Example: "Destroy target creature." → actions: "destroy_creature"
+
+Mere references:
+- "target creature", "creature card in your graveyard"
+- These reference a type without performing an action on it
+
+**Key distinction for "Whenever X, do Y" abilities:**
+- The X part is a trigger condition
+- The Y part is an action/effect
+- "Whenever a creature dies, draw a card." →
+  triggersOn: "creature_dies", actions: "draw_cards"
+  The card DOES draw cards (via triggered effect) but does NOT kill creatures.
+
+**Resolvers query the summary, not raw text:**
+- `draws_cards` → summary.actions.has("draw_cards")
+- `deals_damage` → summary.actions.has("deal_damage")
+- `is_modal` → summary.modes.hasChooseOne
+
+**Implementation file:** `src/lib/query-engine/oracle-semantics.ts`
+
+This semantic extraction runs once at card normalization time and is cached
+with the NormalizedCard. It is NOT an LLM call — it is deterministic analysis.
+
+### 9.4 What to do before Layer 2b is built
+
+Until the oracle semantic extraction is implemented, **refund** all Layer 2b
+questions rather than giving wrong answers. The translator should map these
+to `{ kind: "unsupported" }`. This is the correct behavior — a refund is
+better than a confidently wrong answer from naive regex matching.
 
 ---
 
