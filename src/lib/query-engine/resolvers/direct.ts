@@ -180,16 +180,6 @@ export function resolveDirectQuery(
       return card.allFaceNamesLower.some(n => n.includes(target)) ? "yes" : "no";
     }
 
-    // ==================== ORACLE TEXT SEARCH ====================
-    case "oracle_text_contains": {
-      if (!card.oracleTextLower) return "no";
-      // Search in oracle text excluding reminder text (parentheses)
-      const textWithoutReminder = card.allOracleTextCombined
-        .replace(/\([^)]*\)/g, "")
-        .toLowerCase();
-      return textWithoutReminder.includes(query.value.toLowerCase()) ? "yes" : "no";
-    }
-
     // ==================== MANA PRODUCTION ====================
     case "produces_mana":
       return card.producedMana.length > 0 ? "yes" : "no";

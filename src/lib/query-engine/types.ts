@@ -127,11 +127,19 @@ export type AtomicQuery =
   | { kind: "produces_any_color" }
   | { kind: "produces_multiple_colors" }
 
-  // Oracle text search
-  | { kind: "oracle_text_contains"; value: string }
-
   // Derived
   | { kind: "is_permanent" }
+  | { kind: "draws_cards" }
+  | { kind: "deals_damage" }
+  | { kind: "gains_life" }
+  | { kind: "causes_life_loss" }
+  | { kind: "destroys_permanents" }
+  | { kind: "exiles" }
+  | { kind: "causes_discard" }
+  | { kind: "searches_library" }
+  | { kind: "interacts_with_graveyard" }
+  | { kind: "sacrifice_effect" }
+  | { kind: "is_modal" }
   | { kind: "creates_tokens" }
   | { kind: "enters_tapped" }
   | { kind: "can_enter_untapped" }

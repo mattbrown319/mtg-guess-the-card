@@ -58,22 +58,19 @@ Printing: {"kind":"printed_in_set","value":"Alpha"} — was it printed in a set 
 Name: {"kind":"name_equals","value":"Lightning Bolt"} — is it this card? (case insensitive, matches face names too)
   {"kind":"name_contains","value":"bolt"}          — does the name contain this text
 
-Oracle text search (for questions about what the card does):
-  {"kind":"oracle_text_contains","value":"draw"}     — does it draw cards? Search for "draw" in rules text.
-  {"kind":"oracle_text_contains","value":"damage"}   — does it deal damage?
-  {"kind":"oracle_text_contains","value":"destroy"}  — does it destroy things?
-  {"kind":"oracle_text_contains","value":"exile"}     — does it exile?
-  {"kind":"oracle_text_contains","value":"graveyard"} — does it interact with the graveyard?
-  {"kind":"oracle_text_contains","value":"life"}      — does it involve life gain/loss?
-  {"kind":"oracle_text_contains","value":"creature"}  — does it interact with creatures?
-  {"kind":"oracle_text_contains","value":"player"}    — does it interact with players?
-  {"kind":"oracle_text_contains","value":"counter"}   — does it involve counters?
-  {"kind":"oracle_text_contains","value":"sacrifice"} — does it involve sacrifice?
-  {"kind":"oracle_text_contains","value":"search"}    — does it search your library?
-  {"kind":"oracle_text_contains","value":"token"}     — does it mention tokens?
-  Use this for any "does it do X?" question where X can be found as a word in the rules text.
-  For multi-word searches, use the most distinctive keyword. E.g., "does it make you discard?" → value:"discard"
-  For modal/choose questions: {"kind":"oracle_text_contains","value":"choose"}
+=== SEMANTIC DERIVED QUERIES (for "does it do X?" questions) ===
+
+  {"kind":"draws_cards"}             — does it draw cards / does it let you draw
+  {"kind":"deals_damage"}            — does it deal damage
+  {"kind":"gains_life"}              — does it gain life
+  {"kind":"causes_life_loss"}        — does it cause life loss / does opponent lose life
+  {"kind":"destroys_permanents"}     — does it destroy things / does it destroy creatures
+  {"kind":"exiles"}                  — does it exile things
+  {"kind":"causes_discard"}          — does it make someone discard
+  {"kind":"searches_library"}        — does it search your library / does it tutor
+  {"kind":"interacts_with_graveyard"} — does it interact with the graveyard / does it involve the graveyard
+  {"kind":"sacrifice_effect"}        — does it involve sacrifice / does it sacrifice something
+  {"kind":"is_modal"}                — does it have modes / can you choose different effects / choose one
 
 Mana production:
   {"kind":"produces_mana"}                        — does it produce/tap for mana

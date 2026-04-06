@@ -17,13 +17,15 @@ const DIRECT_KINDS = new Set([
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
   "produces_mana", "produces_mana_color", "produces_any_color", "produces_multiple_colors",
-  "oracle_text_contains",
 ]);
 
 const DERIVED_KINDS = new Set([
   "is_permanent", "creates_tokens", "enters_tapped", "can_enter_untapped",
   "targets", "triggered_ability", "activated_ability", "etb_ability",
   "has_mana_ability", "has_non_mana_ability",
+  "draws_cards", "deals_damage", "gains_life", "causes_life_loss",
+  "destroys_permanents", "exiles", "causes_discard", "searches_library",
+  "interacts_with_graveyard", "sacrifice_effect", "is_modal",
 ]);
 
 export function resolveAtomicQuery(

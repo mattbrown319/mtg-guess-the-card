@@ -15,7 +15,10 @@ const VALID_ATOMIC_KINDS = new Set([
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
   "produces_mana", "produces_mana_color", "produces_any_color", "produces_multiple_colors",
-  "oracle_text_contains",
+  // Derived — semantic
+  "draws_cards", "deals_damage", "gains_life", "causes_life_loss",
+  "destroys_permanents", "exiles", "causes_discard", "searches_library",
+  "interacts_with_graveyard", "sacrifice_effect", "is_modal",
   // Derived
   "is_permanent", "creates_tokens", "enters_tapped", "can_enter_untapped",
   "targets", "triggered_ability", "activated_ability", "etb_ability",
