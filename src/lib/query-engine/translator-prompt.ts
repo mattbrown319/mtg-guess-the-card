@@ -58,6 +58,23 @@ Printing: {"kind":"printed_in_set","value":"Alpha"} — was it printed in a set 
 Name: {"kind":"name_equals","value":"Lightning Bolt"} — is it this card? (case insensitive, matches face names too)
   {"kind":"name_contains","value":"bolt"}          — does the name contain this text
 
+Oracle text search (for questions about what the card does):
+  {"kind":"oracle_text_contains","value":"draw"}     — does it draw cards? Search for "draw" in rules text.
+  {"kind":"oracle_text_contains","value":"damage"}   — does it deal damage?
+  {"kind":"oracle_text_contains","value":"destroy"}  — does it destroy things?
+  {"kind":"oracle_text_contains","value":"exile"}     — does it exile?
+  {"kind":"oracle_text_contains","value":"graveyard"} — does it interact with the graveyard?
+  {"kind":"oracle_text_contains","value":"life"}      — does it involve life gain/loss?
+  {"kind":"oracle_text_contains","value":"creature"}  — does it interact with creatures?
+  {"kind":"oracle_text_contains","value":"player"}    — does it interact with players?
+  {"kind":"oracle_text_contains","value":"counter"}   — does it involve counters?
+  {"kind":"oracle_text_contains","value":"sacrifice"} — does it involve sacrifice?
+  {"kind":"oracle_text_contains","value":"search"}    — does it search your library?
+  {"kind":"oracle_text_contains","value":"token"}     — does it mention tokens?
+  Use this for any "does it do X?" question where X can be found as a word in the rules text.
+  For multi-word searches, use the most distinctive keyword. E.g., "does it make you discard?" → value:"discard"
+  For modal/choose questions: {"kind":"oracle_text_contains","value":"choose"}
+
 Mana production:
   {"kind":"produces_mana"}                        — does it produce/tap for mana
   {"kind":"produces_mana_color","value":"U"}       — does it produce blue mana

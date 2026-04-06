@@ -127,6 +127,9 @@ export type AtomicQuery =
   | { kind: "produces_any_color" }
   | { kind: "produces_multiple_colors" }
 
+  // Oracle text search
+  | { kind: "oracle_text_contains"; value: string }
+
   // Derived
   | { kind: "is_permanent" }
   | { kind: "creates_tokens" }

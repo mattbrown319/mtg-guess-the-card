@@ -15,6 +15,7 @@ const VALID_ATOMIC_KINDS = new Set([
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
   "produces_mana", "produces_mana_color", "produces_any_color", "produces_multiple_colors",
+  "oracle_text_contains",
   // Derived
   "is_permanent", "creates_tokens", "enters_tapped", "can_enter_untapped",
   "targets", "triggered_ability", "activated_ability", "etb_ability",

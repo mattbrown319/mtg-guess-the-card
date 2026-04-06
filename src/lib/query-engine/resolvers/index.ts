@@ -17,6 +17,7 @@ const DIRECT_KINDS = new Set([
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
   "produces_mana", "produces_mana_color", "produces_any_color", "produces_multiple_colors",
+  "oracle_text_contains",
 ]);
 
 const DERIVED_KINDS = new Set([

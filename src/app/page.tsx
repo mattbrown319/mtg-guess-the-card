@@ -274,7 +274,7 @@ export default function Home() {
           </a>
         </div>
         <div className="text-center text-xs text-[var(--text-secondary)] pt-2 opacity-60">
-          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.64
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.65
         </div>
       </div>
     </main>
