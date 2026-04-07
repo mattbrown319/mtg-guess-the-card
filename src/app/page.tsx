@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { ENGINE_VERSION } from "@/lib/version";
 
 const FORMATS = [
   { value: "", label: "Any Format" },
@@ -274,7 +275,7 @@ export default function Home() {
           </a>
         </div>
         <div className="text-center text-xs text-[var(--text-secondary)] pt-2 opacity-60">
-          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v0.67
+          Card data from <a href="https://scryfall.com" className="underline" target="_blank" rel="noopener noreferrer">Scryfall</a>. Popularity data from <a href="https://cubecobra.com" className="underline" target="_blank" rel="noopener noreferrer">CubeCobra</a>. Not affiliated with Wizards of the Coast. &bull; v{ENGINE_VERSION}
         </div>
       </div>
     </main>
