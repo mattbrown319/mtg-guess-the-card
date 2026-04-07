@@ -155,7 +155,13 @@ Mana production:
 
 === UNSUPPORTED ===
 
-  {"kind":"unsupported"}           — use this when the question cannot be mapped to any supported query kind
+  {"kind":"unsupported"}           — question is factual but doesn't map to any query kind above. Set "supported":false.
+  {"kind":"subjective"}            — question is subjective, opinion-based, or unanswerable from card data. Set "supported":false.
+
+Use "unsupported" for factual questions about the card that just aren't covered by the query kinds above.
+  Examples: "does it let you cast from graveyard?", "does it have an X ability?", "is it from Innistrad block?"
+Use "subjective" for questions that have no objective answer from card data.
+  Examples: "is it good?", "is it competitive?", "does it see play?", "is it fun?", "is the art cool?"
 
 RULES:
 1. NEVER answer the question. ONLY translate it to a query.
@@ -165,8 +171,8 @@ RULES:
 5. "CMC 3 or greater" → cmc_compare >= 3. NOT cmc_compare = 3.
 6. Player shorthand: "1RR" → mana_cost_equals "{1}{R}{R}". "blue?" after color questions → color_contains U.
 7. If the player asks "is it [card name]?" → name_equals with the card name.
-8. For subjective questions (good? competitive? popular? see play?) → unsupported.
-9. For art/visual questions (picture? art? looks like?) → unsupported.
+8. For subjective questions (good? competitive? popular? see play?) → {"kind":"subjective"} with "supported":false.
+9. For art/visual questions (picture? art? looks like?) → {"kind":"subjective"} with "supported":false.
 10. Use context from prior Q&A to disambiguate. "2 or less?" after CMC questions → cmc_compare. "red?" after color questions → color_contains.
 11. IMPORTANT: generic mana ({1},{2},{3}) and colorless mana ({C}) are DIFFERENT things.
-12. If you're unsure, use {"kind":"unsupported"} with "supported":false. Never guess.`;
+12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.`;

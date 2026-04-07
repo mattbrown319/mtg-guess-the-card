@@ -90,7 +90,8 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
       break;
 
     case "unsupported":
-      // Valid — will be handled as refund
+    case "subjective":
+      // Valid — will be handled downstream
       break;
 
     default: {

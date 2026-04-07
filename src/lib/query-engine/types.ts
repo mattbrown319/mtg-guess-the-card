@@ -213,7 +213,8 @@ export type StructuredQuery =
   | { kind: "or"; clauses: StructuredQuery[] }
   | { kind: "not"; clause: StructuredQuery }
   | AtomicQuery
-  | { kind: "unsupported" };
+  | { kind: "unsupported" }
+  | { kind: "subjective" };
 
 // ============================================================
 // Query Envelope

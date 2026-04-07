@@ -79,6 +79,26 @@ async function initTables(db: Client): Promise<void> {
   await db.execute(
     "CREATE INDEX IF NOT EXISTS idx_query_logs_outcome ON query_logs(outcome)"
   ).catch(() => {});
+
+  await db.execute(`
+    CREATE TABLE IF NOT EXISTS sonnet_fallback_logs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      session_id TEXT NOT NULL,
+      card_name TEXT NOT NULL,
+      question TEXT NOT NULL,
+      trigger_reason TEXT NOT NULL,
+      card_context TEXT NOT NULL,
+      raw_output TEXT NOT NULL,
+      parsed_outcome TEXT NOT NULL,
+      input_tokens INTEGER NOT NULL,
+      output_tokens INTEGER NOT NULL,
+      latency_ms INTEGER NOT NULL,
+      created_at INTEGER NOT NULL
+    )
+  `);
+  await db.execute(
+    "CREATE INDEX IF NOT EXISTS idx_sonnet_logs_session ON sonnet_fallback_logs(session_id)"
+  ).catch(() => {});
 }
 
 export async function getDb(): Promise<Client> {

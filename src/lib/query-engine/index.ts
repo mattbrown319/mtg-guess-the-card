@@ -2,6 +2,7 @@ import type { NormalizedCard, EngineResult, StructuredQueryEnvelope } from "./ty
 import { evaluate } from "./evaluator";
 import { validateEnvelope } from "./validator";
 import { translateQuestion } from "./translator";
+import { askSonnet } from "./sonnet-fallback";
 
 interface QuestionContext {
   question: string;
@@ -20,6 +21,35 @@ export interface QueryLogEntry {
   usedContext: boolean;
   translateLatencyMs: number | null;
   totalLatencyMs: number;
+}
+
+async function persistSonnetLog(entry: {
+  sessionId: string;
+  cardName: string;
+  question: string;
+  triggerReason: string;
+  cardContext: string;
+  rawOutput: string;
+  parsedOutcome: string;
+  inputTokens: number;
+  outputTokens: number;
+  latencyMs: number;
+}): Promise<void> {
+  try {
+    const { getDb } = await import("@/lib/db");
+    const db = await getDb();
+    await db.execute({
+      sql: `INSERT INTO sonnet_fallback_logs (session_id, card_name, question, trigger_reason, card_context, raw_output, parsed_outcome, input_tokens, output_tokens, latency_ms, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      args: [
+        entry.sessionId, entry.cardName, entry.question, entry.triggerReason,
+        entry.cardContext, entry.rawOutput, entry.parsedOutcome,
+        entry.inputTokens, entry.outputTokens, entry.latencyMs, Date.now(),
+      ],
+    });
+  } catch (e) {
+    console.error("[QE] Failed to persist sonnet fallback log:", e);
+  }
 }
 
 async function persistLog(entry: QueryLogEntry): Promise<void> {
@@ -113,23 +143,69 @@ export async function processQuestion(
     };
   }
 
-  // Step 4: Check for unsupported
-  if (translation.envelope.query.kind === "unsupported" || !translation.envelope.meta.supported) {
+  // Step 4a: Subjective questions — refund without hitting Sonnet
+  if (translation.envelope.query.kind === "subjective") {
     const totalMs = Date.now() - t0;
-    console.log(`[QE] Unsupported query (${totalMs}ms)`);
+    console.log(`[QE] Subjective question — refunding (${totalMs}ms)`);
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
-        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: "unsupported",
+        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: "subjective",
         validationErrors: null, outcome: "refund",
-        reasonCode: "UNSUPPORTED_QUERY_KIND", usedContext: translation.envelope.meta?.usedContext || false,
+        reasonCode: "SUBJECTIVE_QUESTION", usedContext: translation.envelope.meta?.usedContext || false,
         translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
       });
     }
     return {
       outcome: "refund",
-      playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
-      reasonCode: "UNSUPPORTED_QUERY_KIND",
+      playerMessage: "That's a subjective question I can't answer objectively — try asking about the card's rules text or properties! (This question wasn't counted.)",
+      reasonCode: "SUBJECTIVE_QUESTION",
+      translatedQuery: translation.envelope,
+    };
+  }
+
+  // Step 4b: Unsupported factual questions — fall back to Sonnet
+  if (translation.envelope.query.kind === "unsupported" || !translation.envelope.meta.supported) {
+    console.log(`[QE] Unsupported query — falling back to Sonnet`);
+    const sonnetResult = await askSonnet(card, question);
+    const totalMs = Date.now() - t0;
+
+    console.log(`[QE] Sonnet fallback: "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms, ${sonnetResult.inputTokens}+${sonnetResult.outputTokens} tokens)`);
+
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: "sonnet_fallback",
+        validationErrors: null, outcome: sonnetResult.outcome,
+        reasonCode: "SONNET_FALLBACK_UNSUPPORTED", usedContext: translation.envelope.meta?.usedContext || false,
+        translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+      });
+      persistSonnetLog({
+        sessionId, cardName: card.name, question,
+        triggerReason: "UNSUPPORTED_QUERY_KIND",
+        cardContext: sonnetResult.cardContext,
+        rawOutput: sonnetResult.rawOutput,
+        parsedOutcome: sonnetResult.outcome,
+        inputTokens: sonnetResult.inputTokens,
+        outputTokens: sonnetResult.outputTokens,
+        latencyMs: sonnetResult.latencyMs,
+      });
+    }
+
+    if (sonnetResult.outcome === "refund") {
+      return {
+        outcome: "refund",
+        playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+        reasonCode: "SONNET_FALLBACK_FAILED",
+        translatedQuery: translation.envelope,
+      };
+    }
+
+    return {
+      outcome: sonnetResult.outcome,
+      playerMessage: sonnetResult.answer,
+      truthValue: sonnetResult.outcome as "yes" | "no" | "sometimes",
+      reasonCode: "SONNET_FALLBACK_UNSUPPORTED",
       translatedQuery: translation.envelope,
     };
   }
@@ -137,23 +213,49 @@ export async function processQuestion(
   // Step 5: Evaluate
   const truthValue = evaluate(translation.envelope.query, card);
 
+  // If evaluator returns null (no semantic data), fall back to Sonnet
   if (truthValue === null) {
+    console.log(`[QE] Evaluator null for kind=${translation.envelope.query.kind} — falling back to Sonnet`);
+    const sonnetResult = await askSonnet(card, question);
     const totalMs = Date.now() - t0;
-    console.log(`[QE] Evaluator returned null for kind=${translation.envelope.query.kind} (${totalMs}ms)`);
+
+    console.log(`[QE] Sonnet fallback: "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms, ${sonnetResult.inputTokens}+${sonnetResult.outputTokens} tokens)`);
+
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
         translatedQuery: JSON.stringify(translation.envelope.query),
-        queryKind: translation.envelope.query.kind, validationErrors: null,
-        outcome: "refund", reasonCode: "UNKNOWN_QUERY_KIND",
+        queryKind: "sonnet_fallback", validationErrors: null,
+        outcome: sonnetResult.outcome, reasonCode: "SONNET_FALLBACK_NULL_EVAL",
         usedContext: translation.envelope.meta?.usedContext || false,
         translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
       });
+      persistSonnetLog({
+        sessionId, cardName: card.name, question,
+        triggerReason: "NULL_EVALUATOR_" + translation.envelope.query.kind,
+        cardContext: sonnetResult.cardContext,
+        rawOutput: sonnetResult.rawOutput,
+        parsedOutcome: sonnetResult.outcome,
+        inputTokens: sonnetResult.inputTokens,
+        outputTokens: sonnetResult.outputTokens,
+        latencyMs: sonnetResult.latencyMs,
+      });
     }
+
+    if (sonnetResult.outcome === "refund") {
+      return {
+        outcome: "refund",
+        playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+        reasonCode: "SONNET_FALLBACK_FAILED",
+        translatedQuery: translation.envelope,
+      };
+    }
+
     return {
-      outcome: "refund",
-      playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
-      reasonCode: "UNKNOWN_QUERY_KIND",
+      outcome: sonnetResult.outcome,
+      playerMessage: sonnetResult.answer,
+      truthValue: sonnetResult.outcome as "yes" | "no" | "sometimes",
+      reasonCode: "SONNET_FALLBACK_NULL_EVAL",
       translatedQuery: translation.envelope,
     };
   }
