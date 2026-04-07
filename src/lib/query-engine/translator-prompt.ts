@@ -203,7 +203,7 @@ Structure — ability types and trigger types:
 Mana production:
   {"kind":"produces_mana"}                        — does it produce/tap for mana
   {"kind":"produces_mana_color","value":"U"}       — does it produce blue mana
-  {"kind":"produces_any_color"}                   — does it produce any colored mana
+  {"kind":"produces_any_color"}                   — does it produce any colored mana / "does it tap for colored mana?" / "does it make colored mana?"
   {"kind":"produces_multiple_colors"}             — does it produce 2+ colors of mana
 
 === COMPOUND QUERIES ===

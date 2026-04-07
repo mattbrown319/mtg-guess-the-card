@@ -78,6 +78,7 @@ const VALID_RARITIES = new Set(["common", "uncommon", "rare", "mythic"]);
 export interface ValidationResult {
   valid: boolean;
   errors: string[];
+  isNearMiss: boolean; // true = known kind but bad params (should fall back to Sonnet)
 }
 
 function validateQuery(query: StructuredQuery, errors: string[], path: string): void {
@@ -197,10 +198,20 @@ export function validateEnvelope(envelope: StructuredQueryEnvelope): ValidationR
 
   if (!envelope.query) {
     errors.push("root: missing 'query' field");
-    return { valid: false, errors };
+    return { valid: false, errors, isNearMiss: false };
   }
 
   validateQuery(envelope.query, errors, "query");
 
-  return { valid: errors.length === 0, errors };
+  // Near miss = the kind is known/valid but parameters are wrong
+  // Hard fail = unknown kind, missing kind, malformed structure
+  const isNearMiss = errors.length > 0 && errors.every(e =>
+    !e.includes("unknown query kind") &&
+    !e.includes("missing 'kind'") &&
+    !e.includes("is not an object") &&
+    !e.includes("requires non-empty clauses") &&
+    !e.includes("requires a clause object")
+  );
+
+  return { valid: errors.length === 0, errors, isNearMiss };
 }

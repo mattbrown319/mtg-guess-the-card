@@ -123,22 +123,70 @@ export async function processQuestion(
   // Step 3: Validate
   const validation = validateEnvelope(translation.envelope);
   if (!validation.valid) {
+    if (validation.isNearMiss) {
+      // Near miss: known kind but bad params — fall back to Sonnet
+      console.log(`[QE] Validation near-miss: ${validation.errors.join("; ")} — falling back to Sonnet`);
+      const sonnetResult = await askSonnet(card, question);
+      const totalMs = Date.now() - t0;
+
+      console.log(`[QE] Sonnet fallback (near-miss): "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms)`);
+
+      if (sessionId) {
+        persistLog({
+          sessionId, cardName: card.name, question,
+          translatedQuery: JSON.stringify(translation.envelope.query),
+          queryKind: "sonnet_fallback",
+          validationErrors: validation.errors.join("; "), outcome: sonnetResult.outcome,
+          reasonCode: "VALIDATION_NEAR_MISS_FALLBACK", usedContext: translation.envelope.meta?.usedContext || false,
+          translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
+        });
+        persistSonnetLog({
+          sessionId, cardName: card.name, question,
+          triggerReason: "VALIDATION_NEAR_MISS: " + validation.errors.join("; "),
+          cardContext: sonnetResult.cardContext,
+          rawOutput: sonnetResult.rawOutput,
+          parsedOutcome: sonnetResult.outcome,
+          inputTokens: sonnetResult.inputTokens,
+          outputTokens: sonnetResult.outputTokens,
+          latencyMs: sonnetResult.latencyMs,
+        });
+      }
+
+      if (sonnetResult.outcome === "refund") {
+        return {
+          outcome: "refund",
+          playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+          reasonCode: "SONNET_FALLBACK_FAILED",
+          translatedQuery: translation.envelope,
+        };
+      }
+
+      return {
+        outcome: sonnetResult.outcome,
+        playerMessage: sonnetResult.answer,
+        truthValue: sonnetResult.outcome as "yes" | "no" | "sometimes",
+        reasonCode: "VALIDATION_NEAR_MISS_FALLBACK",
+        translatedQuery: translation.envelope,
+      };
+    }
+
+    // Hard fail: malformed structure — refund
     const totalMs = Date.now() - t0;
-    console.log(`[QE] Validation failed: ${validation.errors.join("; ")} (${totalMs}ms)`);
+    console.log(`[QE] Validation hard fail: ${validation.errors.join("; ")} (${totalMs}ms)`);
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
         translatedQuery: JSON.stringify(translation.envelope.query),
         queryKind: translation.envelope.query.kind,
         validationErrors: validation.errors.join("; "), outcome: "refund",
-        reasonCode: "SEMANTIC_VALIDATION_FAILED", usedContext: translation.envelope.meta?.usedContext || false,
+        reasonCode: "VALIDATION_HARD_FAIL", usedContext: translation.envelope.meta?.usedContext || false,
         translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
       });
     }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
-      reasonCode: "SEMANTIC_VALIDATION_FAILED",
+      reasonCode: "VALIDATION_HARD_FAIL",
       translatedQuery: translation.envelope,
     };
   }
