@@ -236,14 +236,14 @@ export default function Home() {
           Challenge a Friend with a Specific Card
         </a>
         {/* Today's Leaderboard */}
-        {leaderboard.length > 0 && (
-          <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-semibold">Today&apos;s Leaderboard</span>
-              <a href="/leaderboard" className="text-xs text-[var(--accent)] hover:underline">Full board &rarr;</a>
-            </div>
-            <div className="space-y-1">
-              {leaderboard.slice(0, 5).map((entry, i) => (
+        <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-4 min-h-[140px]">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold">Today&apos;s Leaderboard</span>
+            <a href="/leaderboard" className="text-xs text-[var(--accent)] hover:underline">Full board &rarr;</a>
+          </div>
+          <div className="space-y-1">
+            {leaderboard.length > 0 ? (
+              leaderboard.slice(0, 5).map((entry, i) => (
                 <div key={i} className="flex items-center justify-between text-xs text-[var(--text-secondary)]">
                   <span>{i + 1}. <span className="font-mono font-bold">{entry.name}</span></span>
                   <span>
@@ -251,10 +251,12 @@ export default function Home() {
                     {entry.fastest ? ` · ${entry.fastest < 60 ? `${entry.fastest}s` : `${Math.floor(entry.fastest / 60)}m${entry.fastest % 60}s`} best` : ""}
                   </span>
                 </div>
-              ))}
-            </div>
+              ))
+            ) : (
+              <div className="text-xs text-[var(--text-secondary)] opacity-50">Loading...</div>
+            )}
           </div>
-        )}
+        </div>
 
         <div className="flex justify-center gap-4 pt-2">
 	  <a
