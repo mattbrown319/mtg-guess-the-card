@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function TestV2() {
   const [sessionId, setSessionId] = useState("");
@@ -8,7 +8,11 @@ export default function TestV2() {
   const [log, setLog] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [cardName, setCardName] = useState("???");
-  const [engineVersion, setEngineVersion] = useState("");
+  const [engineVersion, setEngineVersion] = useState("loading...");
+
+  useEffect(() => {
+    fetch("/api/version").then(r => r.json()).then(d => setEngineVersion(d.engineVersion)).catch(() => setEngineVersion("unknown"));
+  }, []);
 
   async function startGame() {
     setLoading(true);
@@ -68,7 +72,7 @@ export default function TestV2() {
       <p className="text-sm text-[var(--text-secondary)] mb-4">
         This page uses /api/question-v2 (structured query engine) instead of /api/question (direct LLM).
         <br />Card: <strong>{cardName}</strong>
-        {engineVersion && <> | Engine: <strong>v{engineVersion}</strong></>}
+        {<> | Engine: <strong>v{engineVersion}</strong></>}
       </p>
 
       {!sessionId ? (

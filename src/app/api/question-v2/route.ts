@@ -4,7 +4,7 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { processQuestion, normalizeCard } from "@/lib/query-engine";
 import type { NormalizedCard } from "@/lib/query-engine";
 
-const ENGINE_VERSION = "2.3.0"; // 2.0 = query engine, 2.1 = semantic resolvers, 2.2 = sonnet fallback, 2.3 = all fields wired + granular kinds
+import { ENGINE_VERSION } from "@/lib/version";
 
 // Cache normalized cards per session to avoid re-normalizing each question
 const normalizedCardCache = new Map<string, NormalizedCard>();
