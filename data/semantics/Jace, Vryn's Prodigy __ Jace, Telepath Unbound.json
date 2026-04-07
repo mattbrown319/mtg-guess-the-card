@@ -156,8 +156,7 @@
   "targeting": {
     "targetKinds": [
       "creature",
-      "instant",
-      "sorcery",
+      "instant or sorcery card in graveyard",
       "opponent"
     ],
     "hasTargeting": true

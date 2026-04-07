@@ -67,6 +67,7 @@ const VALID_ATOMIC_KINDS = new Set([
   "cares_about_damage", "cares_about_tapped_untapped",
   "cares_about_colors", "cares_about_mana_spent",
   "cares_about_equipment", "cares_about_auras",
+  "targets_kind",
 ]);
 
 const VALID_COLORS = new Set(["W", "U", "B", "R", "G"]);
@@ -130,7 +131,8 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
            "guild_equals", "shard_wedge_equals",
            "mana_cost_equals", "mana_cost_contains_symbol",
            "keyword_contains", "rarity_equals",
-           "printed_in_set", "name_equals", "name_contains"].includes(query.kind)) {
+           "printed_in_set", "name_equals", "name_contains",
+           "targets_kind"].includes(query.kind)) {
         if (typeof q.value !== "string" || !q.value) {
           errors.push(`${path}: ${query.kind} requires a non-empty string 'value'`);
         }

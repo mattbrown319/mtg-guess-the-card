@@ -252,7 +252,9 @@ export type AtomicQuery =
   | { kind: "cares_about_colors" }
   | { kind: "cares_about_mana_spent" }
   | { kind: "cares_about_equipment" }
-  | { kind: "cares_about_auras" };
+  | { kind: "cares_about_auras" }
+  // Parameterized targeting
+  | { kind: "targets_kind"; value: string };
 
 export type StructuredQuery =
   | { kind: "and"; clauses: StructuredQuery[] }

@@ -1,5 +1,6 @@
 import type { AtomicQuery, NormalizedCard } from "../types";
 import type { TruthValue } from "../truth";
+import { normalizeTargetKinds, matchesTargetKind } from "../target-normalization";
 
 export function resolveDerivedQuery(
   query: AtomicQuery,
@@ -610,6 +611,17 @@ export function resolveDerivedQuery(
     case "cares_about_mana_spent": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutManaSpent ? "yes" : "no"; }
     case "cares_about_equipment": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutEquipment ? "yes" : "no"; }
     case "cares_about_auras": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutAuras ? "yes" : "no"; }
+
+    // ==================== PARAMETERIZED TARGETING ====================
+    case "targets_kind": {
+      const s = card.semantics;
+      if (!s) return null;
+      const rawKinds = s.targeting.targetKinds || [];
+      if (rawKinds.length === 0) return "no";
+      const normalized = normalizeTargetKinds(rawKinds);
+      const queryValue = (query as { kind: "targets_kind"; value: string }).value.toLowerCase();
+      return matchesTargetKind(normalized, queryValue) ? "yes" : "no";
+    }
 
     default:
       return null;

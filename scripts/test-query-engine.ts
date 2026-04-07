@@ -190,5 +190,33 @@ console.log("\n--- Layer 2b: Remaining condition query kinds ---");
 test("Young Pyromancer", { kind: "cares_about_instants_and_sorceries" }, "yes", "cares about instants/sorceries");
 test("Back to Basics", { kind: "cares_about_nonbasic_lands" }, "yes", "cares about nonbasic lands");
 
+console.log("\n--- Parameterized targeting (zone-aware) ---");
+
+// Mana Drain: targets spell on stack, NOT a permanent
+test("Mana Drain", { kind: "targets" }, "yes", "targets anything");
+test("Mana Drain", { kind: "targets_kind", value: "spell" }, "yes", "targets a spell");
+test("Mana Drain", { kind: "targets_kind", value: "permanent" }, "no", "does NOT target a permanent");
+test("Mana Drain", { kind: "targets_kind", value: "creature" }, "no", "does NOT target a creature");
+
+// Lightning Bolt: "any target" = creature, player, planeswalker, battle
+test("Lightning Bolt", { kind: "targets_kind", value: "creature" }, "yes", "targets a creature (any target)");
+test("Lightning Bolt", { kind: "targets_kind", value: "player" }, "yes", "targets a player (any target)");
+test("Lightning Bolt", { kind: "targets_kind", value: "spell" }, "no", "does NOT target a spell");
+
+// Animate Dead: targets creature card in graveyard, NOT a creature on battlefield
+test("Animate Dead", { kind: "targets_kind", value: "creature" }, "no", "does NOT target a battlefield creature (graveyard card)");
+
+// Grief: targets opponent, which implies player
+test("Grief", { kind: "targets_kind", value: "opponent" }, "yes", "targets an opponent");
+test("Grief", { kind: "targets_kind", value: "player" }, "yes", "targets a player (opponent implies player)");
+
+// Abrupt Decay: nonland permanent — permanent includes creatures
+test("Abrupt Decay", { kind: "targets_kind", value: "permanent" }, "yes", "targets a permanent");
+test("Abrupt Decay", { kind: "targets_kind", value: "creature" }, "yes", "targets a creature (permanent includes creatures)");
+
+// Essence Scatter: creature spell on stack, NOT a creature on battlefield
+test("Essence Scatter", { kind: "targets_kind", value: "spell" }, "yes", "targets a spell");
+test("Essence Scatter", { kind: "targets_kind", value: "creature" }, "no", "does NOT target a creature (creature spell ≠ creature)");
+
 console.log(`\n=== RESULTS: ${total - failures}/${total} passed, ${failures} failed ===`);
 if (failures > 0) process.exit(1);

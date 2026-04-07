@@ -170,7 +170,18 @@ Structure — ability types and trigger types:
   {"kind":"creates_tokens"}              — does it create tokens
   {"kind":"enters_tapped"}               — does it enter tapped
   {"kind":"can_enter_untapped"}          — can it enter untapped
-  {"kind":"targets"}                     — does it target something
+  {"kind":"targets"}                     — does it target something (anything at all)
+  {"kind":"targets_kind","value":"creature"}   — does it target a creature (on the battlefield)
+  {"kind":"targets_kind","value":"spell"}      — does it target a spell (on the stack, e.g. counterspells)
+  {"kind":"targets_kind","value":"permanent"}  — does it target a permanent (on the battlefield)
+  {"kind":"targets_kind","value":"player"}     — does it target a player
+  {"kind":"targets_kind","value":"opponent"}   — does it target an opponent specifically
+  {"kind":"targets_kind","value":"artifact"}   — does it target an artifact
+  {"kind":"targets_kind","value":"enchantment"} — does it target an enchantment
+  {"kind":"targets_kind","value":"land"}       — does it target a land
+  {"kind":"targets_kind","value":"planeswalker"} — does it target a planeswalker
+  IMPORTANT: "target creature" = battlefield creature. "target creature card in graveyard" is different.
+  Use targets_kind for "does it target a [thing]?" questions. Use plain targets for "does it target?"
   {"kind":"triggered_ability"}           — does it have a triggered ability
   {"kind":"activated_ability"}           — does it have an activated ability
   {"kind":"static_ability"}              — does it have a static ability

@@ -72,6 +72,7 @@ const DERIVED_KINDS = new Set([
   "cares_about_damage", "cares_about_tapped_untapped",
   "cares_about_colors", "cares_about_mana_spent",
   "cares_about_equipment", "cares_about_auras",
+  "targets_kind",
 ]);
 
 export function resolveAtomicQuery(
