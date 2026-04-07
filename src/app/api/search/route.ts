@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
 
   const db = await getDb();
   const result = await db.execute({
-    sql: "SELECT id, name, type_line, set_name, image_uri_normal FROM cards WHERE name LIKE ? AND image_uri_normal IS NOT NULL ORDER BY popularity_score ASC NULLS LAST LIMIT 10",
+    sql: "SELECT id, name, type_line, set_name, image_uri_normal FROM cards WHERE name LIKE ? AND is_iconic = 1 AND image_uri_normal IS NOT NULL ORDER BY popularity_score ASC NULLS LAST LIMIT 10",
     args: [`%${q}%`],
   });
 
