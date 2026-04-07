@@ -220,7 +220,7 @@ export interface OracleSemanticSummary {
   // TARGETING — what the card targets
   // ============================================================
   targeting: {
-    targetsOnCastOrActivation: boolean;
+    hasTargeting: boolean;
     targetKinds: string[]; // "creature", "player", "spell", "permanent", "card_in_graveyard", etc.
   };
 

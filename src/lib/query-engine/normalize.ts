@@ -1,5 +1,6 @@
 import type { Card } from "@/types";
 import type { NormalizedCard, NormalizedFace } from "./types";
+import { getSemanticsForCard } from "./semantic-loader";
 
 const SUPERTYPES = new Set([
   "legendary", "basic", "snow", "world", "ongoing",
@@ -185,5 +186,7 @@ export function normalizeCard(card: Card): NormalizedCard {
 
     entersTappedTextPresent,
     targetWordPresent,
+
+    semantics: getSemanticsForCard(card.name),
   };
 }

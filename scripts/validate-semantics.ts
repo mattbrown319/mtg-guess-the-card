@@ -1,23 +1,51 @@
 // Post-validation for oracle semantic summaries
 // Catches contradictions and schema violations
 
+// Complete keyword abilities list from MTG Comprehensive Rules §702
+// Source: https://mtg.wiki/page/Keyword_ability
 const VALID_KEYWORDS = new Set([
-  "flying", "first strike", "double strike", "deathtouch", "haste",
-  "hexproof", "indestructible", "lifelink", "menace", "reach",
-  "trample", "vigilance", "ward", "flash", "defender", "prowess",
-  "shroud", "fear", "intimidate", "skulk", "shadow", "horsemanship",
-  "protection", "banding", "flanking", "rampage", "phasing",
+  // Evergreen
+  "deathtouch", "defender", "double strike", "enchant", "equip",
+  "first strike", "flash", "flying", "haste", "hexproof",
+  "indestructible", "lifelink", "menace", "protection", "reach",
+  "trample", "vigilance", "ward",
+  // Retired evergreen
+  "fear", "intimidate", "shroud",
+  // Deciduous
+  "cycling", "kicker", "prowess",
+  // Historic/set-specific keyword abilities
+  "absorb", "affinity", "afterlife", "aftermath", "amplify",
+  "annihilator", "aura swap", "awaken", "backup", "banding",
+  "bargain", "battle cry", "bestow", "blitz", "boast",
+  "bushido", "buyback", "cascade", "casualty", "champion",
+  "changeling", "cipher", "cleave", "cloak", "companion",
+  "compleated", "conspire", "convoke", "craft", "crew",
+  "cumulative upkeep", "dash", "daybound", "decayed", "delve",
+  "demonstrate", "dethrone", "devoid", "devour", "disguise",
+  "disturb", "dredge", "echo", "embalm", "emerge",
+  "encore", "enlist", "entwine", "epic", "escalate",
+  "escape", "eternalize", "evoke", "evolve", "exalted",
+  "exhaust", "exploit", "extort", "fabricate", "fading",
+  "flanking", "flashback", "for mirrodin!", "forecast", "foretell",
+  "fortify", "freerunning", "frenzy", "fuse", "gift",
+  "graft", "gravestorm", "haunt", "hidden agenda", "hideaway",
+  "horsemanship", "impending", "improvise", "infect", "ingest",
+  "jump-start", "level up", "living metal", "living weapon",
+  "madness", "melee", "mentor", "miracle", "modular",
+  "morph", "more than meets the eye", "multikicker", "mutate", "myriad",
+  "nightbound", "ninjutsu", "offering", "offspring", "outlast",
+  "overload", "partner", "persist", "phasing", "plot",
+  "poisonous", "provoke", "prototype", "prowl", "rampage",
+  "ravenous", "read ahead", "rebound", "reconfigure", "recover",
+  "reinforce", "renown", "replicate", "retrace", "riot",
+  "ripple", "saddle", "scavenge", "shadow", "skulk",
+  "soulbond", "soulshift", "spectacle", "splice", "split second",
+  "spree", "squad", "storm", "sunburst", "surge",
+  "suspend", "totem armor", "toxic", "training", "transfigure",
+  "transmute", "tribute", "umbra armor", "undaunted", "undying",
+  "unearth", "unleash", "vanishing", "wither",
+  // Landwalk variants
   "landwalk", "islandwalk", "swampwalk", "mountainwalk", "forestwalk", "plainswalk",
-  "wither", "infect", "persist", "undying", "cascade", "storm",
-  "affinity", "convoke", "delve", "dredge", "devoid", "annihilator",
-  "modular", "ninjutsu", "bushido", "soulshift", "splice",
-  "absorb", "changeling", "totem armor", "bestow", "outlast",
-  "dash", "exploit", "renown", "skulk", "emerge", "partner",
-  "companion", "mutate", "escape", "foretell", "daybound", "nightbound",
-  "disturb", "cleave", "training", "compleated", "reconfigure",
-  "blitz", "casualty", "enlist", "read ahead", "prototype",
-  "craft", "discover", "disguise", "cloak", "saddle", "offspring",
-  "riot", "adapt", "afterlife", "spectacle", "extort",
 ]);
 
 export interface ValidationIssue {
@@ -32,12 +60,12 @@ export function validateSemantics(summary: Record<string, unknown>, cardName: st
 
   // === Structural consistency ===
 
-  if (s.targeting?.targetsOnCastOrActivation === false && s.targeting?.targetKinds?.length > 0) {
-    issues.push({ field: "targeting", severity: "error", message: "targetKinds is non-empty but targetsOnCastOrActivation is false" });
+  if (s.targeting?.hasTargeting === false && s.targeting?.targetKinds?.length > 0) {
+    issues.push({ field: "targeting", severity: "error", message: "targetKinds is non-empty but hasTargeting is false" });
   }
 
-  if (s.targeting?.targetsOnCastOrActivation === true && (!s.targeting?.targetKinds || s.targeting.targetKinds.length === 0)) {
-    issues.push({ field: "targeting", severity: "warning", message: "targetsOnCastOrActivation is true but targetKinds is empty" });
+  if (s.targeting?.hasTargeting === true && (!s.targeting?.targetKinds || s.targeting.targetKinds.length === 0)) {
+    issues.push({ field: "targeting", severity: "warning", message: "hasTargeting is true but targetKinds is empty" });
   }
 
   if (s.structure?.hasManaAbility === true && s.actions?.addsMana === false) {

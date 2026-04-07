@@ -25,7 +25,11 @@
   },
   "actions": {
     "drawsCards": false,
+    "drawsCardsForController": false,
+    "drawsCardsForOpponent": false,
     "discardsCards": false,
+    "discardsForController": false,
+    "forcesOpponentDiscard": false,
     "millsCards": false,
     "surveils": false,
     "scries": false,
@@ -66,6 +70,7 @@
     "untapsThings": true,
     "grantsKeywords": false,
     "grantedKeywords": [],
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -80,7 +85,11 @@
     "fetchesBasicLand": false,
     "letsPlayExtraLands": false,
     "gainsLife": false,
+    "gainsLifeForController": false,
+    "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
+    "causesLifeLossForController": false,
+    "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": true,
@@ -112,7 +121,7 @@
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": true,
-    "caresAboutDamage": true,
+    "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
@@ -142,18 +151,21 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetsOnCastOrActivation": true,
     "targetKinds": [
-      "attacking creature"
-    ]
+      "creature"
+    ],
+    "hasTargeting": true
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": []
+    "notes": [
+      "Ability can only target attacking creatures",
+      "Land does not produce mana"
+    ]
   },
   "audit": {
-    "shortRationale": "Maze of Ith is a land with an activated ability that untaps target attacking creature and prevents all combat damage to and from it. The untapping and damage prevention are actions; caring about attacking creatures and combat damage are conditions.",
+    "shortRationale": "Maze of Ith is a land with a tap ability that untaps a target attacking creature and prevents all combat damage it would deal or be dealt, effectively removing it from combat without producing mana.",
     "flaggedAmbiguities": []
   }
 }

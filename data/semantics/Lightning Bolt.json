@@ -25,7 +25,11 @@
   },
   "actions": {
     "drawsCards": false,
+    "drawsCardsForController": false,
+    "drawsCardsForOpponent": false,
     "discardsCards": false,
+    "discardsForController": false,
+    "forcesOpponentDiscard": false,
     "millsCards": false,
     "surveils": false,
     "scries": false,
@@ -68,6 +72,7 @@
     "untapsThings": false,
     "grantsKeywords": false,
     "grantedKeywords": [],
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -82,7 +87,11 @@
     "fetchesBasicLand": false,
     "letsPlayExtraLands": false,
     "gainsLife": false,
+    "gainsLifeForController": false,
+    "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
+    "causesLifeLossForController": false,
+    "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -144,10 +153,10 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetsOnCastOrActivation": true,
     "targetKinds": [
       "any target"
-    ]
+    ],
+    "hasTargeting": true
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -155,7 +164,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Lightning Bolt is a simple instant spell that deals 3 damage to any legal target (creature, planeswalker, player, or battle). It has no triggers, conditions, or complex interactions—only a single damage-dealing effect with targeting.",
+    "shortRationale": "Lightning Bolt is a simple instant spell that deals 3 damage to any target (creature, planeswalker, battle, or player).",
     "flaggedAmbiguities": []
   }
 }

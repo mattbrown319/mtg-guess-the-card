@@ -10,7 +10,12 @@ const OUTPUT_DIR = path.join(__dirname, "..", "data", "semantics");
 const PROGRESS_FILE = path.join(OUTPUT_DIR, "progress.json");
 const ERRORS_FILE = path.join(OUTPUT_DIR, "errors.json");
 
+const CONCURRENCY = 5;
 const client = new Anthropic();
+
+// Parse --limit N flag
+const limitArg = process.argv.find(a => a.startsWith("--limit"));
+const LIMIT = limitArg ? parseInt(process.argv[process.argv.indexOf(limitArg) + 1], 10) : Infinity;
 
 function buildCardContext(row: Record<string, unknown>): string {
   const parts: string[] = [
@@ -96,59 +101,83 @@ async function main() {
   let warnings = 0;
   let totalInput = 0;
   let totalOutput = 0;
+  const startTime = Date.now();
 
-  for (const card of cards) {
-    const name = card.name as string;
-    if (progress[name]) continue;
+  // Filter to remaining cards and apply limit
+  const remaining = cards.filter(c => !progress[c.name as string]);
+  const toProcess = remaining.slice(0, LIMIT);
 
-    const context = buildCardContext(card);
-    process.stdout.write(`  ${classified + alreadyDone + 1}/${cards.length} ${name}...`);
+  if (LIMIT < Infinity) {
+    console.log(`Limit: processing ${toProcess.length} cards (--limit ${LIMIT})\n`);
+  }
 
-    const { result, inputTokens, outputTokens, rawOutput } = await classifyCard(context);
-    totalInput += inputTokens;
-    totalOutput += outputTokens;
+  // Process in batches of CONCURRENCY
+  for (let i = 0; i < toProcess.length; i += CONCURRENCY) {
+    const batch = toProcess.slice(i, i + CONCURRENCY);
 
-    if (!result) {
-      failed++;
-      errors[name] = { parseError: rawOutput.slice(0, 500) };
-      console.log(` ❌ parse error`);
-    } else {
-      // Validate
-      const issues = validateSemantics(result, name);
-      const errorIssues = issues.filter(i => i.severity === "error");
-      const warningIssues = issues.filter(i => i.severity === "warning");
+    const results = await Promise.all(
+      batch.map(async (card) => {
+        const name = card.name as string;
+        const context = buildCardContext(card);
+        const res = await classifyCard(context);
+        return { name, card, ...res };
+      })
+    );
 
-      if (errorIssues.length > 0) {
-        console.log(` ⚠️  ${errorIssues.length} errors:`);
-        for (const issue of errorIssues) {
-          console.log(`      ${issue.field}: ${issue.message}`);
-        }
-        errors[name] = { validationIssues: errorIssues };
-        warnings += warningIssues.length;
+    // Process results sequentially for clean output
+    for (const { name, result, inputTokens, outputTokens, rawOutput } of results) {
+      const idx = alreadyDone + classified + failed + 1;
+      process.stdout.write(`  ${idx}/${cards.length} ${name}...`);
+
+      totalInput += inputTokens;
+      totalOutput += outputTokens;
+
+      if (!result) {
+        failed++;
+        errors[name] = { parseError: rawOutput.slice(0, 500) };
+        console.log(` ❌ parse error`);
       } else {
-        if (warningIssues.length > 0) {
-          console.log(` ✅ (${warningIssues.length} warnings)`);
+        const issues = validateSemantics(result, name);
+        const errorIssues = issues.filter(i => i.severity === "error");
+        const warningIssues = issues.filter(i => i.severity === "warning");
+
+        if (errorIssues.length > 0) {
+          console.log(` ⚠️  ${errorIssues.length} errors:`);
+          for (const issue of errorIssues) {
+            console.log(`      ${issue.field}: ${issue.message}`);
+          }
+          errors[name] = { validationIssues: errorIssues };
           warnings += warningIssues.length;
         } else {
-          console.log(` ✅`);
+          if (warningIssues.length > 0) {
+            console.log(` ✅ (${warningIssues.length} warnings)`);
+            warnings += warningIssues.length;
+          } else {
+            console.log(` ✅`);
+          }
         }
+
+        const safeName = name.replace(/[/\\?%*:|"<>]/g, "_");
+        fs.writeFileSync(path.join(OUTPUT_DIR, `${safeName}.json`), JSON.stringify(result, null, 2));
+        progress[name] = true;
+        classified++;
       }
-
-      // Save regardless of validation issues (we can fix via overrides)
-      const safeName = name.replace(/[/\\?%*:|"<>]/g, "_");
-      fs.writeFileSync(path.join(OUTPUT_DIR, `${safeName}.json`), JSON.stringify(result, null, 2));
-      progress[name] = true;
-      classified++;
     }
 
-    // Save progress every 10 cards
-    if ((classified + failed) % 10 === 0) {
-      fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
-      fs.writeFileSync(ERRORS_FILE, JSON.stringify(errors, null, 2));
-    }
+    // Save progress after each batch
+    fs.writeFileSync(PROGRESS_FILE, JSON.stringify(progress));
+    fs.writeFileSync(ERRORS_FILE, JSON.stringify(errors, null, 2));
 
-    // Rate limit
-    await new Promise(r => setTimeout(r, 350));
+    // Print progress every 50 cards
+    const done = classified + failed;
+    if (done > 0 && done % 50 === 0) {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const rate = done / elapsed;
+      const remainingCards = toProcess.length - done;
+      const eta = remainingCards / rate;
+      const costSoFar = (totalInput / 1_000_000 * 3) + (totalOutput / 1_000_000 * 15);
+      console.log(`\n  --- ${done} done in ${Math.floor(elapsed / 60)}m ${Math.floor(elapsed % 60)}s | ${rate.toFixed(2)} cards/sec | ETA ${Math.floor(eta / 60)}m ${Math.floor(eta % 60)}s | $${costSoFar.toFixed(2)} spent ---\n`);
+    }
   }
 
   // Final save
@@ -158,6 +187,10 @@ async function main() {
   const inputCost = totalInput / 1_000_000 * 3;
   const outputCost = totalOutput / 1_000_000 * 15;
 
+  const elapsed = (Date.now() - startTime) / 1000;
+  const cardsPerSec = (classified + failed) / elapsed;
+  const remainingAfter = cards.length - Object.keys(progress).length;
+
   console.log(`\n${"=".repeat(60)}`);
   console.log(`RESULTS`);
   console.log(`${"=".repeat(60)}`);
@@ -166,7 +199,16 @@ async function main() {
   console.log(`Validation warnings: ${warnings}`);
   console.log(`Validation errors: ${Object.keys(errors).length}`);
   console.log(`Total completed: ${Object.keys(progress).length}/${cards.length}`);
+  console.log(`\nTime: ${Math.floor(elapsed / 60)}m ${Math.floor(elapsed % 60)}s (${cardsPerSec.toFixed(2)} cards/sec)`);
+  if (remainingAfter > 0) {
+    const etaSeconds = remainingAfter / cardsPerSec;
+    console.log(`ETA for remaining ${remainingAfter}: ${Math.floor(etaSeconds / 60)}m ${Math.floor(etaSeconds % 60)}s`);
+  }
   console.log(`\nCost: $${(inputCost + outputCost).toFixed(2)} (${totalInput.toLocaleString()} in, ${totalOutput.toLocaleString()} out)`);
+  if (remainingAfter > 0) {
+    const costPerCard = (inputCost + outputCost) / (classified + failed);
+    console.log(`Projected remaining cost: $${(costPerCard * remainingAfter).toFixed(2)}`);
+  }
 
   db.close();
 }

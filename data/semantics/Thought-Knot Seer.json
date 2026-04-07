@@ -24,8 +24,12 @@
     "namedMechanics": []
   },
   "actions": {
-    "drawsCards": false,
+    "drawsCards": true,
+    "drawsCardsForController": false,
+    "drawsCardsForOpponent": true,
     "discardsCards": false,
+    "discardsForController": false,
+    "forcesOpponentDiscard": false,
     "millsCards": false,
     "surveils": false,
     "scries": false,
@@ -66,6 +70,7 @@
     "untapsThings": false,
     "grantsKeywords": false,
     "grantedKeywords": [],
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -80,7 +85,11 @@
     "fetchesBasicLand": false,
     "letsPlayExtraLands": false,
     "gainsLife": false,
+    "gainsLifeForController": false,
+    "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
+    "causesLifeLossForController": false,
+    "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -137,15 +146,15 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": true,
+    "canEnterUntapped": false,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetsOnCastOrActivation": true,
     "targetKinds": [
       "opponent"
-    ]
+    ],
+    "hasTargeting": true
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -153,7 +162,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Thought-Knot Seer has two triggered abilities: one that exiles a card from opponent's hand on ETB, and one that gives opponent a card draw when it leaves. The first trigger reveals hand and exiles from it, while the second gives opponent a card as compensation.",
+    "shortRationale": "Thought-Knot Seer is a creature with two triggered abilities: when it enters, it forces an opponent to reveal their hand and exiles a chosen nonland card; when it leaves the battlefield, that opponent draws a card.",
     "flaggedAmbiguities": []
   }
 }

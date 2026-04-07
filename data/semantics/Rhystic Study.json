@@ -25,7 +25,11 @@
   },
   "actions": {
     "drawsCards": true,
+    "drawsCardsForController": true,
+    "drawsCardsForOpponent": false,
     "discardsCards": false,
+    "discardsForController": false,
+    "forcesOpponentDiscard": false,
     "millsCards": false,
     "surveils": false,
     "scries": false,
@@ -66,6 +70,7 @@
     "untapsThings": false,
     "grantsKeywords": false,
     "grantedKeywords": [],
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -80,7 +85,11 @@
     "fetchesBasicLand": false,
     "letsPlayExtraLands": false,
     "gainsLife": false,
+    "gainsLifeForController": false,
+    "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
+    "causesLifeLossForController": false,
+    "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -137,13 +146,13 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetsOnCastOrActivation": false,
-    "targetKinds": []
+    "targetKinds": [],
+    "hasTargeting": false
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -151,7 +160,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Rhystic Study has a triggered ability that triggers whenever an opponent casts a spell (CONDITION: caresAboutCastingSpells), allowing the controller to draw a card unless the opponent pays {1} (ACTION: drawsCards, taxesOpponent).",
+    "shortRationale": "Rhystic Study triggers whenever an opponent casts a spell, giving the controller the option to draw a card unless the opponent pays 1 mana. This is a triggered ability that draws cards for the controller and taxes opponents.",
     "flaggedAmbiguities": []
   }
 }

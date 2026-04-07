@@ -1,4 +1,5 @@
 import type { TruthValue } from "./truth";
+import type { OracleSemanticSummary } from "./oracle-semantics";
 
 // ============================================================
 // Normalized Card
@@ -67,6 +68,9 @@ export interface NormalizedCard {
 
   entersTappedTextPresent: boolean;
   targetWordPresent: boolean;
+
+  // Oracle semantic summary (loaded from pre-classified data)
+  semantics?: OracleSemanticSummary;
 }
 
 // ============================================================

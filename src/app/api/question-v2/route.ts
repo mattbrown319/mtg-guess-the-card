@@ -4,6 +4,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { processQuestion, normalizeCard } from "@/lib/query-engine";
 import type { NormalizedCard } from "@/lib/query-engine";
 
+const ENGINE_VERSION = "2.1.0"; // 2.0 = query engine, 2.1 = semantic resolvers
+
 // Cache normalized cards per session to avoid re-normalizing each question
 const normalizedCardCache = new Map<string, NormalizedCard>();
 
@@ -110,6 +112,7 @@ export async function POST(request: NextRequest) {
       questionsRemaining: game.maxQuestions - game.questionCount,
       notCounted: true,
       reasonCode: result.reasonCode,
+      engineVersion: ENGINE_VERSION,
     });
   }
 
@@ -142,6 +145,7 @@ export async function POST(request: NextRequest) {
       questionNumber: game.questionCount + 1,
       questionsRemaining: game.maxQuestions - game.questionCount - 1,
       correctGuess: true,
+      engineVersion: ENGINE_VERSION,
       card: {
         name: game.card.name,
         mana_cost: game.card.mana_cost,
@@ -164,5 +168,6 @@ export async function POST(request: NextRequest) {
     answer: result.playerMessage,
     questionNumber: game.questionCount + 1,
     questionsRemaining: game.maxQuestions - game.questionCount - 1,
+    engineVersion: ENGINE_VERSION,
   });
 }

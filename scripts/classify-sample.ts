@@ -83,7 +83,7 @@ OUTPUT: Return ONLY valid JSON matching this schema (no markdown, no explanation
     "alwaysEntersTapped": bool, "conditionallyEntersTapped": bool
   },
   "targeting": {
-    "targetsOnCastOrActivation": bool, "targetKinds": []
+    "hasTargeting": bool, "targetKinds": []
   },
   "conditionality": {
     "typeChangesConditionally": bool, "faceDependent": bool, "notes": []
@@ -174,7 +174,7 @@ async function main() {
         checks.push(
           ["actions.dealsDamage", result.actions?.dealsDamage, true],
           ["actions.drawsCards", result.actions?.drawsCards, false],
-          ["targeting.targetsOnCastOrActivation", result.targeting?.targetsOnCastOrActivation, true],
+          ["targeting.hasTargeting", result.targeting?.hasTargeting, true],
           ["structure.hasTriggeredAbility", result.structure?.hasTriggeredAbility, false],
         );
       } else if (name === "Thassa, God of the Sea") {
@@ -197,7 +197,7 @@ async function main() {
           ["structure.hasActivatedAbility", result.structure?.hasActivatedAbility, true],
           ["actions.preventsDamage", result.actions?.preventsDamage, true],
           ["actions.untapsThings", result.actions?.untapsThings, true],
-          ["targeting.targetsOnCastOrActivation", result.targeting?.targetsOnCastOrActivation, true],
+          ["targeting.hasTargeting", result.targeting?.hasTargeting, true],
           ["actions.addsMana", result.actions?.addsMana, false],
         );
       } else if (name === "Rhystic Study") {

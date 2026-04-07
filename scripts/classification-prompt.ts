@@ -205,7 +205,7 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
     "conditionallyEntersTapped": bool
   },
   "targeting": {
-    "targetsOnCastOrActivation": bool,
+    "hasTargeting": bool,
     "targetKinds": []
   },
   "conditionality": {

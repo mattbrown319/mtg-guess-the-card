@@ -22,18 +22,22 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
-      "Indestructible",
-      "Scry",
-      "Devotion"
+      "indestructible",
+      "scry",
+      "devotion"
     ]
   },
   "actions": {
     "drawsCards": false,
+    "drawsCardsForController": false,
+    "drawsCardsForOpponent": false,
     "discardsCards": false,
+    "discardsForController": false,
+    "forcesOpponentDiscard": false,
     "millsCards": false,
     "surveils": false,
     "scries": true,
-    "looksAtTopOfLibrary": false,
+    "looksAtTopOfLibrary": true,
     "searchesLibrary": false,
     "shufflesLibrary": false,
     "createsTokens": false,
@@ -68,10 +72,9 @@
     "copiesPermanents": false,
     "tapsThings": false,
     "untapsThings": false,
-    "grantsKeywords": true,
-    "grantedKeywords": [
-      "Unblockable"
-    ],
+    "grantsKeywords": false,
+    "grantedKeywords": [],
+    "grantsEvasion": true,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -86,7 +89,11 @@
     "fetchesBasicLand": false,
     "letsPlayExtraLands": false,
     "gainsLife": false,
+    "gainsLifeForController": false,
+    "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
+    "causesLifeLossForController": false,
+    "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -148,20 +155,20 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetsOnCastOrActivation": true,
     "targetKinds": [
-      "creature you control"
-    ]
+      "creature"
+    ],
+    "hasTargeting": true
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": false,
     "notes": [
-      "Thassa stops being a creature if devotion to blue is less than five"
+      "Thassa stops being a creature when devotion to blue is less than five"
     ]
   },
   "audit": {
-    "shortRationale": "Thassa has an upkeep scry trigger (action), a static ability making her conditionally not a creature based on devotion (condition about colors), and an activated ability granting unblockability (action). The devotion check is a condition she cares about, not an action.",
+    "shortRationale": "Thassa provides repeatable scry 1 each upkeep and has an activated ability that makes target creature unblockable. She conditionally becomes a creature based on devotion to blue.",
     "flaggedAmbiguities": []
   }
 }
