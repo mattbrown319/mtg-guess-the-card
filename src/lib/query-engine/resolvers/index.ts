@@ -16,7 +16,7 @@ const DIRECT_KINDS = new Set([
   "legality_equals",
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
-  "produces_mana", "produces_mana_color", "produces_any_color", "produces_multiple_colors",
+  "produces_mana", "produces_mana_color", "produces_any_color", "produces_colored_mana", "produces_all_colors", "produces_multiple_colors",
 ]);
 
 const DERIVED_KINDS = new Set([

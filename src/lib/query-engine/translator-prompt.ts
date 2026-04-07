@@ -201,10 +201,14 @@ Structure — ability types and trigger types:
   {"kind":"has_kicker_or_optional_cost"} — does it have kicker or an optional additional cost
 
 Mana production:
-  {"kind":"produces_mana"}                        — does it produce/tap for mana
-  {"kind":"produces_mana_color","value":"U"}       — does it produce blue mana
-  {"kind":"produces_any_color"}                   — does it produce any colored mana / "does it tap for colored mana?" / "does it make colored mana?"
-  {"kind":"produces_multiple_colors"}             — does it produce 2+ colors of mana
+  {"kind":"produces_mana"}                        — does it produce/tap for mana (colored or colorless)
+  {"kind":"produces_mana_color","value":"U"}       — does it produce blue mana. Use W/U/B/R/G/C.
+  {"kind":"produces_colored_mana"}                — does it tap for colored mana (at least one color, as opposed to only colorless)
+  {"kind":"produces_all_colors"}                  — does it tap for ALL five colors / "any color" / "mana of any color". In MTG, "any color" means all 5.
+  {"kind":"produces_multiple_colors"}             — does it produce 2+ different colors of mana
+  IMPORTANT: "any color" or "all colors" in MTG means all 5 colors (WUBRG) → produces_all_colors.
+  "colored mana" or "does it tap for colors" means at least one color → produces_colored_mana.
+  "multiple colors" means 2+ → produces_multiple_colors.
 
 === COMPOUND QUERIES ===
 

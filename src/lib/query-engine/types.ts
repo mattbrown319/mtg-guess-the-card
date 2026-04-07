@@ -129,6 +129,8 @@ export type AtomicQuery =
   | { kind: "produces_mana" }
   | { kind: "produces_mana_color"; value: string }
   | { kind: "produces_any_color" }
+  | { kind: "produces_colored_mana" }
+  | { kind: "produces_all_colors" }
   | { kind: "produces_multiple_colors" }
 
   // Derived

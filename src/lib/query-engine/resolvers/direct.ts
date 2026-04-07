@@ -187,9 +187,15 @@ export function resolveDirectQuery(
     case "produces_mana_color":
       return card.producedMana.includes(query.value) ? "yes" : "no";
 
-    case "produces_any_color": {
+    case "produces_colored_mana":
+    case "produces_any_color": { // keep old name as alias
       const colorMana = card.producedMana.filter(m => ["W", "U", "B", "R", "G"].includes(m));
       return colorMana.length > 0 ? "yes" : "no";
+    }
+
+    case "produces_all_colors": {
+      const colors = new Set(card.producedMana.filter(m => ["W", "U", "B", "R", "G"].includes(m)));
+      return colors.size === 5 ? "yes" : "no";
     }
 
     case "produces_multiple_colors": {
