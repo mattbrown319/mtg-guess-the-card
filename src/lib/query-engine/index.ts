@@ -115,7 +115,7 @@ export async function processQuestion(
     }
     return {
       outcome: "refund",
-      playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+      playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
       reasonCode: "TRANSLATION_FAILED",
     };
   }
@@ -155,7 +155,7 @@ export async function processQuestion(
       if (sonnetResult.outcome === "refund") {
         return {
           outcome: "refund",
-          playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+          playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
           reasonCode: "SONNET_FALLBACK_FAILED",
           translatedQuery: translation.envelope,
         };
@@ -185,7 +185,7 @@ export async function processQuestion(
     }
     return {
       outcome: "refund",
-      playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+      playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
       reasonCode: "VALIDATION_HARD_FAIL",
       translatedQuery: translation.envelope,
     };
@@ -206,7 +206,7 @@ export async function processQuestion(
     }
     return {
       outcome: "refund",
-      playerMessage: "That's a subjective question I can't answer objectively — try asking about the card's rules text or properties! (This question wasn't counted.)",
+      playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
       reasonCode: "SUBJECTIVE_QUESTION",
       translatedQuery: translation.envelope,
     };
@@ -243,7 +243,7 @@ export async function processQuestion(
     if (sonnetResult.outcome === "refund") {
       return {
         outcome: "refund",
-        playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+        playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
         reasonCode: "SONNET_FALLBACK_FAILED",
         translatedQuery: translation.envelope,
       };
@@ -293,7 +293,7 @@ export async function processQuestion(
     if (sonnetResult.outcome === "refund") {
       return {
         outcome: "refund",
-        playerMessage: "I'm not sure how to answer that — try rephrasing! (This question wasn't counted.)",
+        playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
         reasonCode: "SONNET_FALLBACK_FAILED",
         translatedQuery: translation.envelope,
       };

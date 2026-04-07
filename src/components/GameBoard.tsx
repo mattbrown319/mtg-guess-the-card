@@ -81,7 +81,7 @@ export default function GameBoard({
 
   const fetchSummary = useCallback(async () => {
     try {
-      const res = await fetch("/api/question", {
+      const res = await fetch("/api/question-v2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, requestSummary: true }),
@@ -111,7 +111,7 @@ export default function GameBoard({
     setError("");
 
     try {
-      const res = await fetch("/api/question", {
+      const res = await fetch("/api/question-v2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, question, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) }),
@@ -158,7 +158,7 @@ export default function GameBoard({
   async function handleHint() {
     setQuestionLoading(true);
     try {
-      const res = await fetch("/api/question", {
+      const res = await fetch("/api/question-v2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, requestHint: true }),
