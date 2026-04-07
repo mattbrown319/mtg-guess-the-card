@@ -152,7 +152,61 @@ export type AtomicQuery =
   | { kind: "activated_ability" }
   | { kind: "etb_ability" }
   | { kind: "has_mana_ability" }
-  | { kind: "has_non_mana_ability" };
+  | { kind: "has_non_mana_ability" }
+  | { kind: "static_ability" }
+  | { kind: "replacement_effect" }
+  | { kind: "prevention_effect" }
+  | { kind: "leaves_battlefield_trigger" }
+  | { kind: "dies_trigger" }
+  | { kind: "attack_trigger" }
+  | { kind: "block_trigger" }
+  | { kind: "upkeep_trigger" }
+  | { kind: "combat_damage_trigger" }
+  | { kind: "has_additional_cost" }
+  | { kind: "has_alternative_cost" }
+  | { kind: "has_kicker_or_optional_cost" }
+  | { kind: "mills_cards" }
+  | { kind: "surveils" }
+  | { kind: "scries" }
+  | { kind: "looks_at_top_of_library" }
+  | { kind: "shuffles_library" }
+  | { kind: "adds_mana" }
+  | { kind: "counters_spells" }
+  | { kind: "copies_spells" }
+  | { kind: "copies_permanents" }
+  | { kind: "taps_things" }
+  | { kind: "untaps_things" }
+  | { kind: "grants_abilities" }
+  | { kind: "grants_pt_bonus" }
+  | { kind: "grants_pt_penalty" }
+  | { kind: "uses_plus_one_counters" }
+  | { kind: "uses_minus_one_counters" }
+  | { kind: "fetches_land" }
+  | { kind: "fetches_basic_land" }
+  | { kind: "lets_play_extra_lands" }
+  | { kind: "pays_life" }
+  | { kind: "takes_extra_turn" }
+  | { kind: "prevents_damage" }
+  | { kind: "redirects_damage" }
+  | { kind: "animates_self" }
+  | { kind: "animates_other" }
+  | { kind: "restricts_actions" }
+  | { kind: "taxes_opponent" }
+  | { kind: "reduces_costs" }
+  | { kind: "flickers_or_blinks" }
+  | { kind: "cares_about_creatures" }
+  | { kind: "cares_about_artifacts" }
+  | { kind: "cares_about_enchantments" }
+  | { kind: "cares_about_lands" }
+  | { kind: "cares_about_cards_drawn" }
+  | { kind: "cares_about_discard" }
+  | { kind: "cares_about_life_gain_or_loss" }
+  | { kind: "cares_about_counters" }
+  | { kind: "cares_about_casting_spells" }
+  | { kind: "cares_about_death" }
+  | { kind: "cares_about_combat" }
+  | { kind: "cares_about_power_or_toughness" }
+  | { kind: "cares_about_tokens" };
 
 export type StructuredQuery =
   | { kind: "and"; clauses: StructuredQuery[] }

@@ -241,6 +241,310 @@ export function resolveDerivedQuery(
       return (s.actions.sacrificesOwnPermanent || s.actions.forcesOpponentSacrifice) ? "yes" : "no";
     }
 
+    // ==================== STATIC ABILITY ====================
+    case "static_ability": {
+      const s = card.semantics;
+      if (!s) return null;
+      return (s.structure.hasStaticAbility || s.structure.hasReplacementEffect ||
+              s.structure.hasPreventionEffect) ? "yes" : "no";
+    }
+
+    // ==================== GRANTS ABILITIES ====================
+    case "grants_abilities": {
+      const s = card.semantics;
+      if (!s) return null;
+      return (s.actions.grantsKeywords || s.actions.grantsEvasion ||
+              s.actions.grantsPTBonus || s.actions.grantsPTPenalty) ? "yes" : "no";
+    }
+
+    // ==================== STRUCTURE — specific trigger types ====================
+    case "replacement_effect": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasReplacementEffect ? "yes" : "no";
+    }
+    case "prevention_effect": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasPreventionEffect ? "yes" : "no";
+    }
+    case "leaves_battlefield_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasLeavesBattlefieldTrigger ? "yes" : "no";
+    }
+    case "dies_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasDiesTrigger ? "yes" : "no";
+    }
+    case "attack_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasAttackTrigger ? "yes" : "no";
+    }
+    case "block_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasBlockTrigger ? "yes" : "no";
+    }
+    case "upkeep_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasUpkeepTrigger ? "yes" : "no";
+    }
+    case "combat_damage_trigger": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasCombatDamageTrigger ? "yes" : "no";
+    }
+
+    // ==================== COSTS ====================
+    case "has_additional_cost": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasAdditionalCost ? "yes" : "no";
+    }
+    case "has_alternative_cost": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasAlternativeCost ? "yes" : "no";
+    }
+    case "has_kicker_or_optional_cost": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.structure.hasOptionalAdditionalCost ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — library manipulation ====================
+    case "mills_cards": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.millsCards ? "yes" : "no";
+    }
+    case "surveils": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.surveils ? "yes" : "no";
+    }
+    case "scries": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.scries ? "yes" : "no";
+    }
+    case "looks_at_top_of_library": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.looksAtTopOfLibrary ? "yes" : "no";
+    }
+    case "shuffles_library": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.shufflesLibrary ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — mana/spells ====================
+    case "adds_mana": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.addsMana ? "yes" : "no";
+    }
+    case "counters_spells": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.countersSpells ? "yes" : "no";
+    }
+    case "copies_spells": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.copiesSpells ? "yes" : "no";
+    }
+    case "copies_permanents": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.copiesPermanents ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — tap/untap ====================
+    case "taps_things": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.tapsThings ? "yes" : "no";
+    }
+    case "untaps_things": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.untapsThings ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — P/T modification ====================
+    case "grants_pt_bonus": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.grantsPTBonus ? "yes" : "no";
+    }
+    case "grants_pt_penalty": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.grantsPTPenalty ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — counters ====================
+    case "uses_plus_one_counters": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.usesPlusOneCounters ? "yes" : "no";
+    }
+    case "uses_minus_one_counters": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.usesMinusOneCounters ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — land ====================
+    case "fetches_land": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.fetchesLand ? "yes" : "no";
+    }
+    case "fetches_basic_land": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.fetchesBasicLand ? "yes" : "no";
+    }
+    case "lets_play_extra_lands": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.letsPlayExtraLands ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — life/turns ====================
+    case "pays_life": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.paysLife ? "yes" : "no";
+    }
+    case "takes_extra_turn": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.takesExtraTurn ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — damage prevention/redirect ====================
+    case "prevents_damage": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.preventsDamage ? "yes" : "no";
+    }
+    case "redirects_damage": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.redirectsDamage ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — animation ====================
+    case "animates_self": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.animatesSelf ? "yes" : "no";
+    }
+    case "animates_other": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.animatesOtherPermanent ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — restrictions/taxes ====================
+    case "restricts_actions": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.restrictsActions ? "yes" : "no";
+    }
+    case "taxes_opponent": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.taxesOpponent ? "yes" : "no";
+    }
+    case "reduces_costs": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.reducesCosts ? "yes" : "no";
+    }
+
+    // ==================== ACTIONS — flicker ====================
+    case "flickers_or_blinks": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.actions.flickersOrBlinks ? "yes" : "no";
+    }
+
+    // ==================== CONDITIONS — what the card cares about ====================
+    case "cares_about_creatures": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutCreatures ? "yes" : "no";
+    }
+    case "cares_about_artifacts": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutArtifacts ? "yes" : "no";
+    }
+    case "cares_about_enchantments": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutEnchantments ? "yes" : "no";
+    }
+    case "cares_about_lands": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutLands ? "yes" : "no";
+    }
+    case "cares_about_cards_drawn": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutCardsDrawn ? "yes" : "no";
+    }
+    case "cares_about_discard": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutDiscard ? "yes" : "no";
+    }
+    case "cares_about_life_gain_or_loss": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutLifeGainOrLoss ? "yes" : "no";
+    }
+    case "cares_about_counters": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutCounters ? "yes" : "no";
+    }
+    case "cares_about_casting_spells": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutCastingSpells ? "yes" : "no";
+    }
+    case "cares_about_death": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutDeath ? "yes" : "no";
+    }
+    case "cares_about_combat": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutCombat ? "yes" : "no";
+    }
+    case "cares_about_power_or_toughness": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutPowerOrToughness ? "yes" : "no";
+    }
+    case "cares_about_tokens": {
+      const s = card.semantics;
+      if (!s) return null;
+      return s.conditions.caresAboutTokens ? "yes" : "no";
+    }
+
     default:
       return null;
   }

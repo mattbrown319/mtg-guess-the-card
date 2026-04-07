@@ -58,38 +58,94 @@ Printing: {"kind":"printed_in_set","value":"Alpha"} — was it printed in a set 
 Name: {"kind":"name_equals","value":"Lightning Bolt"} — is it this card? (case insensitive, matches face names too)
   {"kind":"name_contains","value":"bolt"}          — does the name contain this text
 
-=== SEMANTIC DERIVED QUERIES (for "does it do X?" questions) ===
+=== SEMANTIC DERIVED QUERIES ===
 
-  {"kind":"draws_cards"}             — does it draw cards / does it let you draw
+Actions — what the card's effects DO:
+  {"kind":"draws_cards"}             — does it draw cards
   {"kind":"deals_damage"}            — does it deal damage
   {"kind":"gains_life"}              — does it gain life
-  {"kind":"causes_life_loss"}        — does it cause life loss / does opponent lose life
-  {"kind":"destroys_permanents"}     — does it destroy things / does it destroy creatures
+  {"kind":"causes_life_loss"}        — does it cause life loss
+  {"kind":"destroys_permanents"}     — does it destroy things
   {"kind":"exiles"}                  — does it exile things
   {"kind":"causes_discard"}          — does it make someone discard
-  {"kind":"searches_library"}        — does it search your library / does it tutor
-  {"kind":"interacts_with_graveyard"} — does it interact with the graveyard / does it involve the graveyard
-  {"kind":"sacrifice_effect"}        — does it involve sacrifice / does it sacrifice something
-  {"kind":"is_modal"}                — does it have modes / can you choose different effects / choose one
+  {"kind":"searches_library"}        — does it search/tutor
+  {"kind":"interacts_with_graveyard"} — does it interact with the graveyard
+  {"kind":"sacrifice_effect"}        — does it involve sacrifice
+  {"kind":"mills_cards"}             — does it mill cards
+  {"kind":"surveils"}                — does it surveil
+  {"kind":"scries"}                  — does it scry
+  {"kind":"looks_at_top_of_library"} — does it look at the top of the library
+  {"kind":"shuffles_library"}        — does it shuffle
+  {"kind":"adds_mana"}               — does it add/produce mana (from oracle text, not just land type)
+  {"kind":"counters_spells"}         — does it counter spells
+  {"kind":"copies_spells"}           — does it copy spells
+  {"kind":"copies_permanents"}       — does it copy/clone permanents
+  {"kind":"taps_things"}             — does it tap other things
+  {"kind":"untaps_things"}           — does it untap things
+  {"kind":"grants_abilities"}        — does it give abilities/keywords to other things
+  {"kind":"grants_pt_bonus"}         — does it give +X/+X or buff power/toughness
+  {"kind":"grants_pt_penalty"}       — does it give -X/-X or debuff power/toughness
+  {"kind":"uses_plus_one_counters"}  — does it use +1/+1 counters
+  {"kind":"uses_minus_one_counters"} — does it use -1/-1 counters
+  {"kind":"fetches_land"}            — does it fetch/search for lands
+  {"kind":"fetches_basic_land"}      — does it fetch basic lands specifically
+  {"kind":"lets_play_extra_lands"}   — does it let you play extra lands
+  {"kind":"pays_life"}               — does it require paying life
+  {"kind":"takes_extra_turn"}        — does it give extra turns
+  {"kind":"prevents_damage"}         — does it prevent damage
+  {"kind":"redirects_damage"}        — does it redirect damage
+  {"kind":"animates_self"}           — does it become a creature / animate itself
+  {"kind":"animates_other"}          — does it animate other permanents into creatures
+  {"kind":"restricts_actions"}       — does it prevent/restrict what players can do
+  {"kind":"taxes_opponent"}          — does it tax the opponent / make them pay extra
+  {"kind":"reduces_costs"}           — does it reduce costs / make spells cheaper
+  {"kind":"flickers_or_blinks"}      — does it flicker/blink (exile and return)
+  {"kind":"is_modal"}                — does it have modes / choose one/two
+
+Conditions — what the card CARES ABOUT or TRIGGERS ON:
+  {"kind":"cares_about_creatures"}       — does it care about creatures
+  {"kind":"cares_about_artifacts"}       — does it care about artifacts
+  {"kind":"cares_about_enchantments"}    — does it care about enchantments
+  {"kind":"cares_about_lands"}           — does it care about lands
+  {"kind":"cares_about_cards_drawn"}     — does it care about cards being drawn
+  {"kind":"cares_about_discard"}         — does it care about discarding
+  {"kind":"cares_about_life_gain_or_loss"} — does it care about life gain or loss
+  {"kind":"cares_about_counters"}        — does it care about counters
+  {"kind":"cares_about_casting_spells"}  — does it care about casting spells / spellcast triggers
+  {"kind":"cares_about_death"}           — does it care about things dying
+  {"kind":"cares_about_combat"}          — does it care about combat
+  {"kind":"cares_about_power_or_toughness"} — does it care about power or toughness
+  {"kind":"cares_about_tokens"}          — does it care about tokens
+
+Structure — ability types and trigger types:
+  {"kind":"is_permanent"}                — is it a permanent (not instant/sorcery)
+  {"kind":"creates_tokens"}              — does it create tokens
+  {"kind":"enters_tapped"}               — does it enter tapped
+  {"kind":"can_enter_untapped"}          — can it enter untapped
+  {"kind":"targets"}                     — does it target something
+  {"kind":"triggered_ability"}           — does it have a triggered ability
+  {"kind":"activated_ability"}           — does it have an activated ability
+  {"kind":"static_ability"}              — does it have a static ability
+  {"kind":"etb_ability"}                 — does it have an ETB trigger
+  {"kind":"leaves_battlefield_trigger"}  — does it trigger when leaving the battlefield
+  {"kind":"dies_trigger"}                — does it have a death trigger
+  {"kind":"attack_trigger"}              — does it trigger on attack
+  {"kind":"block_trigger"}               — does it trigger on block
+  {"kind":"upkeep_trigger"}              — does it trigger on upkeep
+  {"kind":"combat_damage_trigger"}       — does it trigger on combat damage
+  {"kind":"replacement_effect"}          — does it have a replacement effect
+  {"kind":"prevention_effect"}           — does it have a prevention effect
+  {"kind":"has_mana_ability"}            — does it have a mana ability
+  {"kind":"has_non_mana_ability"}        — does it have non-mana abilities
+  {"kind":"has_additional_cost"}         — does it have an additional cost
+  {"kind":"has_alternative_cost"}        — does it have an alternative cost (e.g. evoke, force of will)
+  {"kind":"has_kicker_or_optional_cost"} — does it have kicker or an optional additional cost
 
 Mana production:
   {"kind":"produces_mana"}                        — does it produce/tap for mana
   {"kind":"produces_mana_color","value":"U"}       — does it produce blue mana
   {"kind":"produces_any_color"}                   — does it produce any colored mana
   {"kind":"produces_multiple_colors"}             — does it produce 2+ colors of mana
-
-=== DERIVED QUERIES ===
-
-  {"kind":"is_permanent"}          — is it a permanent (not instant/sorcery)
-  {"kind":"creates_tokens"}        — does it create/make tokens
-  {"kind":"enters_tapped"}         — does it enter the battlefield tapped
-  {"kind":"can_enter_untapped"}    — can it enter untapped (conditionally or always)
-  {"kind":"targets"}               — does it target something
-  {"kind":"triggered_ability"}     — does it have a triggered ability (when/whenever/at the beginning)
-  {"kind":"activated_ability"}     — does it have an activated ability (cost: effect)
-  {"kind":"etb_ability"}           — does it have an enters-the-battlefield triggered ability
-  {"kind":"has_mana_ability"}      — does it have a mana ability (adds mana)
-  {"kind":"has_non_mana_ability"}  — does it have abilities besides mana abilities
 
 === COMPOUND QUERIES ===
 
