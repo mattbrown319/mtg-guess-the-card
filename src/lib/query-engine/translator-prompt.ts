@@ -101,6 +101,44 @@ Actions — what the card's effects DO:
   {"kind":"reduces_costs"}           — does it reduce costs / make spells cheaper
   {"kind":"flickers_or_blinks"}      — does it flicker/blink (exile and return)
   {"kind":"is_modal"}                — does it have modes / choose one/two
+  {"kind":"makes_monarch"}           — does it make you the monarch
+  {"kind":"creates_emblem"}          — does it create an emblem
+  {"kind":"phase_out"}               — does it phase things out
+  {"kind":"filters_mana"}            — does it filter mana
+  {"kind":"can_add_any_color"}       — can it add any color of mana
+  {"kind":"can_add_multiple_colors"} — can it add multiple colors of mana
+  {"kind":"adds_other_counters"}     — does it add counters other than +1/+1 or -1/-1
+
+Granular actions (use these when the player asks about a SPECIFIC type of destruction/exile/etc.):
+  {"kind":"destroys_creature"}       — does it destroy creatures specifically
+  {"kind":"destroys_artifact"}       — does it destroy artifacts specifically
+  {"kind":"destroys_enchantment"}    — does it destroy enchantments specifically
+  {"kind":"destroys_land"}           — does it destroy lands specifically
+  {"kind":"exiles_creature"}         — does it exile creatures
+  {"kind":"exiles_from_graveyard"}   — does it exile from graveyard
+  {"kind":"exiles_from_hand"}        — does it exile from hand
+  {"kind":"exiles_from_library"}     — does it exile from library
+  {"kind":"reanimates_self"}         — does it return itself from graveyard to battlefield
+  {"kind":"reanimates_other"}        — does it return other cards from graveyard to battlefield
+  {"kind":"returns_to_hand"}         — does it return things to hand
+  {"kind":"bounces_creature"}        — does it bounce creatures to hand
+  {"kind":"bounces_permanent"}       — does it bounce permanents to hand
+  {"kind":"sacrifices_own_permanent"} — does it sacrifice your own things
+  {"kind":"forces_opponent_sacrifice"} — does it force opponent to sacrifice
+  {"kind":"grants_keywords"}         — does it grant keyword abilities specifically
+  {"kind":"grants_evasion"}          — does it grant evasion (can't be blocked)
+  {"kind":"modifies_power"}          — does it modify power
+  {"kind":"modifies_toughness"}      — does it modify toughness
+
+Who is affected (use when player asks specifically about controller vs opponent):
+  {"kind":"draws_cards_for_controller"} — does it draw cards for you
+  {"kind":"draws_cards_for_opponent"}   — does it draw cards for your opponent
+  {"kind":"discards_for_controller"}    — does it make you discard
+  {"kind":"forces_opponent_discard"}    — does it make opponent discard
+  {"kind":"gains_life_for_controller"}  — does it gain life for you
+  {"kind":"gains_life_for_opponent"}    — does it gain life for opponent
+  {"kind":"causes_life_loss_for_controller"} — does it cause you to lose life
+  {"kind":"causes_life_loss_for_opponent"}   — does it cause opponent to lose life
 
 Conditions — what the card CARES ABOUT or TRIGGERS ON:
   {"kind":"cares_about_creatures"}       — does it care about creatures
@@ -116,6 +154,16 @@ Conditions — what the card CARES ABOUT or TRIGGERS ON:
   {"kind":"cares_about_combat"}          — does it care about combat
   {"kind":"cares_about_power_or_toughness"} — does it care about power or toughness
   {"kind":"cares_about_tokens"}          — does it care about tokens
+  {"kind":"cares_about_nonbasic_lands"}  — does it care about nonbasic lands
+  {"kind":"cares_about_instants_and_sorceries"} — does it care about instants/sorceries specifically
+  {"kind":"cares_about_enter_battlefield"} — does it care about things entering the battlefield
+  {"kind":"cares_about_leave_battlefield"} — does it care about things leaving the battlefield
+  {"kind":"cares_about_damage"}          — does it care about damage being dealt
+  {"kind":"cares_about_tapped_untapped"} — does it care about tapped/untapped state
+  {"kind":"cares_about_colors"}          — does it care about colors
+  {"kind":"cares_about_mana_spent"}      — does it care about mana spent
+  {"kind":"cares_about_equipment"}       — does it care about equipment
+  {"kind":"cares_about_auras"}           — does it care about auras
 
 Structure — ability types and trigger types:
   {"kind":"is_permanent"}                — is it a permanent (not instant/sorcery)
@@ -176,6 +224,7 @@ RULES:
 10. Use context from prior Q&A to disambiguate. "2 or less?" after CMC questions → cmc_compare. "red?" after color questions → color_contains.
 11. IMPORTANT: generic mana ({1},{2},{3}) and colorless mana ({C}) are DIFFERENT things.
 12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.
+14. "Can it [keyword]?" is the same as "does it have [keyword]?". "Can it cycle?" → keyword_contains cycling. "Can it fly?" → keyword_contains flying.
 13. CRITICAL — AND/OR compound queries vs unsupported:
     Only use AND/OR when combining INDEPENDENT properties of the card.
     Do NOT decompose questions that involve cause-effect, triggers, conditions, or one mechanic affecting another.

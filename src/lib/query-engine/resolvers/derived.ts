@@ -545,6 +545,72 @@ export function resolveDerivedQuery(
       return s.conditions.caresAboutTokens ? "yes" : "no";
     }
 
+    // ==================== GRANULAR DESTRUCTION ====================
+    case "destroys_creature": { const s = card.semantics; if (!s) return null; return s.actions.destroysCreature ? "yes" : "no"; }
+    case "destroys_artifact": { const s = card.semantics; if (!s) return null; return s.actions.destroysArtifact ? "yes" : "no"; }
+    case "destroys_enchantment": { const s = card.semantics; if (!s) return null; return s.actions.destroysEnchantment ? "yes" : "no"; }
+    case "destroys_land": { const s = card.semantics; if (!s) return null; return s.actions.destroysLand ? "yes" : "no"; }
+
+    // ==================== GRANULAR EXILE ====================
+    case "exiles_creature": { const s = card.semantics; if (!s) return null; return s.actions.exilesCreature ? "yes" : "no"; }
+    case "exiles_from_graveyard": { const s = card.semantics; if (!s) return null; return s.actions.exilesFromGraveyard ? "yes" : "no"; }
+    case "exiles_from_hand": { const s = card.semantics; if (!s) return null; return s.actions.exilesFromHand ? "yes" : "no"; }
+    case "exiles_from_library": { const s = card.semantics; if (!s) return null; return s.actions.exilesFromLibrary ? "yes" : "no"; }
+
+    // ==================== GRANULAR REANIMATE/BOUNCE ====================
+    case "reanimates_self": { const s = card.semantics; if (!s) return null; return s.actions.reanimatesSelf ? "yes" : "no"; }
+    case "reanimates_other": { const s = card.semantics; if (!s) return null; return s.actions.reanimatesOther ? "yes" : "no"; }
+    case "returns_to_hand": { const s = card.semantics; if (!s) return null; return s.actions.returnsToHand ? "yes" : "no"; }
+    case "bounces_creature": { const s = card.semantics; if (!s) return null; return s.actions.bouncesCreature ? "yes" : "no"; }
+    case "bounces_permanent": { const s = card.semantics; if (!s) return null; return s.actions.bouncesPermanent ? "yes" : "no"; }
+
+    // ==================== GRANULAR SACRIFICE ====================
+    case "sacrifices_own_permanent": { const s = card.semantics; if (!s) return null; return s.actions.sacrificesOwnPermanent ? "yes" : "no"; }
+    case "forces_opponent_sacrifice": { const s = card.semantics; if (!s) return null; return s.actions.forcesOpponentSacrifice ? "yes" : "no"; }
+
+    // ==================== GRANULAR DRAW/DISCARD BY WHO ====================
+    case "draws_cards_for_controller": { const s = card.semantics; if (!s) return null; return s.actions.drawsCardsForController ? "yes" : "no"; }
+    case "draws_cards_for_opponent": { const s = card.semantics; if (!s) return null; return s.actions.drawsCardsForOpponent ? "yes" : "no"; }
+    case "discards_for_controller": { const s = card.semantics; if (!s) return null; return s.actions.discardsForController ? "yes" : "no"; }
+    case "forces_opponent_discard": { const s = card.semantics; if (!s) return null; return s.actions.forcesOpponentDiscard ? "yes" : "no"; }
+
+    // ==================== GRANULAR LIFE BY WHO ====================
+    case "gains_life_for_controller": { const s = card.semantics; if (!s) return null; return s.actions.gainsLifeForController ? "yes" : "no"; }
+    case "gains_life_for_opponent": { const s = card.semantics; if (!s) return null; return s.actions.gainsLifeForOpponent ? "yes" : "no"; }
+    case "causes_life_loss_for_controller": { const s = card.semantics; if (!s) return null; return s.actions.causesLifeLossForController ? "yes" : "no"; }
+    case "causes_life_loss_for_opponent": { const s = card.semantics; if (!s) return null; return s.actions.causesLifeLossForOpponent ? "yes" : "no"; }
+
+    // ==================== GRANULAR GRANTS ====================
+    case "grants_keywords": { const s = card.semantics; if (!s) return null; return s.actions.grantsKeywords ? "yes" : "no"; }
+    case "grants_evasion": { const s = card.semantics; if (!s) return null; return s.actions.grantsEvasion ? "yes" : "no"; }
+
+    // ==================== P/T MODIFICATION ====================
+    case "modifies_power": { const s = card.semantics; if (!s) return null; return s.actions.modifiesPower ? "yes" : "no"; }
+    case "modifies_toughness": { const s = card.semantics; if (!s) return null; return s.actions.modifiesToughness ? "yes" : "no"; }
+
+    // ==================== COUNTERS/MANA ====================
+    case "adds_other_counters": { const s = card.semantics; if (!s) return null; return s.actions.addsOtherCounters ? "yes" : "no"; }
+    case "filters_mana": { const s = card.semantics; if (!s) return null; return s.actions.filtersMana ? "yes" : "no"; }
+    case "can_add_any_color": { const s = card.semantics; if (!s) return null; return s.actions.canAddAnyColor ? "yes" : "no"; }
+    case "can_add_multiple_colors": { const s = card.semantics; if (!s) return null; return s.actions.canAddMultipleColors ? "yes" : "no"; }
+
+    // ==================== SPECIAL ====================
+    case "makes_monarch": { const s = card.semantics; if (!s) return null; return s.actions.makesMonarch ? "yes" : "no"; }
+    case "creates_emblem": { const s = card.semantics; if (!s) return null; return s.actions.createsEmblem ? "yes" : "no"; }
+    case "phase_out": { const s = card.semantics; if (!s) return null; return s.actions.phaseOut ? "yes" : "no"; }
+
+    // ==================== REMAINING CONDITIONS ====================
+    case "cares_about_nonbasic_lands": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutNonbasicLands ? "yes" : "no"; }
+    case "cares_about_instants_and_sorceries": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutInstantsAndSorceries ? "yes" : "no"; }
+    case "cares_about_enter_battlefield": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutEnterBattlefield ? "yes" : "no"; }
+    case "cares_about_leave_battlefield": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutLeaveBattlefield ? "yes" : "no"; }
+    case "cares_about_damage": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutDamage ? "yes" : "no"; }
+    case "cares_about_tapped_untapped": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutTappedUntappedState ? "yes" : "no"; }
+    case "cares_about_colors": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutColors ? "yes" : "no"; }
+    case "cares_about_mana_spent": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutManaSpent ? "yes" : "no"; }
+    case "cares_about_equipment": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutEquipment ? "yes" : "no"; }
+    case "cares_about_auras": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutAuras ? "yes" : "no"; }
+
     default:
       return null;
   }

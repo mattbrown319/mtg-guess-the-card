@@ -51,6 +51,27 @@ const DERIVED_KINDS = new Set([
   "cares_about_life_gain_or_loss", "cares_about_counters",
   "cares_about_casting_spells", "cares_about_death",
   "cares_about_combat", "cares_about_power_or_toughness", "cares_about_tokens",
+  // Granular action queries
+  "destroys_creature", "destroys_artifact", "destroys_enchantment", "destroys_land",
+  "exiles_creature", "exiles_from_graveyard", "exiles_from_hand", "exiles_from_library",
+  "reanimates_self", "reanimates_other",
+  "returns_to_hand", "bounces_creature", "bounces_permanent",
+  "sacrifices_own_permanent", "forces_opponent_sacrifice",
+  "draws_cards_for_controller", "draws_cards_for_opponent",
+  "discards_for_controller", "forces_opponent_discard",
+  "gains_life_for_controller", "gains_life_for_opponent",
+  "causes_life_loss_for_controller", "causes_life_loss_for_opponent",
+  "grants_keywords", "grants_evasion",
+  "modifies_power", "modifies_toughness",
+  "adds_other_counters", "filters_mana",
+  "can_add_any_color", "can_add_multiple_colors",
+  "makes_monarch", "creates_emblem", "phase_out",
+  // Remaining conditions
+  "cares_about_nonbasic_lands", "cares_about_instants_and_sorceries",
+  "cares_about_enter_battlefield", "cares_about_leave_battlefield",
+  "cares_about_damage", "cares_about_tapped_untapped",
+  "cares_about_colors", "cares_about_mana_spent",
+  "cares_about_equipment", "cares_about_auras",
 ]);
 
 export function resolveAtomicQuery(

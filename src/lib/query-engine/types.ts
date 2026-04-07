@@ -206,7 +206,53 @@ export type AtomicQuery =
   | { kind: "cares_about_death" }
   | { kind: "cares_about_combat" }
   | { kind: "cares_about_power_or_toughness" }
-  | { kind: "cares_about_tokens" };
+  | { kind: "cares_about_tokens" }
+  // Granular action queries (break out from grouped kinds)
+  | { kind: "destroys_creature" }
+  | { kind: "destroys_artifact" }
+  | { kind: "destroys_enchantment" }
+  | { kind: "destroys_land" }
+  | { kind: "exiles_creature" }
+  | { kind: "exiles_from_graveyard" }
+  | { kind: "exiles_from_hand" }
+  | { kind: "exiles_from_library" }
+  | { kind: "reanimates_self" }
+  | { kind: "reanimates_other" }
+  | { kind: "returns_to_hand" }
+  | { kind: "bounces_creature" }
+  | { kind: "bounces_permanent" }
+  | { kind: "sacrifices_own_permanent" }
+  | { kind: "forces_opponent_sacrifice" }
+  | { kind: "draws_cards_for_controller" }
+  | { kind: "draws_cards_for_opponent" }
+  | { kind: "discards_for_controller" }
+  | { kind: "forces_opponent_discard" }
+  | { kind: "gains_life_for_controller" }
+  | { kind: "gains_life_for_opponent" }
+  | { kind: "causes_life_loss_for_controller" }
+  | { kind: "causes_life_loss_for_opponent" }
+  | { kind: "grants_keywords" }
+  | { kind: "grants_evasion" }
+  | { kind: "modifies_power" }
+  | { kind: "modifies_toughness" }
+  | { kind: "adds_other_counters" }
+  | { kind: "filters_mana" }
+  | { kind: "can_add_any_color" }
+  | { kind: "can_add_multiple_colors" }
+  | { kind: "makes_monarch" }
+  | { kind: "creates_emblem" }
+  | { kind: "phase_out" }
+  // Conditions not yet wired
+  | { kind: "cares_about_nonbasic_lands" }
+  | { kind: "cares_about_instants_and_sorceries" }
+  | { kind: "cares_about_enter_battlefield" }
+  | { kind: "cares_about_leave_battlefield" }
+  | { kind: "cares_about_damage" }
+  | { kind: "cares_about_tapped_untapped" }
+  | { kind: "cares_about_colors" }
+  | { kind: "cares_about_mana_spent" }
+  | { kind: "cares_about_equipment" }
+  | { kind: "cares_about_auras" };
 
 export type StructuredQuery =
   | { kind: "and"; clauses: StructuredQuery[] }
