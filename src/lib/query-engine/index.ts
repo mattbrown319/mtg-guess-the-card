@@ -3,6 +3,7 @@ import { evaluate } from "./evaluator";
 import { validateEnvelope } from "./validator";
 import { translateQuestion } from "./translator";
 import { askSonnet } from "./sonnet-fallback";
+import { logLlmCost } from "@/lib/llm-cost-logger";
 
 interface QuestionContext {
   question: string;
@@ -100,6 +101,18 @@ export async function processQuestion(
   const translation = await translateQuestion(question, context);
   const tTranslate = Date.now();
 
+  // Log translator cost
+  if (translation.inputTokens > 0) {
+    logLlmCost({
+      sessionId: sessionId || null,
+      callType: "translator",
+      model: "haiku",
+      inputTokens: translation.inputTokens,
+      outputTokens: translation.outputTokens,
+      latencyMs: translation.latencyMs,
+    });
+  }
+
   if (!translation.envelope) {
     const totalMs = Date.now() - t0;
     console.log(`[QE] Translation failed: ${translation.parseError} (${totalMs}ms)`);
@@ -128,6 +141,7 @@ export async function processQuestion(
       console.log(`[QE] Validation near-miss: ${validation.errors.join("; ")} — falling back to Sonnet`);
       const sonnetResult = await askSonnet(card, question);
       const totalMs = Date.now() - t0;
+      logLlmCost({ sessionId: sessionId || null, callType: "sonnet_fallback_near_miss", model: "sonnet", inputTokens: sonnetResult.inputTokens, outputTokens: sonnetResult.outputTokens, latencyMs: sonnetResult.latencyMs });
 
       console.log(`[QE] Sonnet fallback (near-miss): "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms)`);
 
@@ -217,6 +231,7 @@ export async function processQuestion(
     console.log(`[QE] Unsupported query — falling back to Sonnet`);
     const sonnetResult = await askSonnet(card, question);
     const totalMs = Date.now() - t0;
+    logLlmCost({ sessionId: sessionId || null, callType: "sonnet_fallback_unsupported", model: "sonnet", inputTokens: sonnetResult.inputTokens, outputTokens: sonnetResult.outputTokens, latencyMs: sonnetResult.latencyMs });
 
     console.log(`[QE] Sonnet fallback: "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms, ${sonnetResult.inputTokens}+${sonnetResult.outputTokens} tokens)`);
 
@@ -266,6 +281,7 @@ export async function processQuestion(
     console.log(`[QE] Evaluator null for kind=${translation.envelope.query.kind} — falling back to Sonnet`);
     const sonnetResult = await askSonnet(card, question);
     const totalMs = Date.now() - t0;
+    logLlmCost({ sessionId: sessionId || null, callType: "sonnet_fallback_null_eval", model: "sonnet", inputTokens: sonnetResult.inputTokens, outputTokens: sonnetResult.outputTokens, latencyMs: sonnetResult.latencyMs });
 
     console.log(`[QE] Sonnet fallback: "${question}" → ${sonnetResult.outcome} (${sonnetResult.latencyMs}ms, ${sonnetResult.inputTokens}+${sonnetResult.outputTokens} tokens)`);
 

@@ -9,6 +9,8 @@ export interface TranslationResult {
   rawOutput: string;
   parseError?: string;
   latencyMs: number;
+  inputTokens: number;
+  outputTokens: number;
 }
 
 export async function translateQuestion(
@@ -37,6 +39,8 @@ export async function translateQuestion(
     const textBlock = response.content.find((block) => block.type === "text");
     const rawOutput = textBlock?.text || "";
     const latencyMs = Date.now() - t0;
+    const inputTokens = response.usage.input_tokens;
+    const outputTokens = response.usage.output_tokens;
 
     // Try to parse JSON from the response
     // The model might wrap it in markdown code blocks
@@ -60,13 +64,15 @@ export async function translateQuestion(
       }
       parsed.meta.translatorModel = "haiku";
 
-      return { envelope: parsed, rawOutput, latencyMs };
+      return { envelope: parsed, rawOutput, latencyMs, inputTokens, outputTokens };
     } catch (e) {
       return {
         envelope: null,
         rawOutput,
         parseError: `JSON parse error: ${e instanceof Error ? e.message : String(e)}`,
         latencyMs,
+        inputTokens,
+        outputTokens,
       };
     }
   } catch (e) {
@@ -75,6 +81,8 @@ export async function translateQuestion(
       rawOutput: "",
       parseError: `API error: ${e instanceof Error ? e.message : String(e)}`,
       latencyMs: Date.now() - t0,
+      inputTokens: 0,
+      outputTokens: 0,
     };
   }
 }

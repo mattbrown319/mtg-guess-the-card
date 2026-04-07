@@ -1,7 +1,14 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { Card } from "@/types";
+import { logLlmCost } from "@/lib/llm-cost-logger";
 
 const client = new Anthropic();
+
+// Session ID for cost tracking — set before calling hint/summary functions
+let _currentSessionId: string | null = null;
+export function setSessionForCostTracking(sessionId: string | null) {
+  _currentSessionId = sessionId;
+}
 
 export function cardToContext(card: Card): string {
   const parts: string[] = [
@@ -122,6 +129,7 @@ export async function getHint(
     .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
     .join("\n");
 
+  const t0 = Date.now();
   const response = await client.messages.create({
     model: "claude-haiku-4-5-20251001",
     max_tokens: 100,
@@ -145,6 +153,7 @@ Conversation so far:\n${qaHistory || "No questions asked yet."}`,
     ],
   });
 
+  logLlmCost({ sessionId: _currentSessionId, callType: "hint", model: "haiku", inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens, latencyMs: Date.now() - t0 });
   const textBlock = response.content.find((block) => block.type === "text");
   return textBlock ? textBlock.text : "Try asking about the card's color or type!";
 }
@@ -156,6 +165,7 @@ export async function generateSummary(
     .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
     .join("\n");
 
+  const t0 = Date.now();
   const response = await client.messages.create({
     model: "claude-haiku-4-5-20251001",
     max_tokens: 300,
@@ -179,6 +189,7 @@ ${qaHistory}`,
     ],
   });
 
+  logLlmCost({ sessionId: _currentSessionId, callType: "summary", model: "haiku", inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens, latencyMs: Date.now() - t0 });
   const textBlock = response.content.find((block) => block.type === "text");
   return textBlock ? textBlock.text : "Could not generate summary.";
 }
@@ -190,6 +201,7 @@ export async function generateShareSummary(
     .map((qa) => `Q: ${qa.question}\nA: ${qa.answer}`)
     .join("\n");
 
+  const t0 = Date.now();
   const response = await client.messages.create({
     model: "claude-haiku-4-5-20251001",
     max_tokens: 100,
@@ -208,6 +220,7 @@ ${qaHistory}`,
     ],
   });
 
+  logLlmCost({ sessionId: _currentSessionId, callType: "share_summary", model: "haiku", inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens, latencyMs: Date.now() - t0 });
   const textBlock = response.content.find((block) => block.type === "text");
   return textBlock ? textBlock.text : "";
 }

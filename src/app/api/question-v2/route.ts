@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Set session for cost tracking in claude.ts functions
+  const { setSessionForCostTracking } = await import("@/lib/claude");
+  setSessionForCostTracking(sessionId);
+
   // Pass through hint/summary requests to the old LLM system
   if (requestSummary) {
     const { generateSummary } = await import("@/lib/claude");
