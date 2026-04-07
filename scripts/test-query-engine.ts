@@ -135,5 +135,60 @@ test("Goblin Masons", { kind: "subtype_contains", value: "goblin" }, "yes", "is 
 test("Goblin Masons", { kind: "targets" }, "yes", "targets (target Wall)");
 test("Goblin Masons", { kind: "triggered_ability" }, "yes", "has triggered ability (when dies)");
 
+// === LAYER 2b — SEMANTIC RESOLVERS ===
+console.log("\n--- Layer 2b: Original semantic query kinds ---");
+
+test("Lightning Bolt", { kind: "deals_damage" }, "yes", "deals damage");
+test("Lightning Bolt", { kind: "draws_cards" }, "no", "doesn't draw cards");
+test("Lightning Bolt", { kind: "counters_spells" }, "no", "doesn't counter spells");
+test("Ancestral Recall", { kind: "draws_cards" }, "yes", "draws cards");
+test("Ancestral Recall", { kind: "deals_damage" }, "no", "doesn't deal damage");
+test("Animate Dead", { kind: "interacts_with_graveyard" }, "yes", "interacts with graveyard");
+test("Arcbound Ravager", { kind: "sacrifice_effect" }, "yes", "involves sacrifice");
+test("Arcbound Ravager", { kind: "uses_plus_one_counters" }, "yes", "uses +1/+1 counters");
+test("Arcbound Ravager", { kind: "dies_trigger" }, "yes", "has death trigger");
+test("Austere Command", { kind: "destroys_permanents" }, "yes", "destroys permanents");
+test("Austere Command", { kind: "exiles" }, "no", "doesn't exile");
+test("Ancient Tomb", { kind: "causes_life_loss" }, "yes", "causes life loss");
+test("Ancient Tomb", { kind: "gains_life" }, "no", "doesn't gain life");
+test("Grief", { kind: "causes_discard" }, "yes", "causes discard");
+test("Green Sun's Zenith", { kind: "searches_library" }, "yes", "searches library");
+test("Banishing Light", { kind: "exiles" }, "yes", "exiles");
+
+console.log("\n--- Layer 2b: Structure/trigger query kinds ---");
+
+test("Containment Priest", { kind: "static_ability" }, "yes", "has static ability");
+test("Containment Priest", { kind: "replacement_effect" }, "yes", "has replacement effect");
+test("Lightning Bolt", { kind: "static_ability" }, "no", "no static ability");
+test("Counterspell", { kind: "counters_spells" }, "yes", "counters spells");
+test("Rhystic Study", { kind: "taxes_opponent" }, "yes", "taxes opponent");
+test("Rhystic Study", { kind: "cares_about_casting_spells" }, "yes", "cares about casting spells");
+test("Arid Mesa", { kind: "fetches_land" }, "yes", "fetches land");
+test("Arid Mesa", { kind: "shuffles_library" }, "yes", "shuffles library");
+test("Thassa, God of the Sea", { kind: "scries" }, "yes", "scries");
+test("Yorion, Sky Nomad", { kind: "flickers_or_blinks" }, "yes", "flickers");
+test("Baral, Chief of Compliance", { kind: "reduces_costs" }, "yes", "reduces costs");
+test("Young Pyromancer", { kind: "cares_about_casting_spells" }, "yes", "cares about spells");
+test("Zulaport Cutthroat", { kind: "cares_about_death" }, "yes", "cares about death");
+test("Zulaport Cutthroat", { kind: "causes_life_loss" }, "yes", "causes life loss");
+
+console.log("\n--- Layer 2b: Granular action query kinds ---");
+
+test("Abrupt Decay", { kind: "destroys_creature" }, "yes", "destroys creatures");
+test("Abrupt Decay", { kind: "destroys_land" }, "no", "doesn't destroy lands");
+test("Venser, Shaper Savant", { kind: "bounces_permanent" }, "yes", "bounces permanents");
+test("Lightning Bolt", { kind: "bounces_permanent" }, "no", "doesn't bounce");
+test("Animate Dead", { kind: "reanimates_other" }, "yes", "reanimates other cards");
+test("Animate Dead", { kind: "reanimates_self" }, "no", "doesn't reanimate itself");
+test("Arcbound Ravager", { kind: "sacrifices_own_permanent" }, "yes", "sacrifices own permanents");
+test("Arcbound Ravager", { kind: "forces_opponent_sacrifice" }, "no", "doesn't force opponent sacrifice");
+test("Ancestral Recall", { kind: "draws_cards_for_controller" }, "yes", "draws for controller");
+test("Ancestral Recall", { kind: "draws_cards_for_opponent" }, "yes", "draws for opponent (target player)");
+
+console.log("\n--- Layer 2b: Remaining condition query kinds ---");
+
+test("Young Pyromancer", { kind: "cares_about_instants_and_sorceries" }, "yes", "cares about instants/sorceries");
+test("Back to Basics", { kind: "cares_about_nonbasic_lands" }, "yes", "cares about nonbasic lands");
+
 console.log(`\n=== RESULTS: ${total - failures}/${total} passed, ${failures} failed ===`);
 if (failures > 0) process.exit(1);
