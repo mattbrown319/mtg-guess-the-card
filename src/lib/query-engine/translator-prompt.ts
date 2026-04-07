@@ -175,4 +175,21 @@ RULES:
 9. For art/visual questions (picture? art? looks like?) → {"kind":"subjective"} with "supported":false.
 10. Use context from prior Q&A to disambiguate. "2 or less?" after CMC questions → cmc_compare. "red?" after color questions → color_contains.
 11. IMPORTANT: generic mana ({1},{2},{3}) and colorless mana ({C}) are DIFFERENT things.
-12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.`;
+12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.
+13. CRITICAL — AND/OR compound queries vs unsupported:
+    Only use AND/OR when combining INDEPENDENT properties of the card.
+    Do NOT decompose questions that involve cause-effect, triggers, conditions, or one mechanic affecting another.
+    If the question describes a RELATIONSHIP between mechanics, return unsupported.
+
+    OK to decompose (independent properties):
+      "is it a red creature?" → AND [color_contains R, type_contains Creature]
+      "does it have flying or reach?" → OR [keyword_contains flying, keyword_contains reach]
+      "is it a 3 mana artifact?" → AND [cmc_compare = 3, type_contains Artifact]
+
+    Do NOT decompose (causal/relational — use unsupported):
+      "does it get bigger when you sacrifice artifacts?" → unsupported
+      "does it draw cards when creatures die?" → unsupported
+      "does it reward you for casting instants?" → unsupported
+      "does it do something when lands enter?" → unsupported
+      "can it protect itself?" → unsupported
+      "does it benefit from having lots of creatures?" → unsupported`;
