@@ -8,6 +8,7 @@ export default function TestV2() {
   const [log, setLog] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [cardName, setCardName] = useState("???");
+  const [engineVersion, setEngineVersion] = useState("");
 
   async function startGame() {
     setLoading(true);
@@ -42,6 +43,8 @@ export default function TestV2() {
       });
       const data = await res.json();
 
+      if (data.engineVersion && !engineVersion) setEngineVersion(data.engineVersion);
+
       if (data.error) {
         setLog(prev => [...prev, `Q: "${q}" → ERROR: ${data.error}`]);
       } else if (data.notCounted) {
@@ -65,6 +68,7 @@ export default function TestV2() {
       <p className="text-sm text-[var(--text-secondary)] mb-4">
         This page uses /api/question-v2 (structured query engine) instead of /api/question (direct LLM).
         <br />Card: <strong>{cardName}</strong>
+        {engineVersion && <> | Engine: <strong>v{engineVersion}</strong></>}
       </p>
 
       {!sessionId ? (
