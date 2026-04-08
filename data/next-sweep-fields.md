@@ -14,6 +14,17 @@ Add them to the schema and classification prompt before the next run.
 - `protectsSelf: boolean` — can it protect itself? (hexproof, indestructible, regenerate, ward on itself, phase out, etc.)
 - `protectsOthers: boolean` — can it protect other things? (grants hexproof/indestructible, gives protection, etc.)
 
+## High Priority — Activation Cost Properties (from Priest of Forgotten Gods game)
+
+- `requiresTapToActivate: boolean` — does the activated ability require tapping as part of its cost? ({T} in cost)
+- `requiresManaToActivate: boolean` — does the activated ability require spending mana?
+- `sacrificesOtherPermanent: boolean` — does it specifically sacrifice OTHER permanents (not itself)? Distinct from `sacrificesSelf`.
+- `numberOfCreaturesToSacrifice: number | null` — how many creatures need to be sacrificed? (Priest = 2)
+
+## High Priority — Fetchland / Land Search Fixes
+
+- `fetchesBasicLand` — EXISTING FIELD, needs reclassification. Sonnet said `false` for Scalding Tarn because oracle says "Island or Mountain card" not "basic land". But Island/Mountain ARE basic land types. All 10 fetchlands likely wrong. Fix classification prompt to clarify that searching for a card by basic land type name (Plains, Island, Swamp, Mountain, Forest) counts as fetching a basic land.
+- `fetchedLandTypes: string[]` — NEW FIELD. Which specific land types does it search for? e.g. Scalding Tarn → `["Island", "Mountain"]`, Verdant Catacombs → `["Swamp", "Forest"]`. Enables answering "does it fetch mountains?" deterministically.
 ## Medium Priority (competitive/metagame data from external sources)
 
 - `appearedInProTourTop8: boolean` — has this card appeared in a Pro Tour / Mythic Championship top 8 deck? (requires MTGTop8/Melee data)

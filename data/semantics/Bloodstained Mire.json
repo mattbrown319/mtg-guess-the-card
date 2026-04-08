@@ -82,7 +82,7 @@
     "sacrificesOwnPermanent": true,
     "forcesOpponentSacrifice": false,
     "fetchesLand": true,
-    "fetchesBasicLand": false,
+    "fetchesBasicLand": true,
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
