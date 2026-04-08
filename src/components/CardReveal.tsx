@@ -38,16 +38,25 @@ interface CardRevealProps {
   timeLimitSeconds?: number;
 }
 
+function formatTime(seconds: number): string {
+  if (seconds < 60) return `${seconds}s`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return s > 0 ? `${m}m ${s}s` : `${m}m`;
+}
+
 function buildShareText(
   questions: QuestionAnswer[],
   correct: boolean,
   gaveUp: boolean | undefined,
   questionsAsked: number,
   usedHint: boolean,
-  challengeUrl?: string
+  challengeUrl?: string,
+  elapsedSeconds?: number
 ): string {
+  const timeStr = elapsedSeconds ? ` in ${formatTime(elapsedSeconds)}` : "";
   const result = correct
-    ? `Got it in ${questionsAsked} Qs! ✅`
+    ? `Got it in ${questionsAsked} Qs${timeStr}! ✅`
     : gaveUp
       ? `Gave up after ${questionsAsked} Qs ❌`
       : `Missed it after ${questionsAsked} Qs ❌`;
@@ -175,7 +184,8 @@ export default function CardReveal({
         gaveUp,
         questionsAsked,
         !!usedHint,
-        challengeUrl
+        challengeUrl,
+        elapsedSeconds
       );
 
       // Always show the text, and try to copy automatically
@@ -250,13 +260,13 @@ export default function CardReveal({
       {/* Share text area (appears after clicking Challenge) */}
       {shareText && (
         <div className="w-full max-w-sm space-y-2">
-          <textarea
-            readOnly
-            value={shareText}
-            onClick={(e) => (e.target as HTMLTextAreaElement).select()}
-            className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-xs text-[var(--text-primary)] font-mono resize-none"
-            rows={4}
-          />
+          <div className="w-full bg-[var(--bg-secondary)] border border-[var(--border)] rounded-lg p-3 text-xs font-mono space-y-1">
+            {shareText.split("\n").map((line, i) => (
+              <div key={i} className={line.startsWith("http") || line.includes("play/") ? "text-[var(--accent)] select-all" : "text-[var(--text-primary)]"}>
+                {line}
+              </div>
+            ))}
+          </div>
           <button
             onClick={async () => {
               try {
@@ -264,8 +274,7 @@ export default function CardReveal({
                 setShareState("copied");
                 setTimeout(() => setShareState("shown"), 3000);
               } catch {
-                const textarea = document.querySelector("textarea");
-                textarea?.select();
+                // Fallback — do nothing, user can manually copy
               }
             }}
             className="w-full bg-[var(--accent)] hover:bg-[var(--accent-hover)] text-white font-medium py-2 rounded-lg transition-colors cursor-pointer text-sm"
