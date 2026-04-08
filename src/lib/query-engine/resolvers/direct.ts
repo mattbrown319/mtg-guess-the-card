@@ -89,7 +89,12 @@ export function resolveDirectQuery(
     // ==================== MANA COST ====================
     case "mana_cost_equals": {
       if (!card.manaCost) return "no";
-      return card.manaCost.toLowerCase() === query.value.toLowerCase() ? "yes" : "no";
+      // Compare as sorted symbol sets — {W}{U}{R} and {U}{R}{W} are the same cost
+      const normalizeManaCost = (cost: string) => {
+        const symbols = cost.match(/\{[^}]+\}/g) || [];
+        return symbols.map(s => s.toLowerCase()).sort().join("");
+      };
+      return normalizeManaCost(card.manaCost) === normalizeManaCost(query.value) ? "yes" : "no";
     }
 
     case "mana_cost_contains_symbol": {
