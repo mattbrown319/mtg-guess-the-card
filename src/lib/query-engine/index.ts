@@ -4,10 +4,30 @@ import { validateEnvelope } from "./validator";
 import { translateQuestion } from "./translator";
 import { askSonnet } from "./sonnet-fallback";
 import { logLlmCost } from "@/lib/llm-cost-logger";
+import { buildNameGuessIndex, checkNameGuessV2, type NameGuessMatch } from "./name-guess-index";
 
 interface QuestionContext {
   question: string;
   answer: string;
+}
+
+// Lazy-loaded name guess index
+let nameGuessIndex: Map<string, { cardName: string; tier: "winning" | "entity" }> | null = null;
+
+async function getNameGuessIndex() {
+  if (nameGuessIndex) return nameGuessIndex;
+  try {
+    const { getDb } = await import("@/lib/db");
+    const db = await getDb();
+    const result = await db.execute("SELECT name FROM cards WHERE is_iconic = 1");
+    const names = result.rows.map(r => r.name as string);
+    nameGuessIndex = buildNameGuessIndex(names);
+    console.log(`[QE] Name guess index built: ${nameGuessIndex.size} aliases from ${names.length} cards`);
+  } catch (e) {
+    console.error("[QE] Failed to build name guess index:", e);
+    nameGuessIndex = new Map();
+  }
+  return nameGuessIndex;
 }
 
 export interface QueryLogEntry {
@@ -80,21 +100,46 @@ export async function processQuestion(
 ): Promise<EngineResult> {
   const t0 = Date.now();
 
-  // Step 1: Check for direct name guess (deterministic, no LLM needed)
-  const nameGuessResult = checkNameGuess(card, question);
-  if (nameGuessResult) {
+  // Step 1: Check for name guess using two-tier alias system
+  const index = await getNameGuessIndex();
+  const nameMatch = checkNameGuessV2(card.name, question, index);
+
+  if (nameMatch.outcome === "correct_guess") {
     const totalMs = Date.now() - t0;
-    console.log(`[QE] Name guess: "${question}" → ${nameGuessResult.outcome} (${totalMs}ms)`);
+    console.log(`[QE] Name guess (winning): "${question}" → matched "${nameMatch.matchedAlias}" (${totalMs}ms)`);
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
-        translatedQuery: null, queryKind: "name_equals_local",
-        validationErrors: null, outcome: nameGuessResult.outcome,
-        reasonCode: nameGuessResult.reasonCode || null,
+        translatedQuery: null, queryKind: "name_guess_winning",
+        validationErrors: null, outcome: "yes",
+        reasonCode: "CORRECT_GUESS",
         usedContext: false, translateLatencyMs: null, totalLatencyMs: totalMs,
       });
     }
-    return nameGuessResult;
+    return {
+      outcome: "yes",
+      playerMessage: "Yes.",
+      reasonCode: "CORRECT_GUESS",
+    };
+  }
+
+  if (nameMatch.outcome === "identified_but_incomplete") {
+    const totalMs = Date.now() - t0;
+    console.log(`[QE] Name guess (entity): "${question}" → matched "${nameMatch.matchedAlias}" but not specific enough (${totalMs}ms)`);
+    if (sessionId) {
+      persistLog({
+        sessionId, cardName: card.name, question,
+        translatedQuery: null, queryKind: "name_guess_entity",
+        validationErrors: null, outcome: "yes",
+        reasonCode: "IDENTIFIED_BUT_INCOMPLETE",
+        usedContext: false, translateLatencyMs: null, totalLatencyMs: totalMs,
+      });
+    }
+    return {
+      outcome: "yes",
+      playerMessage: "Yes.",
+      reasonCode: "IDENTIFIED_BUT_INCOMPLETE",
+    };
   }
 
   // Step 2: Translate via Haiku
@@ -356,34 +401,6 @@ export async function processQuestion(
   };
 }
 
-function checkNameGuess(card: NormalizedCard, question: string): EngineResult | null {
-  // Quick check: if the question is very short and looks like just a card name
-  const q = question.trim().toLowerCase();
-
-  // Strip common prefixes
-  let name = q;
-  for (const prefix of ["is it ", "is this ", "it's ", "its "]) {
-    if (name.startsWith(prefix)) {
-      name = name.slice(prefix.length);
-      break;
-    }
-  }
-  // Strip trailing ?
-  name = name.replace(/\?+$/, "").trim();
-
-  // Check if the remaining text matches any card name
-  if (card.allFaceNamesLower.some(n => n === name)) {
-    return {
-      outcome: "yes",
-      playerMessage: "Yes.",
-      reasonCode: "CORRECT_GUESS",
-    };
-  }
-
-  // Don't return "no" here — let the translator handle it,
-  // since the question might not actually be a name guess
-  return null;
-}
 
 export { normalizeCard } from "./normalize";
 export type { NormalizedCard, EngineResult, StructuredQueryEnvelope } from "./types";
