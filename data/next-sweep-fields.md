@@ -25,6 +25,14 @@ Add them to the schema and classification prompt before the next run.
 
 - `fetchesBasicLandOnly: boolean` — NEW FIELD, replaces current `fetchesBasicLand`. True only if the card explicitly says "basic land card" (Evolving Wilds, Fabled Passage, Prismatic Vista, Terramorphic Expanse). False for fetchlands that search by land type name (Scalding Tarn searches "Island or Mountain card" which can fetch nonbasics like Volcanic Island or Steam Vents). Current `fetchesBasicLand` is false for all 10 fetchlands which is correct — they CAN fetch basics but also nonbasics. "Does it fetch a basic?" for Scalding Tarn should be "Sometimes."
 - `fetchedLandTypes: string[]` — NEW FIELD. Which specific land types does it search for? e.g. Scalding Tarn → `["Island", "Mountain"]`, Verdant Catacombs → `["Swamp", "Forest"]`, Evolving Wilds → `["Plains", "Island", "Swamp", "Mountain", "Forest"]`. Enables answering "does it fetch mountains?" deterministically.
+## High Priority — Trigger Timing (from Underworld Breach game)
+
+- `hasBeginningOfCombatTrigger: boolean` — triggers "at the beginning of combat on your turn" (Legion Warboss, Rabble Rousing)
+- `hasEndStepTrigger: boolean` — triggers "at the beginning of the end step" or "at end of turn" (Underworld Breach, Wilderness Reclamation)
+- `hasDrawStepTrigger: boolean` — triggers "at the beginning of your draw step" (Mana Vault)
+- `hasEndOfCombatTrigger: boolean` — triggers "at end of combat" (Aurelia)
+- Note: we already have upkeep_trigger, attack_trigger, block_trigger, combat_damage_trigger, dies_trigger, etb_ability, leaves_battlefield_trigger. These new ones fill the remaining MTG trigger timing gaps.
+
 ## High Priority — Ability Details (from Sonnet fallback log review)
 
 - `numberOfActivatedAbilities: number` — how many activated abilities does the card have?
