@@ -23,8 +23,8 @@ Add them to the schema and classification prompt before the next run.
 
 ## High Priority — Fetchland / Land Search Fixes
 
-- `fetchesBasicLand` — EXISTING FIELD, needs reclassification. Sonnet said `false` for Scalding Tarn because oracle says "Island or Mountain card" not "basic land". But Island/Mountain ARE basic land types. All 10 fetchlands likely wrong. Fix classification prompt to clarify that searching for a card by basic land type name (Plains, Island, Swamp, Mountain, Forest) counts as fetching a basic land.
-- `fetchedLandTypes: string[]` — NEW FIELD. Which specific land types does it search for? e.g. Scalding Tarn → `["Island", "Mountain"]`, Verdant Catacombs → `["Swamp", "Forest"]`. Enables answering "does it fetch mountains?" deterministically.
+- `fetchesBasicLandOnly: boolean` — NEW FIELD, replaces current `fetchesBasicLand`. True only if the card explicitly says "basic land card" (Evolving Wilds, Fabled Passage, Prismatic Vista, Terramorphic Expanse). False for fetchlands that search by land type name (Scalding Tarn searches "Island or Mountain card" which can fetch nonbasics like Volcanic Island or Steam Vents). Current `fetchesBasicLand` is false for all 10 fetchlands which is correct — they CAN fetch basics but also nonbasics. "Does it fetch a basic?" for Scalding Tarn should be "Sometimes."
+- `fetchedLandTypes: string[]` — NEW FIELD. Which specific land types does it search for? e.g. Scalding Tarn → `["Island", "Mountain"]`, Verdant Catacombs → `["Swamp", "Forest"]`, Evolving Wilds → `["Plains", "Island", "Swamp", "Mountain", "Forest"]`. Enables answering "does it fetch mountains?" deterministically.
 ## Medium Priority (competitive/metagame data from external sources)
 
 - `appearedInProTourTop8: boolean` — has this card appeared in a Pro Tour / Mythic Championship top 8 deck? (requires MTGTop8/Melee data)
