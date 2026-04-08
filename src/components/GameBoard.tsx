@@ -51,6 +51,7 @@ export default function GameBoard({
   const [phase, setPhase] = useState<Phase>("asking");
   const [questions, setQuestions] = useState<QuestionAnswer[]>([]);
   const [questionLoading, setQuestionLoading] = useState(false);
+  const [thinkingMessage, setThinkingMessage] = useState("");
   const [guessLoading, setGuessLoading] = useState(false);
   const [reveal, setReveal] = useState<RevealData | null>(null);
   const [error, setError] = useState("");
@@ -108,14 +109,35 @@ export default function GameBoard({
 
   async function handleAsk(question: string) {
     setQuestionLoading(true);
+    setThinkingMessage("");
     setError("");
 
+    // Show escalating thinking messages
+    const thinkingTimer = setTimeout(() => setThinkingMessage("Hmm... that's a hard question..."), 5000);
+    const timeoutTimer = setTimeout(() => {
+      setThinkingMessage("");
+      setQuestionLoading(false);
+      setQuestions((prev) => [
+        ...prev,
+        { question, answer: "Wait, what was the question again? Try asking again." },
+      ]);
+    }, 20000);
+
     try {
+      const controller = new AbortController();
+      const fetchTimeout = setTimeout(() => controller.abort(), 19000);
+
       const res = await fetch("/api/question-v2", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ sessionId, question, elapsedSeconds: Math.round((Date.now() - startedAt) / 1000) }),
+        signal: controller.signal,
       });
+
+      clearTimeout(fetchTimeout);
+      clearTimeout(thinkingTimer);
+      clearTimeout(timeoutTimer);
+      setThinkingMessage("");
 
       const data = await res.json();
 
@@ -148,6 +170,13 @@ export default function GameBoard({
         transitionToGuessing();
       }
     } catch (err) {
+      clearTimeout(thinkingTimer);
+      clearTimeout(timeoutTimer);
+      setThinkingMessage("");
+      if (err instanceof DOMException && err.name === "AbortError") {
+        // Timeout already handled above
+        return;
+      }
       console.error("Question fetch error:", err);
       setError("Could not reach the server. Check your connection and try again.");
     } finally {
@@ -350,6 +379,12 @@ export default function GameBoard({
                 </div>
               </div>
             ))}
+
+            {thinkingMessage && (
+              <div className="text-sm text-[var(--text-secondary)] italic animate-pulse">
+                {thinkingMessage}
+              </div>
+            )}
 
             {hint && (
               <div className="pl-2 text-sm">
