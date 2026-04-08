@@ -5,6 +5,9 @@
 - [ ] **"does it search up a swamp?" → Yes for Scalding Tarn (WRONG)**. Translated to generic `searches_library`/`fetches_land` which lost specificity. Need a way to answer "does it fetch specifically [land type]?" — probably a parameterized `fetches_land_type` query kind that checks which specific types the card searches for. Requires new semantic field or oracle text parsing.
 - [ ] **"does it make blue mana?" → No for fetchlands (misleading)**. Scryfall `produced_mana: []` is technically correct (fetchlands don't produce mana themselves) but terrible for gameplay. Players think of Scalding Tarn as "makes blue and red mana." Need to decide: override produced_mana for fetchlands, or handle this in the Sonnet fallback, or add a "effectively produces" semantic field.
 
+## PRIORITY — Name Guessing Bug
+- [ ] **"Is it daretti?" → No for Daretti, Scrap Savant (WRONG)**. Engine does exact full-name matching only. Need two-tier alias system: Tier 1 (full name → win), Tier 2 (unique partial name like pre-comma legendary name → "Yes." but no win). Alias index should be computed at runtime from current card pool so it auto-adjusts when pool changes. See ChatGPT's design: uniqueness-checked aliases, no fuzzy/substring matching. 8 pre-comma collisions in current pool (Teferi x3, Nicol Bolas x3, Ugin/Thalia/Karn/Jace/Emrakul/Elspeth x2 each).
+
 ## Bugs / Fixes
 - [ ] Railway auto-deploy not working (manually running `railway up` each time)
 - [ ] Year shorthand ambiguity ("2024?" after "before 2020?" mistranslated as `>=` instead of `=`)
