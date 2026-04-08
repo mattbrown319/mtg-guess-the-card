@@ -264,7 +264,8 @@ export type StructuredQuery =
   | { kind: "not"; clause: StructuredQuery }
   | AtomicQuery
   | { kind: "unsupported" }
-  | { kind: "subjective" };
+  | { kind: "subjective" }
+  | { kind: "ambiguous" };
 
 // ============================================================
 // Query Envelope

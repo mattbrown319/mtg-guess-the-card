@@ -114,6 +114,7 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
 
     case "unsupported":
     case "subjective":
+    case "ambiguous":
       // Valid — will be handled downstream
       break;
 

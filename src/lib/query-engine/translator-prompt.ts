@@ -220,6 +220,7 @@ Mana production:
 
   {"kind":"unsupported"}           — question is factual but doesn't map to any query kind above. Set "supported":false.
   {"kind":"subjective"}            — question is subjective, opinion-based, or unanswerable from card data. Set "supported":false.
+  {"kind":"ambiguous"}             — question is too ambiguous to translate confidently. Set "supported":false.
 
 Use "unsupported" for factual questions about the card that just aren't covered by the query kinds above.
   Examples: "does it let you cast from graveyard?", "does it have an X ability?", "is it from Innistrad block?"
@@ -240,7 +241,7 @@ RULES:
 11. IMPORTANT: generic mana ({1},{2},{3}) and colorless mana ({C}) are DIFFERENT things.
 12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.
 14. "Can it [keyword]?" is the same as "does it have [keyword]?". "Can it cycle?" → keyword_contains cycling. "Can it fly?" → keyword_contains flying.
-15. IMPORTANT: A bare year like "2024?" or "2017?" is ambiguous — it could mean "before 2024?", "in 2024?", or "after 2024?". Return unsupported for bare year questions. The player needs to say "before 2024?", "in 2024?", or "printed in 2024?" for you to translate it. However, "before 2020?" is clear → printed_in_year_compare < 2020. "in 2013?" is clear → printed_in_year_compare = 2013.
+15. IMPORTANT: A bare year like "2024?" or "2017?" is ambiguous — it could mean "before 2024?", "in 2024?", or "after 2024?". Return ambiguous for bare year questions. The player needs to say "before 2024?", "in 2024?", or "printed in 2024?" for you to translate it. However, "before 2020?" is clear → printed_in_year_compare < 2020. "in 2013?" is clear → printed_in_year_compare = 2013.
 16. IMPORTANT: "abilities" and "keywords" are DIFFERENT things. Keywords are specific named mechanics (flying, trample, haste, etc.) tracked by keyword_contains/keyword_count_compare. "Abilities" includes keywords PLUS activated abilities, triggered abilities, static abilities, etc. Do NOT translate "does it have more than one ability?" as keyword_count_compare. Instead use unsupported — this is a complex question about ability count that the engine cannot answer directly.
 13. CRITICAL — AND/OR compound queries vs unsupported:
     Only use AND/OR when combining INDEPENDENT properties of the card.

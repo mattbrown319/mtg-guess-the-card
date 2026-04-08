@@ -250,23 +250,24 @@ export async function processQuestion(
     };
   }
 
-  // Step 4a: Subjective questions — refund without hitting Sonnet
-  if (translation.envelope.query.kind === "subjective") {
+  // Step 4a: Subjective or ambiguous questions — refund without hitting Sonnet
+  if (translation.envelope.query.kind === "subjective" || translation.envelope.query.kind === "ambiguous") {
+    const reasonCode = translation.envelope.query.kind === "subjective" ? "SUBJECTIVE_QUESTION" : "AMBIGUOUS_QUESTION";
     const totalMs = Date.now() - t0;
-    console.log(`[QE] Subjective question — refunding (${totalMs}ms)`);
+    console.log(`[QE] ${reasonCode} — refunding (${totalMs}ms)`);
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
-        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: "subjective",
+        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: translation.envelope.query.kind,
         validationErrors: null, outcome: "refund",
-        reasonCode: "SUBJECTIVE_QUESTION", usedContext: translation.envelope.meta?.usedContext || false,
+        reasonCode, usedContext: translation.envelope.meta?.usedContext || false,
         translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
       });
     }
     return {
       outcome: "refund",
       playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
-      reasonCode: "SUBJECTIVE_QUESTION",
+      reasonCode,
       translatedQuery: translation.envelope,
     };
   }

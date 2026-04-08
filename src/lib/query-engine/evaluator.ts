@@ -36,6 +36,7 @@ export function evaluate(
 
     case "unsupported":
     case "subjective":
+    case "ambiguous":
       return null;
 
     default:
