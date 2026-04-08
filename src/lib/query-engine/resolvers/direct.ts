@@ -73,13 +73,13 @@ export function resolveDirectQuery(
     case "guild_equals": {
       const target = GUILD_MAP[query.value.toLowerCase()];
       if (!target) return null;
-      return colorsMatch(card.colors, target) ? "yes" : "no";
+      return colorsMatch(card.colorIdentity, target) ? "yes" : "no";
     }
 
     case "shard_wedge_equals": {
       const target = SHARD_WEDGE_MAP[query.value.toLowerCase()];
       if (!target) return null;
-      return colorsMatch(card.colors, target) ? "yes" : "no";
+      return colorsMatch(card.colorIdentity, target) ? "yes" : "no";
     }
 
     // ==================== CMC ====================
