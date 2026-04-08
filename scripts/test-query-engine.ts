@@ -218,5 +218,56 @@ test("Abrupt Decay", { kind: "targets_kind", value: "creature" }, "yes", "target
 test("Essence Scatter", { kind: "targets_kind", value: "spell" }, "yes", "targets a spell");
 test("Essence Scatter", { kind: "targets_kind", value: "creature" }, "no", "does NOT target a creature (creature spell ≠ creature)");
 
+// === NAME GUESS SYSTEM ===
+console.log("\n--- Name guess: two-tier alias system ---");
+
+import { buildNameGuessIndex, checkNameGuessV2 } from "../src/lib/query-engine/name-guess-index";
+
+const allIconicNames = (() => {
+  const db = new Database(DB_PATH, { readonly: true });
+  const names = db.prepare("SELECT name FROM cards WHERE is_iconic = 1").all().map((r: Record<string, unknown>) => r.name as string);
+  db.close();
+  return names;
+})();
+const nameIndex = buildNameGuessIndex(allIconicNames);
+
+function testNameGuess(cardName: string, question: string, expected: string, description: string) {
+  const result = checkNameGuessV2(cardName, question, nameIndex);
+  const pass = result.outcome === expected;
+  const icon = pass ? "✅" : "❌";
+  console.log(`${icon} ${cardName}: ${description} → ${result.outcome} (expected ${expected})`);
+  if (!pass) failures++;
+  total++;
+}
+
+// Tier 1: exact full name → win
+testNameGuess("Daretti, Scrap Savant", "is it daretti, scrap savant?", "correct_guess", "exact full name wins");
+testNameGuess("Lightning Bolt", "is it lightning bolt?", "correct_guess", "simple name wins");
+testNameGuess("Delver of Secrets // Insectile Aberration", "is it delver of secrets?", "correct_guess", "DFC face name wins");
+testNameGuess("Delver of Secrets // Insectile Aberration", "is it insectile aberration?", "correct_guess", "DFC back face wins");
+
+// Tier 2: entity alias → yes but no win
+testNameGuess("Daretti, Scrap Savant", "is it daretti?", "identified_but_incomplete", "pre-comma name identifies but doesn't win");
+testNameGuess("Lurrus of the Dream-Den", "is it lurrus?", "identified_but_incomplete", "pre-comma identifies");
+testNameGuess("Yorion, Sky Nomad", "is it yorion?", "identified_but_incomplete", "pre-comma identifies");
+
+// Manual aliases
+testNameGuess("Dack Fayden", "is it dack?", "identified_but_incomplete", "manual alias identifies");
+testNameGuess("Garruk Wildspeaker", "is it garruk?", "identified_but_incomplete", "manual alias for non-comma legendary");
+testNameGuess("Hazoret the Fervent", "is it hazoret?", "identified_but_incomplete", "manual alias for non-comma legendary");
+
+// Ambiguous names → no match (falls through to translator)
+testNameGuess("Teferi, Time Raveler", "is it teferi?", "no_match", "ambiguous pre-comma (3 Teferis)");
+testNameGuess("Jace, the Mind Sculptor", "is it jace?", "no_match", "ambiguous pre-comma (2 Jaces)");
+testNameGuess("Karn, the Great Creator", "is it karn?", "no_match", "ambiguous (multiple Karns)");
+
+// Wrong guesses → no match
+testNameGuess("Daretti, Scrap Savant", "is it tibalt?", "no_match", "wrong name");
+testNameGuess("Lightning Bolt", "is it counterspell?", "no_match", "wrong name");
+
+// Generic words → no match
+testNameGuess("The Scarab God", "is it scarab?", "no_match", "generic word not aliased");
+testNameGuess("Lightning Bolt", "is it lightning?", "no_match", "partial non-legendary not aliased");
+
 console.log(`\n=== RESULTS: ${total - failures}/${total} passed, ${failures} failed ===`);
 if (failures > 0) process.exit(1);
