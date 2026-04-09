@@ -52,6 +52,15 @@ export default function Home() {
   const [prefetchedGame, setPrefetchedGame] = useState<Record<string, unknown> | null>(null);
   const [prefetchSettings, setPrefetchSettings] = useState("");
 
+  // Capture ref param for referral tracking
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get("ref");
+    if (ref && !document.cookie.includes("ref_source=")) {
+      document.cookie = `ref_source=${encodeURIComponent(ref)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    }
+  }, []);
+
   // Fetch leaderboard and prefetch first game on page load
   useEffect(() => {
     fetch("/api/leaderboard")
