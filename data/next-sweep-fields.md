@@ -26,6 +26,11 @@ Add them to the schema and classification prompt before the next run.
 - `fetchesBasicLandOnly: boolean` — NEW FIELD, replaces current `fetchesBasicLand`. True only if the card explicitly says "basic land card" (Evolving Wilds, Fabled Passage, Prismatic Vista, Terramorphic Expanse). False for fetchlands that search by land type name (Scalding Tarn searches "Island or Mountain card" which can fetch nonbasics like Volcanic Island or Steam Vents). Current `fetchesBasicLand` is false for all 10 fetchlands which is correct — they CAN fetch basics but also nonbasics. "Does it fetch a basic?" for Scalding Tarn should be "Sometimes."
 - `fetchesNonbasicLand: boolean` — can it fetch nonbasic lands? Scalding Tarn = true (searches "Island or Mountain card" which includes nonbasic Islands like Volcanic Island). Fabled Passage = false (explicitly "basic land card"). "Does it search up nonbasic lands?" was answered Yes for Fabled Passage because Haiku fell back to generic `fetches_land`.
 - `fetchedLandTypes: string[]` — NEW FIELD. Which specific land types does it search for? e.g. Scalding Tarn → `["Island", "Mountain"]`, Verdant Catacombs → `["Swamp", "Forest"]`, Evolving Wilds → `["Plains", "Island", "Swamp", "Mountain", "Forest"]`. Enables answering "does it fetch mountains?" deterministically.
+## High Priority — Alternative Cost Fixes (from Unearth game)
+
+- `grantsAlternativeCostToOtherSpells: boolean` — does this card let you cast OTHER spells with an alternative cost? (Bolas's Citadel, Dream Halls, Omniscience, Aluren, cascade cards, Isochron Scepter, Golos, etc.) Distinct from `hasAlternativeCost` which is about the card itself.
+- Classification prompt fix needed: cycling is NOT an alternative casting cost — it's an activated ability. Equip is NOT an alternative casting cost. hasAlternativeCost should only be true for actual alternative ways to CAST the spell (Force of Will pitch, evoke, ninjutsu, delve, phyrexian mana in casting cost, spectacle, etc.)
+
 ## High Priority — Spell Casting Trigger Specificity (from Seeker of the Way game)
 
 - `caresAboutControllerCastingSpells: boolean` — triggers when YOU cast a spell (prowess, Seeker of the Way, Young Pyromancer)

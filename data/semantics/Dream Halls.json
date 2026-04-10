@@ -17,7 +17,7 @@
     "modalCount": null,
     "modalKind": [],
     "hasAdditionalCost": false,
-    "hasAlternativeCost": true,
+    "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
