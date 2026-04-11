@@ -1,0 +1,84 @@
+{
+  "_comment": "Manual overrides applied AFTER every Sonnet sweep. Source of truth for corrections.",
+  "_comment2": "Format: card name → path → value. Applied by scripts/apply-overrides.ts",
+  "overrides": [
+    {
+      "card": "Cast Out",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Cycling is an activated ability, not an alternative casting cost"
+    },
+    {
+      "card": "Lórien Revealed",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Cycling is an activated ability, not an alternative casting cost"
+    },
+    {
+      "card": "Miscalculation",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Cycling is an activated ability, not an alternative casting cost"
+    },
+    {
+      "card": "Shark Typhoon",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Cycling is an activated ability, not an alternative casting cost"
+    },
+    {
+      "card": "Unearth",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Cycling is an activated ability, not an alternative casting cost"
+    },
+    {
+      "card": "Cranial Plating",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Alternate equip {B}{B} is not an alternative CASTING cost"
+    },
+    {
+      "card": "Bolas's Citadel",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Grants alternative costs to OTHER spells, not itself"
+    },
+    {
+      "card": "Dream Halls",
+      "field": "structure.hasAlternativeCost",
+      "value": false,
+      "reason": "Grants alternative costs to OTHER spells, not itself"
+    },
+    {
+      "card": "Jace, Vryn's Prodigy // Jace, Telepath Unbound",
+      "field": "targeting.targetKinds",
+      "value": ["creature", "instant or sorcery card in graveyard", "opponent"],
+      "reason": "Sonnet used bare 'instant' and 'sorcery' — should be 'instant or sorcery card in graveyard' (his -3 targets cards in graveyard)"
+    },
+    {
+      "card": "Dack Fayden",
+      "field": "actions.drawsCardsForController",
+      "value": true,
+      "reason": "Target player draws — can target yourself"
+    },
+    {
+      "card": "Dack Fayden",
+      "field": "actions.drawsCardsForOpponent",
+      "value": true,
+      "reason": "Target player draws — can target opponent"
+    },
+    {
+      "card": "Dack Fayden",
+      "field": "actions.discardsForController",
+      "value": true,
+      "reason": "Target player discards — can target yourself"
+    },
+    {
+      "card": "Dack Fayden",
+      "field": "actions.forcesOpponentDiscard",
+      "value": true,
+      "reason": "Target player discards — can target opponent"
+    }
+  ]
+}
