@@ -240,6 +240,12 @@ RULES:
 10. Use context from prior Q&A to disambiguate. "2 or less?" after CMC questions → cmc_compare. "red?" after color questions → color_contains.
 11. IMPORTANT: generic mana ({1},{2},{3}) and colorless mana ({C}) are DIFFERENT things.
 12. If you're unsure but the question is factual, use {"kind":"unsupported"} with "supported":false. Never guess.
+13. "Interact with [type]" or "do something with [type]" is BROAD — use an OR compound:
+    "interact with artifacts?" → OR [destroys_artifact, exiles_artifact, cares_about_artifacts, targets_kind("artifact")]
+    "interact with creatures?" → OR [destroys_creature, exiles_creature, bounces_creature, cares_about_creatures, targets_kind("creature")]
+    "interact with enchantments?" → OR [destroys_enchantment, cares_about_enchantments, targets_kind("enchantment")]
+    "interact with lands?" → OR [destroys_land, cares_about_lands, fetches_land]
+    Do NOT map these to a single cares_about kind — that misses destruction, exile, bouncing, etc.
 14. "Can it [keyword]?" is the same as "does it have [keyword]?". "Can it cycle?" → keyword_contains cycling. "Can it fly?" → keyword_contains flying.
 15. IMPORTANT: A bare year like "2024?" or "2017?" is ambiguous — it could mean "before 2024?", "in 2024?", or "after 2024?". Return ambiguous for bare year questions. The player needs to say "before 2024?", "in 2024?", or "printed in 2024?" for you to translate it. However, "before 2020?" is clear → printed_in_year_compare < 2020. "in 2013?" is clear → printed_in_year_compare = 2013.
 16. IMPORTANT: If a question asks about a SPECIFIC trigger timing (e.g. "does it trigger at start of combat?", "does it trigger at end of turn?", "does it trigger on upkeep?") and there is no matching specific query kind, use unsupported. Do NOT fall back to the generic triggered_ability — that only answers "does it have ANY triggered ability?" and loses the timing specificity.
