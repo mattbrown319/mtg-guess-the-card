@@ -161,6 +161,58 @@ const TEST_CASES: {
 
   // === TOKENS ===
   { cardName: "Lightning Bolt", question: "does it make tokens?", expectedKind: "creates_tokens", expectedOutcome: "no" },
+
+  // === "CAN IT [KEYWORD]?" → keyword_contains ===
+  { cardName: "Baneslayer Angel", question: "can it fly?", expectedKind: "keyword_contains", expectedOutcome: "yes" },
+  { cardName: "Lightning Bolt", question: "can it cycle?", expectedKind: "keyword_contains", expectedOutcome: "no" },
+
+  // === BARE YEAR AMBIGUITY → ambiguous/unsupported (refund) ===
+  { cardName: "Lightning Bolt", question: "2024?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "2017?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "before 2024?", expectedKind: "printed_in_year_compare" },
+  { cardName: "Lightning Bolt", question: "in 2013?", expectedKind: "printed_in_year_compare" },
+
+  // === SPECIFIC TRIGGER TIMING → unsupported (refund) ===
+  { cardName: "Lightning Bolt", question: "does it trigger at start of combat?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "does it trigger at end of turn?", expectedOutcome: "refund" },
+
+  // === ABILITIES ≠ KEYWORDS ===
+  { cardName: "Lightning Bolt", question: "does it have more than one ability?", expectedOutcome: "refund" },
+
+  // === CAUSAL/RELATIONAL → unsupported (refund) ===
+  { cardName: "Arcbound Ravager", question: "does it get bigger when you sacrifice artifacts?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "does it draw cards when creatures die?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "does it reward you for casting instants?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "can it protect itself?", expectedOutcome: "refund" },
+
+  // === AND/OR FOR INDEPENDENT PROPERTIES ===
+  { cardName: "Lightning Bolt", question: "is it a red creature?", expectedKind: "and", expectedOutcome: "no" },
+  { cardName: "Baneslayer Angel", question: "does it have flying or reach?", expectedKind: "or", expectedOutcome: "yes" },
+  { cardName: "Sol Ring", question: "is it a 1 mana artifact?", expectedKind: "and", expectedOutcome: "yes" },
+
+  // === "INTERACT WITH" → OR COMPOUND ===
+  { cardName: "Abrupt Decay", question: "does it interact with artifacts?", expectedKind: "or", expectedOutcome: "yes" },
+  { cardName: "Lightning Bolt", question: "does it interact with creatures?", expectedKind: "or", expectedOutcome: "yes" },
+  { cardName: "Lightning Bolt", question: "does it interact with enchantments?", expectedKind: "or", expectedOutcome: "no" },
+
+  // === TARGET KIND (zone-aware) ===
+  { cardName: "Mana Drain", question: "does it target a permanent?", expectedKind: "targets_kind", expectedOutcome: "no" },
+  { cardName: "Mana Drain", question: "does it target a spell?", expectedKind: "targets_kind", expectedOutcome: "yes" },
+  { cardName: "Lightning Bolt", question: "does it target a creature?", expectedKind: "targets_kind", expectedOutcome: "yes" },
+  { cardName: "Essence Scatter", question: "does it target a creature?", expectedKind: "targets_kind", expectedOutcome: "no" },
+
+  // === MANA COLOR DISTINCTIONS ===
+  { cardName: "City of Brass", question: "does it tap for all colors?", expectedKind: "produces_all_colors", expectedOutcome: "yes" },
+  { cardName: "Ancient Tomb", question: "does it tap for colored mana?", expectedKind: "produces_colored_mana", expectedOutcome: "no" },
+  { cardName: "Arcane Signet", question: "does it make multiple colors?", expectedKind: "produces_multiple_colors" },
+
+  // === MANA COST ORDER INDEPENDENCE ===
+  { cardName: "Mantis Rider", question: "is it WUR to cast?", expectedKind: "mana_cost_equals", expectedOutcome: "yes" },
+
+  // === SUBJECTIVE VARIANTS ===
+  { cardName: "Lightning Bolt", question: "is it worth more than $50?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "has it won a pro tour?", expectedOutcome: "refund" },
+  { cardName: "Lightning Bolt", question: "would you play this in modern?", expectedOutcome: "refund" },
 ];
 
 async function runTests() {

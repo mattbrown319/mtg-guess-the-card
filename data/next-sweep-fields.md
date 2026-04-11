@@ -53,6 +53,12 @@ Add them to the schema and classification prompt before the next run.
 - `manaToActivate: string | null` — what mana is required to activate? (Wayfarer's Bauble = "{2}")
 - `manaProducedAmount: number | null` — how much mana does it produce per activation? (Mana Vault = 3, Sol Ring = 2). Sonnet got Mana Vault WRONG on "can it produce 2 colorless?" — said No when it produces 3.
 
+## High Priority — Payoff/Synergy Classification (from "reward you for casting instants" edge case)
+
+- `payoffForCastingSpells: boolean` — does this card reward/benefit you for casting spells? (Young Pyromancer, Monastery Mentor, prowess creatures)
+- `payoffForCastingInstantsOrSorceries: boolean` — specifically rewards instants/sorceries (Archmage Emeritus, Talrand)
+- Note: "does it reward you for casting instants?" is a causal/synergy question that `cares_about_instants_and_sorceries` partially but imperfectly answers. The "cares about" field captures the trigger condition but not the payoff/reward aspect.
+
 ## Medium Priority (competitive/metagame data from external sources)
 
 - `appearedInProTourTop8: boolean` — has this card appeared in a Pro Tour / Mythic Championship top 8 deck? (requires MTGTop8/Melee data)
