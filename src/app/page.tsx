@@ -48,7 +48,16 @@ export default function Home() {
   const [timeLimit, setTimeLimit] = useState(300);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [leaderboard, setLeaderboard] = useState<{name: string; uniqueWins: number; fastest: number | null}[]>([]);
+  const [leaderboard, setLeaderboard] = useState<{name: string; uniqueWins: number; fastest: number | null}[]>(() => {
+    // Load cached leaderboard from localStorage for instant rendering
+    if (typeof window !== "undefined") {
+      try {
+        const cached = localStorage.getItem("leaderboard_cache");
+        if (cached) return JSON.parse(cached);
+      } catch {}
+    }
+    return [];
+  });
   const [prefetchedGame, setPrefetchedGame] = useState<Record<string, unknown> | null>(null);
   const [prefetchSettings, setPrefetchSettings] = useState("");
 
@@ -74,7 +83,11 @@ export default function Home() {
   useEffect(() => {
     fetch("/api/leaderboard")
       .then(r => r.json())
-      .then(data => setLeaderboard(data.daily || []))
+      .then(data => {
+        const lb = data.allTime || data.daily || [];
+        setLeaderboard(lb);
+        try { localStorage.setItem("leaderboard_cache", JSON.stringify(lb)); } catch {}
+      })
       .catch(() => {});
     // Prefetch a game with default settings to warm the DB connection
     prefetchGame("popular", 300);
@@ -253,10 +266,10 @@ export default function Home() {
         >
           Challenge a Friend with a Specific Card
         </a>
-        {/* Today's Leaderboard */}
+        {/* Leaderboard */}
         <div className="bg-[var(--bg-card)] rounded-xl border border-[var(--border)] p-4 min-h-[140px]">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold">Today&apos;s Leaderboard</span>
+            <span className="text-sm font-semibold">Leaderboard</span>
             <a href="/leaderboard" className="text-xs text-[var(--accent)] hover:underline">Full board &rarr;</a>
           </div>
           <div className="space-y-1">
