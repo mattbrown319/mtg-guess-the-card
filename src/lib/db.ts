@@ -56,6 +56,7 @@ async function initTables(db: Client): Promise<void> {
   await db.execute("ALTER TABLE sessions ADD COLUMN player_initials TEXT").catch(() => {});
   await db.execute("ALTER TABLE sessions ADD COLUMN elapsed_seconds INTEGER").catch(() => {});
   await db.execute("ALTER TABLE sessions ADD COLUMN ref_source TEXT").catch(() => {});
+  await db.execute("ALTER TABLE sessions ADD COLUMN country TEXT").catch(() => {});
 
   await db.execute(`
     CREATE TABLE IF NOT EXISTS query_logs (

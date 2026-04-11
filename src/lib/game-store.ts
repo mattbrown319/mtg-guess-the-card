@@ -10,7 +10,8 @@ export async function createGame(
   timeLimitSeconds?: number,
   playerId?: string,
   playerInitials?: string,
-  refSource?: string | null
+  refSource?: string | null,
+  country?: string | null
 ): Promise<GameState> {
   const db = await getDb();
   const sessionId = uuidv4();
@@ -18,9 +19,9 @@ export async function createGame(
   const timeLimit = timeLimitSeconds !== undefined && timeLimitSeconds !== null ? timeLimitSeconds : DEFAULT_TIME_LIMIT;
 
   await db.execute({
-    sql: `INSERT INTO sessions (session_id, card_json, started_at, max_questions, time_limit_seconds, player_id, player_initials, ref_source)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-    args: [sessionId, JSON.stringify(card), now, MAX_QUESTIONS, timeLimit, playerId || null, playerInitials || null, refSource || null],
+    sql: `INSERT INTO sessions (session_id, card_json, started_at, max_questions, time_limit_seconds, player_id, player_initials, ref_source, country)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    args: [sessionId, JSON.stringify(card), now, MAX_QUESTIONS, timeLimit, playerId || null, playerInitials || null, refSource || null, country || null],
   });
 
   return {

@@ -52,12 +52,21 @@ export default function Home() {
   const [prefetchedGame, setPrefetchedGame] = useState<Record<string, unknown> | null>(null);
   const [prefetchSettings, setPrefetchSettings] = useState("");
 
-  // Capture ref param for referral tracking
+  // Capture referral source: ?utm_source=, ?ref=, or HTTP referer
   useEffect(() => {
+    if (document.cookie.includes("ref_source=")) return; // already captured
     const params = new URLSearchParams(window.location.search);
-    const ref = params.get("ref");
-    if (ref && !document.cookie.includes("ref_source=")) {
-      document.cookie = `ref_source=${encodeURIComponent(ref)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    const source = params.get("utm_source") || params.get("ref");
+    if (source) {
+      document.cookie = `ref_source=${encodeURIComponent(source)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+    } else if (document.referrer) {
+      // Capture the referring domain (e.g. "reddit.com", "discord.com")
+      try {
+        const refDomain = new URL(document.referrer).hostname.replace(/^www\./, "");
+        if (refDomain && refDomain !== window.location.hostname) {
+          document.cookie = `ref_source=${encodeURIComponent("referrer:" + refDomain)}; path=/; max-age=${60 * 60 * 24 * 365}; SameSite=Lax`;
+        }
+      } catch { /* invalid referrer URL, ignore */ }
     }
   }, []);
 
