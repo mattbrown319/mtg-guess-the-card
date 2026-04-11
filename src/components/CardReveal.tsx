@@ -128,7 +128,7 @@ export default function CardReveal({
   useEffect(() => {
     fetch("/api/leaderboard")
       .then(r => r.json())
-      .then(data => setLeaderboard(data.daily || []))
+      .then(data => setLeaderboard(data.allTime || data.daily || []))
       .catch(() => {});
   }, []);
 
@@ -342,7 +342,7 @@ export default function CardReveal({
                     // Refresh leaderboard
                     const r = await fetch("/api/leaderboard");
                     const data = await r.json();
-                    setLeaderboard(data.daily || []);
+                    setLeaderboard(data.allTime || data.daily || []);
                   } catch {}
                 }}
                 disabled={!initialsInput}

@@ -45,6 +45,7 @@ P/T:
 Keywords:
   {"kind":"keyword_contains","value":"flying"}    — flying/trample/haste/flash/hexproof/etc.
   {"kind":"keyword_count_compare","operator":">","value":0} — has any keywords (>0), no keywords (=0)
+  Note: "unblockable" and "can't be blocked" are NOT keywords — use {"kind":"grants_evasion"} instead.
 
 Rarity: {"kind":"rarity_equals","value":"rare"}   — common/uncommon/rare/mythic
 Legality: {"kind":"legality_equals","format":"modern","value":"legal"} — format: standard/modern/pioneer/legacy/vintage/commander/pauper

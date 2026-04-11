@@ -53,6 +53,14 @@ Add them to the schema and classification prompt before the next run.
 - `manaToActivate: string | null` — what mana is required to activate? (Wayfarer's Bauble = "{2}")
 - `manaProducedAmount: number | null` — how much mana does it produce per activation? (Mana Vault = 3, Sol Ring = 2). Sonnet got Mana Vault WRONG on "can it produce 2 colorless?" — said No when it produces 3.
 
+## High Priority — Animated Creature Properties (from Creeping Tar Pit game)
+
+- `animatedPower: number | null` — power when animated (Creeping Tar Pit = 3, Mutavault = 2, Celestial Colonnade = 4)
+- `animatedToughness: number | null` — toughness when animated
+- `animatedKeywords: string[]` — keywords when animated (Creeping Tar Pit = ["can't be blocked"], Celestial Colonnade = ["flying", "vigilance"])
+- `animatedCreatureType: string | null` — creature type when animated (Creeping Tar Pit = "Elemental")
+- Note: affects ALL animates_self cards: manlands, Vehicles, Gideons, Nissas, etc. Currently "does it become a 3/2?" fails because P/T fields are null for non-creatures. And "can't be blocked" on animated form isn't captured by grants_evasion since it's conditional.
+
 ## High Priority — Payoff/Synergy Classification (from "reward you for casting instants" edge case)
 
 - `payoffForCastingSpells: boolean` — does this card reward/benefit you for casting spells? (Young Pyromancer, Monastery Mentor, prowess creatures)
