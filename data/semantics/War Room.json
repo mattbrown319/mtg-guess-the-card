@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -153,19 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Commander-specific card - references commanders' color identity",
-      "Life payment amount varies based on commander color identity (1-5 life typically)"
+      "Card specifically designed for Commander format, referencing commanders' color identity"
     ]
   },
   "audit": {
-    "shortRationale": "War Room is a land with two activated abilities: it taps for colorless mana, and has a costly second ability that pays life (based on commander color identity) to draw a card.",
+    "shortRationale": "War Room is a utility land that taps for colorless mana and has an activated ability to draw a card by paying mana, tapping, and paying life equal to your commanders' color identity.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,11 +13,15 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 2,
     "modalKind": [
       "card_draw",
-      "pump_effect"
+      "stat_boost"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -86,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -154,21 +174,23 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Modal spell with two distinct effects",
-      "Both modes specifically care about non-Human creatures",
-      "First mode draws variable number of cards based on greatest power among non-Humans controlled",
-      "Second mode grants temporary +3/+3 buff to all non-Human creatures controlled"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Modal instant that either draws cards equal to your biggest non-Human creature's power, or gives all your non-Human creatures +3/+3 until end of turn.",
+    "shortRationale": "Modal instant that either draws cards equal to your biggest non-Human creature's power or pumps all your non-Human creatures by +3/+3 until end of turn.",
     "flaggedAmbiguities": []
   }
 }

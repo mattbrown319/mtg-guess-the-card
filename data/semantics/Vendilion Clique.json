@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -86,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -149,26 +169,33 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "player"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The card's controller chooses whether to exile a nonland card from the targeted player's hand",
-      "The targeted player draws a card only if a card was chosen to be put on bottom of library"
+      "The ETB trigger can target any player including controller",
+      "The draw replaces the tucked card so it's card-neutral"
     ]
   },
   "audit": {
-    "shortRationale": "Vendilion Clique is a flash flyer that lets you look at a target player's hand when it enters and optionally exile a nonland card from it by putting it on the bottom of their library, then that player draws a card.",
+    "shortRationale": "Vendilion Clique is a 3/1 flying flash creature that on ETB lets you look at target player's hand, optionally tuck a nonland card to the bottom of their library, then they draw a card. It provides hand disruption and information while being card-neutral.",
     "flaggedAmbiguities": []
   }
 }

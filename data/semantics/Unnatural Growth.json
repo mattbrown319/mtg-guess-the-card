@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": true,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -83,6 +87,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,7 +109,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -116,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -151,8 +171,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -160,7 +187,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Unnatural Growth triggers at the beginning of each combat and doubles the power and toughness of all creatures you control until end of turn, functioning as a combat-oriented power/toughness modification enchantment.",
+    "shortRationale": "Unnatural Growth is an enchantment that triggers at the beginning of each combat, doubling the power and toughness of all creatures you control until end of turn, providing a repeatable combat pump effect.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": true,
@@ -153,18 +173,23 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Replacement effect applies to all nontoken creatures entering the battlefield that weren't cast (e.g., reanimated, cheated into play, tokens that become creatures)"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Containment Priest has flash and a static replacement effect that exiles any nontoken creature that enters the battlefield without being cast, shutting down reanimation and cheat effects.",
+    "shortRationale": "Containment Priest is a hate bear with flash that exiles nontoken creatures trying to enter the battlefield without being cast, shutting down reanimation, token-copying effects like Blade of Selves, and similar cheating strategies.",
     "flaggedAmbiguities": []
   }
 }

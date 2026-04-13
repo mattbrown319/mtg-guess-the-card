@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": true,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -91,6 +95,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -110,7 +117,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -124,6 +142,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -159,20 +179,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Saga that sacrifices itself after three chapters",
-      "Grants itself activated abilities as saga progresses",
-      "Token's power/toughness depends on artifact count"
+      "Saga abilities grant activated abilities to itself",
+      "Self-sacrifices after third lore counter",
+      "Token power/toughness scales with artifacts controlled"
     ]
   },
   "audit": {
-    "shortRationale": "Urza's Saga is a unique enchantment land that functions as a Saga, adding mana abilities and token creation as it progresses, then tutoring for a cheap artifact before sacrificing itself.",
+    "shortRationale": "Urza's Saga is a unique enchantment land that functions as a Saga, progressively gaining mana and token-making abilities before searching for a cheap artifact and sacrificing itself. It provides mana, creates artifact creature tokens, and tutors artifacts.",
     "flaggedAmbiguities": []
   }
 }

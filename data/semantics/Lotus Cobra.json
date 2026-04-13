@@ -1,18 +1,22 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
     "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
-    "hasEnterBattlefieldTrigger": false,
+    "hasEnterBattlefieldTrigger": true,
     "hasLeavesBattlefieldTrigger": false,
     "hasDiesTrigger": false,
     "hasAttackTrigger": false,
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -91,6 +95,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -110,7 +117,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -124,6 +142,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": true,
@@ -154,13 +174,20 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -168,7 +195,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Lotus Cobra is a mana-producing creature with landfall that triggers whenever a land enters under your control, adding one mana of any color.",
+    "shortRationale": "Lotus Cobra is a mana-producing creature with landfall that triggers whenever a land you control enters, adding one mana of any color. It provides mana acceleration and color fixing but does not provide card advantage.",
     "flaggedAmbiguities": []
   }
 }

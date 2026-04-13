@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,8 +26,7 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "companion",
-      "flying"
+      "companion"
     ]
   },
   "actions": {
@@ -86,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": true
+    "flickersOrBlinks": true,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -154,19 +173,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Companion ability requires deck-building restriction (80+ cards in 60-card formats)",
-      "ETB effect exiles any number chosen by controller, then returns them at next end step"
+      "Companion restriction requires 80+ cards in Commander or 80+ cards in casual formats (minimum 60)",
+      "ETB trigger is optional (choose any number including zero)",
+      "Blink effect re-triggers ETB abilities of exiled permanents"
     ]
   },
   "audit": {
-    "shortRationale": "Yorion is a flying companion that flickers any number of your own nonland permanents when it enters the battlefield, returning them at the next end step to retrigger their abilities.",
+    "shortRationale": "Yorion is a companion creature with flying that blinks any number of your nonland permanents when it enters, returning them at the next end step. This generates card advantage by re-triggering ETB abilities.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,9 +13,16 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
-    "hasModalChoice": false,
-    "modalCount": null,
-    "modalKind": [],
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
+    "hasModalChoice": true,
+    "modalCount": 2,
+    "modalKind": [
+      "discard",
+      "life payment"
+    ],
     "hasAdditionalCost": true,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
@@ -83,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -116,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -151,11 +174,18 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature",
       "planeswalker"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -163,7 +193,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Bitter Triumph is a targeted removal spell that requires either discarding a card or paying 3 life as an additional cost, then destroys target creature or planeswalker.",
+    "shortRationale": "Bitter Triumph is a removal instant that destroys target creature or planeswalker with an additional cost choice of discarding a card or paying 3 life.",
     "flaggedAmbiguities": []
   }
 }

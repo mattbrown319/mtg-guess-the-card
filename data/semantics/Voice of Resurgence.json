@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": true,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": true,
     "caresAboutEnterBattlefield": false,
@@ -127,7 +147,7 @@
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
-    "caresAboutPowerOrToughness": true,
+    "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
     "caresAboutAuras": false
@@ -153,18 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The created token has power and toughness that scale with the number of creatures controlled, but this is a characteristic-defining ability of the token itself, not an action of Voice of Resurgence"
+      "Token created has P/T equal to number of creatures controller controls (dynamic value)"
     ]
   },
   "audit": {
-    "shortRationale": "Voice of Resurgence triggers when an opponent casts a spell during your turn or when it dies, creating a green and white Elemental token with power/toughness equal to the number of creatures you control.",
+    "shortRationale": "Voice of Resurgence punishes opponents for casting spells on your turn and creates a token when it dies, with the token's size scaling to your creature count, providing card advantage and board presence.",
     "flaggedAmbiguities": []
   }
 }

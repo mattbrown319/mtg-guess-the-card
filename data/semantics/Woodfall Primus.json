@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": true,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -72,9 +76,7 @@
     "tapsThings": false,
     "untapsThings": false,
     "grantsKeywords": false,
-    "grantedKeywords": [
-      "trample"
-    ],
+    "grantedKeywords": [],
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
@@ -88,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,8 +137,10 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
-    "caresAboutDeath": true,
+    "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
@@ -156,20 +174,28 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "permanent"
-    ],
-    "hasTargeting": true
+      "noncreature permanent"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Persist is a triggered replacement effect that returns the creature from graveyard once"
+      "Persist trigger checks for -1/-1 counters when it dies",
+      "Returns with a -1/-1 counter, effectively allowing it to trigger twice"
     ]
   },
   "audit": {
-    "shortRationale": "Woodfall Primus is a large creature with trample that destroys a noncreature permanent when it enters the battlefield, and has persist to return once from the graveyard with a -1/-1 counter.",
+    "shortRationale": "Woodfall Primus is a creature with trample that destroys a noncreature permanent when it enters and can return itself from the graveyard once via persist.",
     "flaggedAmbiguities": []
   }
 }

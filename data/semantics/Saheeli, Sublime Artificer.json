@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,11 +111,22 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": true,
+    "payoffForCastingInstantsOrSorceries": true
   },
   "conditions": {
     "caresAboutCreatures": false,
-    "caresAboutArtifacts": false,
+    "caresAboutArtifacts": true,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
     "caresAboutNonbasicLands": false,
@@ -118,7 +136,9 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
-    "caresAboutInstantsAndSorceries": false,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
+    "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
@@ -153,20 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "artifact"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Loyalty ability makes artifacts become copies of other artifacts or creatures until end of turn"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Planeswalker that creates Servo tokens whenever you cast noncreature spells and can turn your artifacts into copies of other artifacts or creatures you control.",
+    "shortRationale": "Saheeli creates a 1/1 Servo token whenever you cast a noncreature spell, rewarding spellcasting with artifact tokens. Her minus ability copies artifacts or creatures you control, turning an artifact into a temporary copy.",
     "flaggedAmbiguities": []
   }
 }

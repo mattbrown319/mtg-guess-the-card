@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -83,6 +87,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,7 +109,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -116,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -124,7 +144,7 @@
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
-    "caresAboutManaSpent": false,
+    "caresAboutManaSpent": true,
     "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
@@ -151,21 +171,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Phyrexian mana allows paying with either green mana or 2 life",
-      "Activation is restricted to sorcery speed",
-      "Searches for creatures with exactly 1 more mana value than sacrificed creature",
-      "Puts creature directly onto battlefield without casting"
+      "Phyrexian mana {G/P} can be paid with either green mana or 2 life",
+      "Activated ability has sorcery-speed restriction",
+      "Fetches creatures based on mana value calculation (sacrificed creature's MV + 1)"
     ]
   },
   "audit": {
-    "shortRationale": "Birthing Pod is an activated ability artifact that lets you sacrifice a creature to search for and put a creature with exactly 1 more mana value directly onto the battlefield. It has Phyrexian mana costs allowing life payment.",
+    "shortRationale": "Birthing Pod is an artifact with an activated ability that sacrifices a creature to search for and put onto the battlefield a creature with mana value exactly one higher, providing card advantage and selection through a repeatable tutor engine.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
-    "hasTriggeredAbility": false,
+    "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
     "hasStaticAbility": false,
     "hasReplacementEffect": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -86,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -154,22 +174,30 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature",
       "instant or sorcery card in graveyard",
       "opponent"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": true,
     "notes": [
-      "Transforms from creature to planeswalker when five or more cards are in graveyard"
+      "Front face is a creature, back face is a planeswalker",
+      "Transform condition based on graveyard count"
     ]
   },
   "audit": {
-    "shortRationale": "DFC that starts as a creature with a looter ability that transforms into a planeswalker when graveyard reaches 5+ cards. Planeswalker form weakens creatures, recasts instants/sorceries from graveyard, and creates a mill emblem.",
+    "shortRationale": "A transforming DFC that starts as a creature with a looting ability that transforms into a planeswalker when you have five or more cards in your graveyard. The planeswalker form can weaken creatures, flashback instants/sorceries from your graveyard, and creates an emblem that mills opponents when you cast spells.",
     "flaggedAmbiguities": []
   }
 }

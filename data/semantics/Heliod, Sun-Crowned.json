@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,9 +26,7 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
-      "indestructible",
-      "devotion",
-      "lifelink"
+      "devotion"
     ]
   },
   "actions": {
@@ -79,8 +81,8 @@
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
-    "modifiesPower": false,
-    "modifiesToughness": false,
+    "modifiesPower": true,
+    "modifiesToughness": true,
     "usesPlusOneCounters": true,
     "usesMinusOneCounters": false,
     "addsOtherCounters": false,
@@ -89,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,12 +113,23 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": true,
+    "caresAboutCreatures": false,
     "caresAboutArtifacts": false,
-    "caresAboutEnchantments": true,
+    "caresAboutEnchantments": false,
     "caresAboutLands": false,
     "caresAboutNonbasicLands": false,
     "caresAboutGraveyard": false,
@@ -122,6 +138,8 @@
     "caresAboutLifeGainOrLoss": true,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -157,21 +175,28 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature",
       "enchantment"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": false,
     "notes": [
-      "Heliod is only a creature when your devotion to white is five or more"
+      "Heliod stops being a creature if your devotion to white is less than five"
     ]
   },
   "audit": {
-    "shortRationale": "Heliod is an indestructible enchantment that becomes a creature with sufficient devotion to white. It triggers whenever you gain life to add +1/+1 counters to creatures or enchantments, and can grant lifelink to other creatures via an activated ability.",
+    "shortRationale": "Heliod is an indestructible enchantment that becomes a creature with sufficient devotion to white. It triggers whenever you gain life to put +1/+1 counters on creatures/enchantments you control, and has an activated ability to grant lifelink to other creatures.",
     "flaggedAmbiguities": []
   }
 }

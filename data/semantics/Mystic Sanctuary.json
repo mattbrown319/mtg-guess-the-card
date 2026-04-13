@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,13 +136,15 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
-    "caresAboutEnterBattlefield": true,
+    "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
-    "caresAboutTappedUntappedState": true,
+    "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
@@ -153,22 +173,28 @@
     "conditionallyEntersTapped": true
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "instant or sorcery card in graveyard"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The trigger only occurs when the land enters untapped, not when it enters tapped",
-      "Requires controlling three or more other Islands to enter untapped",
-      "Puts instant or sorcery from graveyard on top of library (not into hand)"
+      "Enters untapped condition depends on controlling three or more other Islands",
+      "ETB trigger only occurs when land enters untapped"
     ]
   },
   "audit": {
-    "shortRationale": "Mystic Sanctuary is an Island land that taps for blue mana, enters tapped unless you control three or more other Islands, and when it enters untapped triggers an optional ability to put a target instant or sorcery from your graveyard on top of your library.",
+    "shortRationale": "Mystic Sanctuary is an Island that enters tapped unless you control three or more other Islands, and when it enters untapped, you may put an instant or sorcery from your graveyard on top of your library, providing card advantage and selection for spell-heavy decks.",
     "flaggedAmbiguities": []
   }
 }

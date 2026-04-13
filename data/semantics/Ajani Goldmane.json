@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -75,10 +79,10 @@
       "vigilance"
     ],
     "grantsEvasion": false,
-    "grantsPTBonus": false,
+    "grantsPTBonus": true,
     "grantsPTPenalty": false,
-    "modifiesPower": false,
-    "modifiesToughness": false,
+    "modifiesPower": true,
+    "modifiesToughness": true,
     "usesPlusOneCounters": true,
     "usesMinusOneCounters": false,
     "addsOtherCounters": false,
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": true,
     "gainsLifeForController": true,
@@ -106,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -120,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -150,23 +170,28 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "The token created by the ultimate ability has power and toughness dynamically linked to controller's life total"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Ajani Goldmane is a planeswalker with three loyalty abilities: gaining life, distributing +1/+1 counters and vigilance to creatures, and creating an Avatar token whose power/toughness equal your life total.",
+    "shortRationale": "Ajani Goldmane is a planeswalker with three loyalty abilities: gaining life, distributing +1/+1 counters and vigilance to creatures, and creating an Avatar token whose power/toughness equals your life total.",
     "flaggedAmbiguities": []
   }
 }

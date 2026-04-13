@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,10 +111,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
+    "caresAboutCreatures": true,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -141,7 +161,7 @@
     "mentionsGraveyard": true,
     "mentionsLibrary": false,
     "mentionsHand": false,
-    "mentionsExile": true,
+    "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
     "mentionsCombat": false
@@ -153,20 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature card in graveyard"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Flashback allows casting from graveyard with alternative cost of sacrificing three creatures"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Dread Return is a reanimation spell that returns a target creature card from your graveyard to the battlefield, with flashback that costs sacrificing three creatures instead of paying mana.",
+    "shortRationale": "Dread Return reanimates a creature from graveyard to battlefield. It has flashback with a sacrifice cost, allowing it to be cast from the graveyard by sacrificing three creatures, making it card advantage that converts creatures into a powerful reanimation effect.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
-    "hasTriggeredAbility": false,
+    "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
     "hasStaticAbility": true,
     "hasReplacementEffect": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -71,14 +75,12 @@
     "tapsThings": false,
     "untapsThings": false,
     "grantsKeywords": false,
-    "grantedKeywords": [
-      "prowess"
-    ],
+    "grantedKeywords": [],
     "grantsEvasion": false,
-    "grantsPTBonus": false,
+    "grantsPTBonus": true,
     "grantsPTPenalty": false,
-    "modifiesPower": false,
-    "modifiesToughness": false,
+    "modifiesPower": true,
+    "modifiesToughness": true,
     "usesPlusOneCounters": false,
     "usesMinusOneCounters": true,
     "addsOtherCounters": false,
@@ -87,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -96,7 +101,7 @@
     "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
-    "preventsDamage": false,
+    "preventsDamage": true,
     "redirectsDamage": false,
     "animatesSelf": false,
     "animatesOtherPermanent": false,
@@ -106,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -120,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -155,8 +173,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -164,7 +189,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Soul-Scar Mage has prowess and replaces noncombat damage your sources would deal to opponent's creatures with -1/-1 counters instead.",
+    "shortRationale": "Soul-Scar Mage is a 1/2 creature with prowess that has a static replacement effect converting noncombat damage from sources you control into -1/-1 counters on opponent's creatures instead of dealing damage.",
     "flaggedAmbiguities": []
   }
 }

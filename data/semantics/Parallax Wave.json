@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": true,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -120,10 +138,12 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
-    "caresAboutLeaveBattlefield": true,
+    "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
@@ -155,23 +175,28 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Enters with five fade counters due to fading 5",
-      "Must remove a fade counter each upkeep or sacrifice itself",
-      "Activated ability requires removing a fade counter as cost",
-      "Returns exiled cards to battlefield when it leaves, not to hand"
+      "Fading mechanic causes self-sacrifice when counters run out",
+      "Leave-battlefield trigger returns all exiled creatures regardless of controller"
     ]
   },
   "audit": {
-    "shortRationale": "Parallax Wave enters with five fade counters and can exile creatures by removing counters. It loses a counter each upkeep and sacrifices itself when out of counters, returning all exiled creatures to the battlefield.",
+    "shortRationale": "Parallax Wave is a white enchantment with fading that can repeatedly exile target creatures by removing fade counters, then returns all exiled cards when it leaves the battlefield.",
     "flaggedAmbiguities": []
   }
 }

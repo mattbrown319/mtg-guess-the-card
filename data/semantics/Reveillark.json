@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,7 +26,8 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "evoke"
+      "evoke",
+      "flying"
     ]
   },
   "actions": {
@@ -85,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -118,10 +137,12 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
-    "caresAboutLeaveBattlefield": true,
+    "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
@@ -153,21 +174,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "creature card in graveyard"
-    ],
-    "hasTargeting": true
+      "creature cards in graveyard"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Targets up to two creature cards with power 2 or less from graveyard",
-      "Evoke causes sacrifice on ETB, triggering leaves-battlefield ability"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Reveillark is a flying creature that reanimates up to two small creatures (power 2 or less) when it leaves the battlefield. It has evoke as an alternative casting cost that sacrifices it on entry, enabling the reanimation trigger immediately.",
+    "shortRationale": "Reveillark is a 4/3 flying creature with a leaves-the-battlefield trigger that reanimates up to two small creatures (power 2 or less) from your graveyard. It has evoke as an alternative casting cost, allowing you to cast it for sacrifice to immediately trigger its reanimation effect.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -73,7 +77,7 @@
     "grantsKeywords": false,
     "grantedKeywords": [],
     "grantsEvasion": false,
-    "grantsPTBonus": false,
+    "grantsPTBonus": true,
     "grantsPTPenalty": false,
     "modifiesPower": true,
     "modifiesToughness": true,
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,9 +136,11 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": true,
-    "caresAboutEnterBattlefield": true,
+    "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
@@ -153,20 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "artifact creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Modular 1 creates a replacement effect on ETB and a triggered ability on death"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Arcbound Ravager is an artifact creature with an activated ability to sacrifice artifacts for +1/+1 counters, and modular 1 which makes it enter with a counter and transfer all counters to target artifact creature when it dies.",
+    "shortRationale": "Arcbound Ravager is an artifact creature with modular 1 that can sacrifice artifacts to grow itself, then redistribute its counters to another artifact creature when it dies.",
     "flaggedAmbiguities": []
   }
 }

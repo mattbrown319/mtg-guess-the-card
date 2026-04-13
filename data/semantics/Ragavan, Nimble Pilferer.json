@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": true,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,7 +26,8 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "dash"
+      "dash",
+      "treasure"
     ]
   },
   "actions": {
@@ -87,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +114,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -120,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -142,7 +163,7 @@
     "mentionsPlaneswalker": false,
     "mentionsGraveyard": false,
     "mentionsLibrary": true,
-    "mentionsHand": true,
+    "mentionsHand": false,
     "mentionsExile": true,
     "mentionsOpponent": false,
     "mentionsPlayer": true,
@@ -155,18 +176,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Dash mechanic provides alternative casting cost and grants haste with automatic bounce to hand"
+      "Dash returns creature to hand at end step",
+      "Exiled card can be cast only until end of turn"
     ]
   },
   "audit": {
-    "shortRationale": "Ragavan triggers when it deals combat damage to a player, creating a Treasure token and exiling the top card of that player's library to cast it. It has dash as an alternative casting method.",
+    "shortRationale": "Ragavan is a 1-mana creature that generates Treasure tokens and exiles opponents' cards for temporary use when it deals combat damage, with an alternative dash casting cost for haste and self-bounce.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,11 +13,15 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 2,
     "modalKind": [
       "damage",
-      "destroy"
+      "destruction"
     ],
     "hasAdditionalCost": true,
     "hasAlternativeCost": false,
@@ -88,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +114,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -128,7 +148,7 @@
     "caresAboutCombat": false,
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
-    "caresAboutColors": false,
+    "caresAboutColors": true,
     "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
@@ -137,7 +157,7 @@
   },
   "references": {
     "mentionsCreature": true,
-    "mentionsArtifact": true,
+    "mentionsArtifact": false,
     "mentionsEnchantment": false,
     "mentionsLand": true,
     "mentionsPlaneswalker": false,
@@ -156,11 +176,18 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature",
       "colorless nonland permanent"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -168,7 +195,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Goblin Cratermaker is a creature with a modal activated ability that requires sacrificing itself and paying {1}. It can either deal 2 damage to a target creature or destroy a target colorless nonland permanent.",
+    "shortRationale": "Goblin Cratermaker is a 2-mana creature with a modal activated ability requiring {1} and sacrificing itself to either deal 2 damage to a creature or destroy a colorless nonland permanent, providing flexible removal at instant speed.",
     "flaggedAmbiguities": []
   }
 }

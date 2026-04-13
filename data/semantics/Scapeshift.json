@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -82,7 +86,10 @@
     "sacrificesOwnPermanent": true,
     "forcesOpponentSacrifice": false,
     "fetchesLand": true,
-    "fetchesBasicLand": false,
+    "fetchesBasicLand": true,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": true,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,13 +109,24 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
-    "caresAboutLands": false,
+    "caresAboutLands": true,
     "caresAboutNonbasicLands": false,
     "caresAboutGraveyard": false,
     "caresAboutCardsDrawn": false,
@@ -116,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -151,18 +171,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The number of lands fetched is variable, determined by how many lands were sacrificed"
+      "Fetched lands enter tapped, which is relevant for mana availability"
     ]
   },
   "audit": {
-    "shortRationale": "Scapeshift sacrifices any number of your lands, then searches your library for up to that many land cards and puts them onto the battlefield tapped.",
+    "shortRationale": "Scapeshift sacrifices any number of your lands and fetches up to that many land cards from your library, putting them onto the battlefield tapped. This is primarily a land-tutoring and ramp effect that enables landfall triggers and specific land combinations.",
     "flaggedAmbiguities": []
   }
 }

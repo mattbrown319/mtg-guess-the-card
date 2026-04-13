@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -57,7 +61,7 @@
     "exilesEnchantment": false,
     "exilesLand": false,
     "exilesPermanent": false,
-    "exilesFromGraveyard": true,
+    "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
     "reanimatesSelf": false,
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -141,7 +161,7 @@
     "mentionsGraveyard": true,
     "mentionsLibrary": false,
     "mentionsHand": false,
-    "mentionsExile": true,
+    "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": true,
     "mentionsCombat": false
@@ -153,10 +173,17 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "player"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -164,7 +191,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Deep Analysis is a sorcery that makes target player draw two cards, with flashback allowing it to be cast from the graveyard for alternative mana plus 3 life, then exiling itself.",
+    "shortRationale": "Deep Analysis is a sorcery that makes target player draw two cards, providing card advantage. It has flashback, allowing it to be cast from the graveyard for an alternative cost of {1}{U} and 3 life.",
     "flaggedAmbiguities": []
   }
 }

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -86,13 +90,16 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
     "gainsLifeForOpponent": false,
-    "causesLifeLoss": false,
+    "causesLifeLoss": true,
     "causesLifeLossForController": false,
-    "causesLifeLossForOpponent": false,
+    "causesLifeLossForOpponent": true,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -105,10 +112,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
+    "caresAboutCreatures": true,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -128,7 +148,7 @@
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
-    "caresAboutPowerOrToughness": false,
+    "caresAboutPowerOrToughness": true,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
     "caresAboutAuras": false
@@ -154,10 +174,17 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -165,7 +192,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "This sorcery targets a creature you control and causes it to deal damage equal to its power to all other creatures and all opponents, functioning as a board wipe and life loss effect based on the targeted creature's power.",
+    "shortRationale": "Chandra's Ignition causes a target creature you control to deal damage equal to its power to each other creature and each opponent, functioning as both board wipe and burn damage.",
     "flaggedAmbiguities": []
   }
 }

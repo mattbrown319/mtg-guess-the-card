@@ -1,11 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
     "hasStaticAbility": true,
     "hasReplacementEffect": true,
-    "hasPreventionEffect": true,
+    "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
     "hasLeavesBattlefieldTrigger": false,
     "hasDiesTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,8 +26,8 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
-      "indestructible",
-      "devotion"
+      "devotion",
+      "indestructible"
     ]
   },
   "actions": {
@@ -86,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -154,19 +174,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": false,
     "notes": [
-      "Card is only a creature when devotion to black is five or more",
-      "Devotion mechanic counts {B} symbols in mana costs of permanents controller controls"
+      "Erebos is only a creature when devotion to black is 5 or more",
+      "Base stats are 5/5 when a creature"
     ]
   },
   "audit": {
-    "shortRationale": "Erebos is an indestructible God that prevents opponents from gaining life and has an activated ability to draw cards by paying mana and life. It only becomes a creature when devotion to black is five or more.",
+    "shortRationale": "Erebos is an indestructible enchantment that becomes a 5/5 creature with devotion to black of 5+, prevents opponents from gaining life, and has an activated ability to pay life and mana to draw cards.",
     "flaggedAmbiguities": []
   }
 }

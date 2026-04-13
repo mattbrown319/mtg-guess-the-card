@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,10 +13,14 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 3,
     "modalKind": [
-      "damage_distribution"
+      "damage distribution"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -47,7 +51,7 @@
     "filtersMana": false,
     "dealsDamage": true,
     "damageTargets": [
-      "any"
+      "any target"
     ],
     "destroysCreature": false,
     "destroysArtifact": false,
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -120,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -150,15 +170,22 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": true,
+    "canEnterUntapped": false,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "any_target"
-    ],
-    "hasTargeting": true
+      "any target"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -166,7 +193,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Inferno Titan has an activated ability to pump its power and a triggered ability that deals 3 damage divided among up to three targets whenever it enters the battlefield or attacks.",
+    "shortRationale": "Inferno Titan is a 6/6 Giant with an activated ability to pump its power and a triggered ability that deals 3 divisible damage when it enters or attacks, functioning as repeatable removal.",
     "flaggedAmbiguities": []
   }
 }

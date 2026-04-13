@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,7 +26,6 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "flying",
       "connive"
     ]
   },
@@ -86,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": true,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": true,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -154,19 +173,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Connive trigger is conditional on a player casting their second spell each turn",
-      "+1/+1 counter is only added if a nonland card is discarded"
+      "Triggers on second spell cast by any player each turn",
+      "Grows via +1/+1 counters only when nonland cards are discarded"
     ]
   },
   "audit": {
-    "shortRationale": "Ledger Shredder is a flying creature that triggers connive (draw then discard, potentially adding a +1/+1 counter) whenever any player casts their second spell each turn.",
+    "shortRationale": "Ledger Shredder is a flying creature that triggers connive (draw then discard, potentially adding a +1/+1 counter) whenever any player casts their second spell each turn, rewarding spell-heavy strategies with card selection and creature growth.",
     "flaggedAmbiguities": []
   }
 }

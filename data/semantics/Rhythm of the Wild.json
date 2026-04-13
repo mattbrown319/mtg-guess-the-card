@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,9 +13,15 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
-    "hasModalChoice": false,
-    "modalCount": null,
-    "modalKind": [],
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
+    "hasModalChoice": true,
+    "modalCount": 2,
+    "modalKind": [
+      "riot_choice"
+    ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
@@ -75,10 +81,10 @@
       "haste"
     ],
     "grantsEvasion": false,
-    "grantsPTBonus": false,
+    "grantsPTBonus": true,
     "grantsPTPenalty": false,
-    "modifiesPower": false,
-    "modifiesToughness": false,
+    "modifiesPower": true,
+    "modifiesToughness": true,
     "usesPlusOneCounters": true,
     "usesMinusOneCounters": false,
     "addsOtherCounters": false,
@@ -87,6 +93,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,11 +111,22 @@
     "animatesOtherPermanent": false,
     "makesMonarch": false,
     "createsEmblem": false,
-    "restrictsActions": true,
+    "restrictsActions": false,
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": true,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -119,7 +139,9 @@
     "caresAboutDiscard": false,
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
-    "caresAboutCastingSpells": false,
+    "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": true,
@@ -150,24 +172,32 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Riot is a modal replacement effect triggered when nontoken creatures enter the battlefield under your control, offering choice between +1/+1 counter or haste",
-      "First ability prevents opponent counterspells on your creature spells"
+      "Riot grants a modal choice between +1/+1 counter or haste as creatures enter",
+      "First ability protects only creature spells, not the enchantment itself",
+      "Riot only applies to nontoken creatures"
     ]
   },
   "audit": {
-    "shortRationale": "Rhythm of the Wild provides two static abilities: it makes your creature spells uncounterable and grants riot to your nontoken creatures, allowing them to enter with either a +1/+1 counter or haste.",
+    "shortRationale": "Rhythm of the Wild is an enchantment that prevents creature spells from being countered and grants nontoken creatures riot (choice of +1/+1 counter or haste on entry).",
     "flaggedAmbiguities": []
   }
 }

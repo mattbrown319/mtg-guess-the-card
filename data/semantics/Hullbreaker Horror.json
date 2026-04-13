@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,11 +13,15 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 2,
     "modalKind": [
-      "bounce_spell",
-      "bounce_permanent"
+      "bounce spell",
+      "bounce permanent"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -88,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +114,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": true,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -156,22 +176,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "spell",
-      "nonland_permanent"
-    ],
-    "hasTargeting": true
+      "nonland permanent"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Modal trigger allows choosing up to one mode, meaning choosing zero is also valid",
-      "Can target spells on the stack or nonland permanents on the battlefield"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Hullbreaker Horror is an uncounterable flash creature with a triggered ability that bounces spells or nonland permanents to hand whenever you cast a spell, with modal choice.",
+    "shortRationale": "Hullbreaker Horror is a 7/8 flash creature that can't be countered and triggers whenever you cast a spell, letting you bounce either an opponent's spell on the stack or any nonland permanent back to hand. This creates repeatable tempo advantage and a spell-based value engine.",
     "flaggedAmbiguities": []
   }
 }

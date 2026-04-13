@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,9 +109,20 @@
     "createsEmblem": false,
     "restrictsActions": false,
     "taxesOpponent": false,
-    "reducesCosts": true,
+    "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -126,7 +146,7 @@
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
-    "caresAboutManaSpent": true,
+    "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
@@ -153,19 +173,23 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "X value determines maximum mana value of creature fetched",
-      "Convoke reduces the mana cost by allowing creatures to tap for mana"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Chord of Calling is an instant that searches your library for a creature with mana value X or less and puts it onto the battlefield. It has convoke, allowing you to tap creatures to help pay its cost.",
+    "shortRationale": "Chord of Calling is an instant-speed tutor that searches your library for a creature with mana value X or less and puts it directly onto the battlefield. It has convoke, allowing creatures to help pay for the spell, effectively providing card advantage and selection by converting board presence into a toolbox creature.",
     "flaggedAmbiguities": []
   }
 }

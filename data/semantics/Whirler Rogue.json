@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,11 +111,22 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
-    "caresAboutArtifacts": false,
+    "caresAboutArtifacts": true,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
     "caresAboutNonbasicLands": false,
@@ -118,13 +136,15 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
-    "caresAboutTappedUntappedState": false,
+    "caresAboutTappedUntappedState": true,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
@@ -144,19 +164,26 @@
     "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
-    "mentionsCombat": true
+    "mentionsCombat": false
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -164,7 +191,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Whirler Rogue creates two Thopter tokens on ETB and has an activated ability that grants unblockability to target creature by tapping two artifacts.",
+    "shortRationale": "Whirler Rogue enters the battlefield and creates two 1/1 flying Thopter tokens, then has an activated ability to make creatures unblockable by tapping two artifacts, synergizing with the tokens it creates.",
     "flaggedAmbiguities": []
   }
 }

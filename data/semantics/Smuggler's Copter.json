@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": true,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -86,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -145,7 +165,7 @@
     "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
-    "mentionsCombat": true
+    "mentionsCombat": false
   },
   "battlefield": {
     "entersTapped": false,
@@ -154,18 +174,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": true,
+    "animatedPower": 3,
+    "animatedToughness": 3,
+    "animatedKeywords": [
+      "flying"
+    ],
+    "animatedCreatureType": "Vehicle"
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": false,
     "notes": [
-      "Vehicle becomes an artifact creature only when crewed"
+      "Vehicle becomes artifact creature when crewed"
     ]
   },
   "audit": {
-    "shortRationale": "Smuggler's Copter is a Vehicle with flying that triggers when it attacks or blocks, allowing the controller to optionally draw then discard a card, and can be animated via Crew 1.",
+    "shortRationale": "Smuggler's Copter is a Vehicle that becomes a 3/3 flying artifact creature when crewed. Whenever it attacks or blocks, it provides card selection through optional looting (draw then discard).",
     "flaggedAmbiguities": []
   }
 }

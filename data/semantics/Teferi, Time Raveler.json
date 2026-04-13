@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -70,8 +74,10 @@
     "copiesPermanents": false,
     "tapsThings": false,
     "untapsThings": false,
-    "grantsKeywords": false,
-    "grantedKeywords": [],
+    "grantsKeywords": true,
+    "grantedKeywords": [
+      "flash"
+    ],
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
@@ -85,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -148,29 +170,32 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "artifact",
       "creature",
       "enchantment"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Static ability restricts opponents' spell casting timing",
-      "Plus ability grants controller ability to cast sorceries at instant speed until next turn",
-      "Minus ability can target up to one permanent of specified types"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Teferi, Time Raveler is a planeswalker with a static ability that restricts opponents to sorcery-speed casting, a +1 that lets the controller cast sorceries at instant speed, and a -3 that bounces a permanent and draws a card.",
+    "shortRationale": "Teferi, Time Raveler is a planeswalker that restricts opponents to sorcery-speed spells via a static ability, grants flash to your sorceries with his +1, and bounces a permanent while drawing a card with his -3, providing tempo advantage and card advantage.",
     "flaggedAmbiguities": []
   }
 }

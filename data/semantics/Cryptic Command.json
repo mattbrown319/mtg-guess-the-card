@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,8 +13,12 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
-    "modalCount": 2,
+    "modalCount": 4,
     "modalKind": [
       "counter",
       "bounce",
@@ -88,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +114,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -143,7 +163,7 @@
     "mentionsPlaneswalker": false,
     "mentionsGraveyard": false,
     "mentionsLibrary": false,
-    "mentionsHand": false,
+    "mentionsHand": true,
     "mentionsExile": false,
     "mentionsOpponent": true,
     "mentionsPlayer": false,
@@ -156,19 +176,28 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "spell",
       "permanent"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": []
+    "notes": [
+      "Modal spell with four distinct options, choose any two"
+    ]
   },
   "audit": {
-    "shortRationale": "Cryptic Command is a modal instant that lets you choose two from four options: counter a spell, bounce a permanent, tap all opponent creatures, or draw a card.",
+    "shortRationale": "Cryptic Command is a highly flexible modal instant that lets you choose two of four powerful effects: countering a spell, bouncing a permanent, tapping all opponent creatures, or drawing a card. The combination of counterspell + card draw makes it card advantage, and bouncing permanents qualifies as removal.",
     "flaggedAmbiguities": []
   }
 }

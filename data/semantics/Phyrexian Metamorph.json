@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": true,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -83,6 +87,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,11 +109,22 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
-    "caresAboutArtifacts": false,
+    "caresAboutCreatures": true,
+    "caresAboutArtifacts": true,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
     "caresAboutNonbasicLands": false,
@@ -116,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -151,20 +171,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": false,
     "notes": [
-      "Can become a copy of any artifact or creature on battlefield",
-      "Always maintains artifact type regardless of what it copies",
-      "Phyrexian mana allows paying with life instead of blue mana"
+      "Can copy any artifact or creature, inheriting all characteristics except it becomes an artifact in addition to other types",
+      "The copied characteristics are entirely dependent on what permanent is chosen to copy"
     ]
   },
   "audit": {
-    "shortRationale": "Phyrexian Metamorph is a clone effect that can copy any artifact or creature as it enters the battlefield, with the additional clause that it's always an artifact. The Phyrexian mana allows paying 2 life instead of blue mana.",
+    "shortRationale": "Phyrexian Metamorph is a clone effect that can copy any artifact or creature on the battlefield as it enters, with phyrexian mana in its casting cost allowing payment of life instead of blue mana.",
     "flaggedAmbiguities": []
   }
 }

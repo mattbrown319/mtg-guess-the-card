@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,12 +13,16 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 3,
     "modalKind": [
-      "exile_graveyard",
-      "destroy_artifact",
-      "punish_creatures"
+      "exile graveyard",
+      "destroy artifact",
+      "punish creatures"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -89,13 +93,16 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
     "gainsLifeForOpponent": false,
-    "causesLifeLoss": false,
+    "causesLifeLoss": true,
     "causesLifeLossForController": false,
-    "causesLifeLossForOpponent": false,
+    "causesLifeLossForOpponent": true,
     "paysLife": false,
     "takesExtraTurn": false,
     "preventsDamage": false,
@@ -108,7 +115,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -122,6 +140,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -157,11 +177,18 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "player",
       "artifact"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -169,7 +196,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Rakdos Charm is a modal instant offering three options: exile a player's graveyard (graveyard hate), destroy an artifact (removal), or deal 1 damage from each creature to its controller (punishes go-wide strategies).",
+    "shortRationale": "Rakdos Charm is a modal instant offering three choices: exile a graveyard, destroy an artifact, or punish go-wide strategies by having each creature deal 1 damage to its controller.",
     "flaggedAmbiguities": []
   }
 }

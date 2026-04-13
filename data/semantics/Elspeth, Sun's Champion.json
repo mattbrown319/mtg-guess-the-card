@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,11 +13,13 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
-    "hasModalChoice": true,
-    "modalCount": 3,
-    "modalKind": [
-      "loyalty_ability"
-    ],
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
+    "hasModalChoice": false,
+    "modalCount": null,
+    "modalKind": [],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
@@ -76,7 +78,7 @@
     "grantedKeywords": [
       "flying"
     ],
-    "grantsEvasion": false,
+    "grantsEvasion": true,
     "grantsPTBonus": true,
     "grantsPTPenalty": false,
     "modifiesPower": true,
@@ -89,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,10 +113,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
+    "caresAboutCreatures": true,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -122,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -157,8 +175,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -166,7 +191,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Planeswalker with three loyalty abilities: creates Soldier tokens, destroys large creatures, and creates an emblem that buffs creatures with +2/+2 and flying.",
+    "shortRationale": "Elspeth is a planeswalker with three loyalty abilities: creates three 1/1 Soldier tokens, destroys all creatures with power 4+, and creates an emblem giving your creatures +2/+2 and flying.",
     "flaggedAmbiguities": []
   }
 }

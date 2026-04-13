@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -21,9 +25,7 @@
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
-    "namedMechanics": [
-      "trample"
-    ]
+    "namedMechanics": []
   },
   "actions": {
     "drawsCards": false,
@@ -71,9 +73,7 @@
     "tapsThings": false,
     "untapsThings": false,
     "grantsKeywords": false,
-    "grantedKeywords": [
-      "trample"
-    ],
+    "grantedKeywords": [],
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
@@ -87,6 +87,9 @@
     "forcesOpponentSacrifice": true,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +109,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -120,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -155,8 +171,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -164,7 +187,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Phyrexian Obliterator is a 4-mana creature with trample that triggers whenever damage is dealt to it, forcing the damage source's controller to sacrifice that many permanents. The trigger is a condition it cares about (damage), and the sacrifice is the resulting action.",
+    "shortRationale": "Phyrexian Obliterator is a 5/5 creature with trample that punishes opponents for dealing damage to it by forcing them to sacrifice that many permanents, making it extremely difficult to block or remove profitably.",
     "flaggedAmbiguities": []
   }
 }

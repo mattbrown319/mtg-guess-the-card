@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,8 +26,8 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "lifelink",
-      "companion"
+      "companion",
+      "lifelink"
     ]
   },
   "actions": {
@@ -62,7 +66,7 @@
     "exilesFromLibrary": false,
     "exilesFromHand": false,
     "reanimatesSelf": false,
-    "reanimatesOther": true,
+    "reanimatesOther": false,
     "returnsToHand": false,
     "bouncesCreature": false,
     "bouncesPermanent": false,
@@ -86,9 +90,12 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
-    "gainsLife": false,
-    "gainsLifeForController": false,
+    "gainsLife": true,
+    "gainsLifeForController": true,
     "gainsLifeForOpponent": false,
     "causesLifeLoss": false,
     "causesLifeLossForController": false,
@@ -105,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -119,6 +137,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -127,7 +147,7 @@
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
-    "caresAboutManaSpent": false,
+    "caresAboutManaSpent": true,
     "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
@@ -149,25 +169,31 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Companion ability restricts deckbuilding but does not affect gameplay once on battlefield",
-      "Graveyard casting ability is limited to once per turn",
-      "Only affects permanent spells with mana value 2 or less"
+      "Companion ability restricts deckbuilding to permanents with mana value 2 or less",
+      "Graveyard casting ability is limited to once per turn and only permanent spells with mana value 2 or less"
     ]
   },
   "audit": {
-    "shortRationale": "Lurrus has lifelink and allows you to cast low-mana-value permanent spells from your graveyard once per turn, functioning as a form of reanimation/recursion engine.",
+    "shortRationale": "Lurrus is a legendary creature with companion (restricts deckbuilding), lifelink, and a static ability allowing you to cast permanent spells with mana value 2 or less from your graveyard once per turn. This provides recurring card advantage through graveyard recursion.",
     "flaggedAmbiguities": []
   }
 }

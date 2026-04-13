@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -36,7 +40,7 @@
     "millsCards": false,
     "surveils": false,
     "scries": true,
-    "looksAtTopOfLibrary": true,
+    "looksAtTopOfLibrary": false,
     "searchesLibrary": false,
     "shufflesLibrary": false,
     "createsTokens": true,
@@ -63,7 +67,7 @@
     "exilesFromGraveyard": true,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
-    "reanimatesSelf": true,
+    "reanimatesSelf": false,
     "reanimatesOther": false,
     "returnsToHand": false,
     "bouncesCreature": false,
@@ -88,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,10 +114,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": true,
+    "caresAboutCreatures": false,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -121,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -144,7 +164,7 @@
     "mentionsGraveyard": true,
     "mentionsLibrary": false,
     "mentionsHand": false,
-    "mentionsExile": true,
+    "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
     "mentionsCombat": false
@@ -156,19 +176,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Escape is an alternative casting cost that allows the card to be cast from the graveyard",
-      "When cast via escape, the creature enters with two +1/+1 counters"
+      "Escapes with two +1/+1 counters when cast from graveyard"
     ]
   },
   "audit": {
-    "shortRationale": "Woe Strider creates a Goat token on entry and has a sacrifice outlet to scry. It features the escape mechanic allowing it to be recast from the graveyard with +1/+1 counters.",
+    "shortRationale": "Woe Strider is a creature that creates a Goat token on entry and has a sacrifice outlet that provides scry 1. It can be cast from the graveyard using escape, returning with +1/+1 counters.",
     "flaggedAmbiguities": []
   }
 }

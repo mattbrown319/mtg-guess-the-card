@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -21,9 +25,7 @@
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
-    "namedMechanics": [
-      "devoid"
-    ]
+    "namedMechanics": []
   },
   "actions": {
     "drawsCards": false,
@@ -85,6 +87,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -101,10 +106,21 @@
     "makesMonarch": false,
     "createsEmblem": false,
     "restrictsActions": false,
-    "taxesOpponent": false,
+    "taxesOpponent": true,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +134,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -133,7 +151,7 @@
     "caresAboutAuras": false
   },
   "references": {
-    "mentionsCreature": true,
+    "mentionsCreature": false,
     "mentionsArtifact": false,
     "mentionsEnchantment": false,
     "mentionsLand": false,
@@ -153,8 +171,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -162,7 +187,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Reality Smasher is a 5-mana Eldrazi creature with trample and haste that protects itself by countering opponent spells that target it unless the opponent discards a card.",
+    "shortRationale": "Reality Smasher is a 5/5 Eldrazi creature with trample and haste that protects itself by countering opponent spells targeting it unless they discard a card, functioning as a self-protecting threat with evasion.",
     "flaggedAmbiguities": []
   }
 }

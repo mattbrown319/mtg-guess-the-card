@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,18 +13,20 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
-    "hasModalChoice": true,
-    "modalCount": 3,
-    "modalKind": [
-      "loyalty_ability"
-    ],
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
+    "hasModalChoice": false,
+    "modalCount": null,
+    "modalKind": [],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
-      "food"
+      "Food"
     ]
   },
   "actions": {
@@ -42,8 +44,7 @@
     "shufflesLibrary": false,
     "createsTokens": true,
     "createdTokenTypes": [
-      "Food",
-      "Elk"
+      "Food"
     ],
     "addsMana": false,
     "addedManaColors": [],
@@ -90,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -102,14 +106,25 @@
     "preventsDamage": false,
     "redirectsDamage": false,
     "animatesSelf": false,
-    "animatesOtherPermanent": true,
+    "animatesOtherPermanent": false,
     "makesMonarch": false,
     "createsEmblem": false,
     "restrictsActions": false,
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -123,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -153,27 +170,34 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "artifact",
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The +1 ability removes all abilities and sets base P/T to 3/3, effectively transforming the permanent into an Elk",
-      "The -5 ability exchanges control of permanents with restrictions on opponent's creature (power 3 or less)"
+      "The +1 ability transforms artifacts or creatures into 3/3 Elks, removing all abilities",
+      "The -5 ability requires opponent's creature to have power 3 or less"
     ]
   },
   "audit": {
-    "shortRationale": "Oko is a planeswalker with three loyalty abilities: creates Food tokens, transforms artifacts/creatures into 3/3 Elks with no abilities, and exchanges control of permanents.",
+    "shortRationale": "Oko is a planeswalker with three loyalty abilities: creates Food tokens for value, transforms artifacts/creatures into 3/3 Elks (removing abilities), and exchanges control of permanents. The Elk ability acts as removal by neutralizing threats.",
     "flaggedAmbiguities": []
   }
 }

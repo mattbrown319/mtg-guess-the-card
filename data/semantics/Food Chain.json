@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,14 +13,18 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
-    "hasManaAbility": true,
-    "hasNonManaActivatedAbility": false,
+    "hasManaAbility": false,
+    "hasNonManaActivatedAbility": true,
     "namedMechanics": []
   },
   "actions": {
@@ -60,7 +64,7 @@
     "exilesArtifact": false,
     "exilesEnchantment": false,
     "exilesLand": false,
-    "exilesPermanent": true,
+    "exilesPermanent": false,
     "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
@@ -89,6 +93,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,7 +115,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -122,6 +140,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -152,24 +172,30 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": true,
+    "canEnterUntapped": false,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Mana added scales with exiled creature's mana value",
-      "Mana restriction: can only be spent to cast creature spells"
+      "The mana produced can only be spent to cast creature spells, creating a spending restriction"
     ]
   },
   "audit": {
-    "shortRationale": "Food Chain is an enchantment with a mana ability that exiles your own creatures to generate mana equal to 1 plus their mana value, restricted to casting creature spells only.",
+    "shortRationale": "Food Chain is an enchantment with an activated ability that exiles your creatures to generate mana equal to 1 plus their mana value, but that mana can only be used to cast creature spells.",
     "flaggedAmbiguities": []
   }
 }

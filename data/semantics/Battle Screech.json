@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -59,7 +63,7 @@
     "exilesEnchantment": false,
     "exilesLand": false,
     "exilesPermanent": false,
-    "exilesFromGraveyard": true,
+    "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
     "reanimatesSelf": false,
@@ -70,12 +74,10 @@
     "countersSpells": false,
     "copiesSpells": false,
     "copiesPermanents": false,
-    "tapsThings": true,
+    "tapsThings": false,
     "untapsThings": false,
-    "grantsKeywords": true,
-    "grantedKeywords": [
-      "flying"
-    ],
+    "grantsKeywords": false,
+    "grantedKeywords": [],
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
@@ -89,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -122,13 +138,15 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
     "caresAboutCombat": false,
     "caresAboutDamage": false,
-    "caresAboutTappedUntappedState": true,
+    "caresAboutTappedUntappedState": false,
     "caresAboutColors": true,
     "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
@@ -157,18 +175,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Flashback cost requires tapping three untapped white creatures as an alternative cost"
+      "Flashback cost requires tapping three untapped white creatures you control as an alternative cost"
     ]
   },
   "audit": {
-    "shortRationale": "Battle Screech creates two 1/1 white Bird tokens with flying, and can be cast from the graveyard by tapping three white creatures via flashback.",
+    "shortRationale": "Battle Screech creates two 1/1 white Bird tokens with flying. It has flashback that can be paid by tapping three white creatures, allowing it to be cast from the graveyard for additional value.",
     "flaggedAmbiguities": []
   }
 }

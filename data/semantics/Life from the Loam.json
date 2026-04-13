@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": true,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -60,7 +64,7 @@
     "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
-    "reanimatesSelf": false,
+    "reanimatesSelf": true,
     "reanimatesOther": false,
     "returnsToHand": true,
     "bouncesCreature": false,
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -139,7 +159,7 @@
     "mentionsLand": true,
     "mentionsPlaneswalker": false,
     "mentionsGraveyard": true,
-    "mentionsLibrary": false,
+    "mentionsLibrary": true,
     "mentionsHand": true,
     "mentionsExile": false,
     "mentionsOpponent": false,
@@ -153,20 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "land_cards_in_graveyard"
-    ],
-    "hasTargeting": true
+      "land cards in graveyard"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Dredge is an optional replacement effect that replaces card draws"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Life from the Loam returns up to three land cards from graveyard to hand when cast, and has dredge 3 which lets you optionally mill three cards instead of drawing to return this card from graveyard to hand.",
+    "shortRationale": "Life from the Loam returns up to three lands from graveyard to hand when cast, and can repeatedly return itself from graveyard via dredge 3, replacing draws with self-mill.",
     "flaggedAmbiguities": []
   }
 }

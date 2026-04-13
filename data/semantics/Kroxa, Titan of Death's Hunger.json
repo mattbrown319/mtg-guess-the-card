@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,11 +136,13 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
-    "caresAboutEnterBattlefield": true,
+    "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
-    "caresAboutCombat": true,
+    "caresAboutCombat": false,
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
@@ -144,7 +164,7 @@
     "mentionsExile": true,
     "mentionsOpponent": true,
     "mentionsPlayer": false,
-    "mentionsCombat": true
+    "mentionsCombat": false
   },
   "battlefield": {
     "entersTapped": false,
@@ -153,19 +173,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Card sacrifices itself unless cast via escape",
-      "Life loss is conditional on what was discarded (nonland vs land)"
+      "Card sacrifices itself unless cast with escape cost",
+      "Life loss only triggers if opponent discarded a land or no card"
     ]
   },
   "audit": {
-    "shortRationale": "Kroxa forces opponents to discard when it enters or attacks, dealing 3 life loss to those who discard lands or nothing. It sacrifices itself unless escaped from graveyard by exiling five cards.",
+    "shortRationale": "Kroxa forces opponents to discard and lose life when entering or attacking. It has escape as an alternative casting cost from the graveyard, exiling five cards as part of that cost.",
     "flaggedAmbiguities": []
   }
 }

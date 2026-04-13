@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -71,15 +75,13 @@
     "copiesPermanents": false,
     "tapsThings": false,
     "untapsThings": false,
-    "grantsKeywords": true,
-    "grantedKeywords": [
-      "flying"
-    ],
-    "grantsEvasion": true,
-    "grantsPTBonus": true,
+    "grantsKeywords": false,
+    "grantedKeywords": [],
+    "grantsEvasion": false,
+    "grantsPTBonus": false,
     "grantsPTPenalty": false,
-    "modifiesPower": true,
-    "modifiesToughness": true,
+    "modifiesPower": false,
+    "modifiesToughness": false,
     "usesPlusOneCounters": false,
     "usesMinusOneCounters": false,
     "addsOtherCounters": false,
@@ -88,6 +90,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +112,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": true,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,11 +137,13 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
-    "caresAboutInstantsAndSorceries": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
+    "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
-    "caresAboutCombat": true,
+    "caresAboutCombat": false,
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
@@ -156,18 +174,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The +2/+2 bonus, flying, and forced attack requirement only apply when delirium is active"
+      "Power and toughness bonus and flying are conditional on delirium",
+      "Must attack if able when delirium is active"
     ]
   },
   "audit": {
-    "shortRationale": "Dragon's Rage Channeler triggers on noncreature spells to surveil 1, and gains +2/+2, flying, and must attack each combat when delirium is active (four or more card types in graveyard).",
+    "shortRationale": "Dragon's Rage Channeler triggers surveil 1 whenever you cast a noncreature spell, providing card selection. With delirium (four or more card types in graveyard), it becomes a 3/3 flier that must attack each combat.",
     "flaggedAmbiguities": []
   }
 }

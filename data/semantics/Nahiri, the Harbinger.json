@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
-    "hasTriggeredAbility": false,
+    "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
     "hasStaticAbility": false,
     "hasReplacementEffect": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": true,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,12 +111,23 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
-    "caresAboutArtifacts": false,
-    "caresAboutEnchantments": false,
+    "caresAboutCreatures": true,
+    "caresAboutArtifacts": true,
+    "caresAboutEnchantments": true,
     "caresAboutLands": false,
     "caresAboutNonbasicLands": false,
     "caresAboutGraveyard": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -153,22 +173,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "enchantment",
       "artifact",
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "The -2 ability can only target tapped artifacts or tapped creatures, not untapped ones"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Nahiri is a planeswalker with three loyalty abilities: optional loot (discard then draw), exile tapped permanents, and an ultimate that cheats artifacts/creatures from library onto battlefield with haste then returns them to hand.",
+    "shortRationale": "Nahiri is a planeswalker with three loyalty abilities: looting (discard then draw), removal that exiles tapped permanents, and an ultimate that tutors creatures/artifacts from library to battlefield temporarily with haste.",
     "flaggedAmbiguities": []
   }
 }

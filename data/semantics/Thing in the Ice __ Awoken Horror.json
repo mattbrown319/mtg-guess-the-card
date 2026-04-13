@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": true,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,8 +26,7 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
     "namedMechanics": [
-      "transform",
-      "defender"
+      "transform"
     ]
   },
   "actions": {
@@ -88,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": true,
+    "payoffForCastingInstantsOrSorceries": true
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -121,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -156,20 +175,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": true,
     "faceDependent": true,
     "notes": [
-      "Front face has defender, back face does not",
-      "Transforms when all ice counters are removed",
-      "Back face bounces all non-Horror creatures on transform"
+      "Front face is 0/4 with defender, back face is 7/8 without defender",
+      "Transformation trigger based on ice counter removal"
     ]
   },
   "audit": {
-    "shortRationale": "Thing in the Ice enters with four ice counters and defender; whenever you cast an instant or sorcery, remove a counter and transform it when empty. Awoken Horror bounces all non-Horror creatures when it transforms.",
+    "shortRationale": "Thing in the Ice is a DFC that enters with 4 ice counters and removes one whenever you cast an instant or sorcery, transforming into Awoken Horror when all counters are removed, which bounces all non-Horror creatures to their owners' hands.",
     "flaggedAmbiguities": []
   }
 }

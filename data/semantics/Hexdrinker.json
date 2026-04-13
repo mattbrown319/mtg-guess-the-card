@@ -1,11 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
     "hasStaticAbility": true,
     "hasReplacementEffect": false,
-    "hasPreventionEffect": true,
+    "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
     "hasLeavesBattlefieldTrigger": false,
     "hasDiesTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -88,6 +92,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -97,7 +104,7 @@
     "causesLifeLossForOpponent": false,
     "paysLife": false,
     "takesExtraTurn": false,
-    "preventsDamage": true,
+    "preventsDamage": false,
     "redirectsDamage": false,
     "animatesSelf": false,
     "animatesOtherPermanent": false,
@@ -107,7 +114,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,6 +139,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -156,20 +176,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "P/T and abilities change based on level counters",
-      "Protection from instants at levels 3-7",
-      "Protection from everything at level 8+"
+      "Power and toughness scale with level counters",
+      "Protection abilities gained at specific level thresholds"
     ]
   },
   "audit": {
-    "shortRationale": "Hexdrinker is a leveler creature that grows in size and gains increasing levels of protection (from instants, then from everything) as you invest mana into it via its level up activated ability.",
+    "shortRationale": "Hexdrinker is a 1/1 Snake creature with level up that grows to 4/4 with protection from instants at 3+ levels, and 6/6 with protection from everything at 8+ levels.",
     "flaggedAmbiguities": []
   }
 }

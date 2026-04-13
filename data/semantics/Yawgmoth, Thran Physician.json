@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -22,8 +26,8 @@
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
-      "protection",
-      "proliferate"
+      "proliferate",
+      "protection"
     ]
   },
   "actions": {
@@ -82,12 +86,15 @@
     "usesMinusOneCounters": true,
     "addsOtherCounters": true,
     "otherCounterTypes": [
-      "any_existing_counters_via_proliferate"
+      "any counter type via proliferate"
     ],
     "sacrificesOwnPermanent": true,
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -97,7 +104,7 @@
     "causesLifeLossForOpponent": false,
     "paysLife": true,
     "takesExtraTurn": false,
-    "preventsDamage": true,
+    "preventsDamage": false,
     "redirectsDamage": false,
     "animatesSelf": false,
     "animatesOtherPermanent": false,
@@ -107,10 +114,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": true,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": false,
+    "caresAboutCreatures": true,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -119,8 +137,10 @@
     "caresAboutCardsDrawn": false,
     "caresAboutDiscard": false,
     "caresAboutLifeGainOrLoss": false,
-    "caresAboutCounters": false,
+    "caresAboutCounters": true,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -156,20 +176,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "creature"
-    ],
-    "hasTargeting": true
+      "creature",
+      "permanent",
+      "player"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "First activated ability targets up to one creature, making targeting optional"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Yawgmoth has protection from Humans and two activated abilities: one that pays life and sacrifices a creature to put a -1/-1 counter on a target creature and draw a card, and another that discards a card to proliferate.",
+    "shortRationale": "Yawgmoth is a legendary creature with protection from Humans, two activated abilities that create a sacrifice-based card draw engine with -1/-1 counters, and a proliferate ability that multiplies counters on permanents and players.",
     "flaggedAmbiguities": []
   }
 }

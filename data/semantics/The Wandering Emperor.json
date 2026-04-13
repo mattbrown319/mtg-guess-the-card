@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,11 +13,13 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
-    "hasModalChoice": true,
-    "modalCount": 3,
-    "modalKind": [
-      "loyalty_ability"
-    ],
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
+    "hasModalChoice": false,
+    "modalCount": null,
+    "modalKind": [],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
@@ -60,7 +62,7 @@
     "exilesArtifact": false,
     "exilesEnchantment": false,
     "exilesLand": false,
-    "exilesPermanent": false,
+    "exilesPermanent": true,
     "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
@@ -80,10 +82,10 @@
       "vigilance"
     ],
     "grantsEvasion": false,
-    "grantsPTBonus": false,
+    "grantsPTBonus": true,
     "grantsPTPenalty": false,
-    "modifiesPower": false,
-    "modifiesToughness": false,
+    "modifiesPower": true,
+    "modifiesToughness": true,
     "usesPlusOneCounters": true,
     "usesMinusOneCounters": false,
     "addsOtherCounters": false,
@@ -92,6 +94,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": true,
     "gainsLifeForController": true,
@@ -111,7 +116,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -125,6 +141,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -160,21 +178,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
-      "creature",
-      "tapped_creature"
-    ],
-    "hasTargeting": true
+      "creature"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Static ability allows instant-speed loyalty activation only on turn entered"
+      "Static ability allows loyalty abilities at instant speed the turn she enters"
     ]
   },
   "audit": {
-    "shortRationale": "A planeswalker with flash that can use loyalty abilities at instant speed on the turn it enters. It adds +1/+1 counters and first strike, creates 2/2 Samurai tokens with vigilance, or exiles tapped creatures while gaining life.",
+    "shortRationale": "The Wandering Emperor is a planeswalker with flash that can use loyalty abilities at instant speed the turn she enters. She can buff creatures with +1/+1 counters and first strike, create Samurai tokens, or exile tapped creatures while gaining life.",
     "flaggedAmbiguities": []
   }
 }

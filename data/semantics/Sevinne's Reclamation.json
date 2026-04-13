@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -57,7 +61,7 @@
     "exilesEnchantment": false,
     "exilesLand": false,
     "exilesPermanent": false,
-    "exilesFromGraveyard": true,
+    "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
     "reanimatesSelf": false,
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": true,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -117,7 +135,9 @@
     "caresAboutDiscard": false,
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
-    "caresAboutCastingSpells": true,
+    "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -126,7 +146,7 @@
     "caresAboutDamage": false,
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
-    "caresAboutManaSpent": true,
+    "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
@@ -153,22 +173,28 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "permanent card in graveyard"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Reanimates permanent cards with mana value 3 or less",
-      "Creates a copy of itself when cast from graveyard",
-      "Flashback exiles itself after resolution"
+      "Self-copies when cast from graveyard via flashback",
+      "Restricted to permanents with mana value 3 or less"
     ]
   },
   "audit": {
-    "shortRationale": "This sorcery returns a low-cost permanent from your graveyard to the battlefield, and if cast via its flashback ability from the graveyard, it copies itself for a second reanimation target.",
+    "shortRationale": "A white sorcery that returns a permanent card with mana value 3 or less from graveyard to battlefield, with flashback that creates a copy of itself when cast from the graveyard, providing potential 2-for-1 value.",
     "flaggedAmbiguities": []
   }
 }

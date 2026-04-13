@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": true,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -70,10 +74,8 @@
     "copiesPermanents": false,
     "tapsThings": false,
     "untapsThings": false,
-    "grantsKeywords": true,
-    "grantedKeywords": [
-      "protection"
-    ],
+    "grantsKeywords": false,
+    "grantedKeywords": [],
     "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
@@ -89,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": true,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,7 +137,9 @@
     "caresAboutDiscard": false,
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": true,
-    "caresAboutCastingSpells": true,
+    "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -157,19 +175,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "ETB ability only triggers if cast, not if put into play by other means",
-      "Card draw scales with burden counters accumulated"
+      "ETB trigger only fires if cast, not if put onto battlefield by other means"
     ]
   },
   "audit": {
-    "shortRationale": "The One Ring is an indestructible artifact that grants protection from everything when cast, has an upkeep life loss trigger scaling with burden counters, and an activated ability that adds burden counters and draws cards equal to the total burden counters.",
+    "shortRationale": "The One Ring is an indestructible artifact that grants protection from everything when cast, has an upkeep trigger causing life loss based on burden counters, and an activated ability to add burden counters and draw cards equal to the total burden counters.",
     "flaggedAmbiguities": []
   }
 }

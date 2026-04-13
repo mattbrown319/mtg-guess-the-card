@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -23,8 +27,8 @@
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
       "cycling",
-      "landcycling",
       "basic landcycling",
+      "landcycling",
       "typecycling"
     ]
   },
@@ -45,7 +49,7 @@
     "createdTokenTypes": [],
     "addsMana": true,
     "addedManaColors": [
-      "colorless"
+      "C"
     ],
     "canAddAnyColor": false,
     "canAddMultipleColors": false,
@@ -90,6 +94,15 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": true,
     "fetchesBasicLand": true,
+    "fetchesBasicLandOnly": true,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [
+      "Plains",
+      "Island",
+      "Swamp",
+      "Mountain",
+      "Forest"
+    ],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -109,7 +122,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -123,6 +147,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -158,8 +184,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -167,7 +200,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "Ash Barrens is a land that taps for colorless mana and has basic landcycling, allowing you to discard it to search for a basic land card.",
+    "shortRationale": "Ash Barrens is a land that taps for colorless mana and has basic landcycling, allowing you to discard it to search for any basic land card and put it into your hand.",
     "flaggedAmbiguities": []
   }
 }

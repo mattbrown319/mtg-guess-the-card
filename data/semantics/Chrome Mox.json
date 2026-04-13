@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -41,14 +45,8 @@
     "createsTokens": false,
     "createdTokenTypes": [],
     "addsMana": true,
-    "addedManaColors": [
-      "W",
-      "U",
-      "B",
-      "R",
-      "G"
-    ],
-    "canAddAnyColor": false,
+    "addedManaColors": [],
+    "canAddAnyColor": true,
     "canAddMultipleColors": false,
     "filtersMana": false,
     "dealsDamage": false,
@@ -91,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -110,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -124,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -159,19 +173,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Mana production depends on the color(s) of the exiled card",
-      "If no card is exiled, the mana ability produces nothing"
+      "Mana production depends on the colors of the imprinted card",
+      "Functionality requires exiling a card with the imprint trigger"
     ]
   },
   "audit": {
-    "shortRationale": "Chrome Mox is a zero-cost artifact that uses the Imprint mechanic to exile a nonartifact, nonland card on ETB, then taps to produce mana of any color the exiled card has.",
+    "shortRationale": "Chrome Mox is a zero-cost artifact that lets you exile a nonartifact, nonland card from your hand when it enters, then taps to add one mana of any color that the exiled card has. It provides mana acceleration at the cost of card disadvantage.",
     "flaggedAmbiguities": []
   }
 }

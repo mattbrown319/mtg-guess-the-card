@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,14 +13,18 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
     "hasAdditionalCost": true,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
-    "hasManaAbility": false,
-    "hasNonManaActivatedAbility": true,
+    "hasManaAbility": true,
+    "hasNonManaActivatedAbility": false,
     "namedMechanics": []
   },
   "actions": {
@@ -89,6 +93,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,7 +115,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -122,6 +140,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -138,7 +158,7 @@
   },
   "references": {
     "mentionsCreature": false,
-    "mentionsArtifact": true,
+    "mentionsArtifact": false,
     "mentionsEnchantment": false,
     "mentionsLand": false,
     "mentionsPlaneswalker": false,
@@ -157,20 +177,23 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "The restriction 'Activate only as an instant' means this can only be activated when you could cast an instant, not that it is a mana ability"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Lion's Eye Diamond is an artifact with an activated ability that requires discarding your hand and sacrificing itself to add three mana of any one color, with the timing restriction that it can only be activated when you could cast an instant.",
-    "flaggedAmbiguities": [
-      "Despite producing mana, this is NOT a mana ability due to the timing restriction, so hasManaAbility is false and hasNonManaActivatedAbility is true"
-    ]
+    "shortRationale": "Lion's Eye Diamond is a mana-generating artifact with an activated mana ability that requires discarding your hand and sacrificing itself to produce three mana of any one color at instant speed.",
+    "flaggedAmbiguities": []
   }
 }

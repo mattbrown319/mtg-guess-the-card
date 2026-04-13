@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -23,9 +27,9 @@
     "hasNonManaActivatedAbility": true,
     "namedMechanics": [
       "cycling",
+      "swampcycling",
       "landcycling",
-      "typecycling",
-      "swampcycling"
+      "typecycling"
     ]
   },
   "actions": {
@@ -75,7 +79,7 @@
     "untapsThings": false,
     "grantsKeywords": false,
     "grantedKeywords": [],
-    "grantsEvasion": true,
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -88,6 +92,11 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": true,
     "fetchesBasicLand": true,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": true,
+    "fetchedLandTypes": [
+      "Swamp"
+    ],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -107,7 +116,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -121,6 +141,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -147,7 +169,7 @@
     "mentionsExile": false,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
-    "mentionsCombat": true
+    "mentionsCombat": false
   },
   "battlefield": {
     "entersTapped": false,
@@ -156,8 +178,15 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
@@ -165,7 +194,7 @@
     "notes": []
   },
   "audit": {
-    "shortRationale": "A 6-mana creature with evasion (requiring 3+ blockers) and a Swampcycling ability that lets you discard it to search for a Swamp card.",
+    "shortRationale": "A creature with evasion that requires three or more blockers, and has swampcycling to search for Swamp cards as an alternative use.",
     "flaggedAmbiguities": []
   }
 }

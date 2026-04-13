@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,12 +13,16 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 3,
     "modalKind": [
-      "damage_creatures",
-      "damage_opponents",
-      "destroy_artifact"
+      "damage",
+      "damage",
+      "destruction"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -49,14 +53,14 @@
     "filtersMana": false,
     "dealsDamage": true,
     "damageTargets": [
-      "each_creature",
-      "each_opponent"
+      "creature",
+      "opponent"
     ],
     "destroysCreature": false,
     "destroysArtifact": true,
     "destroysEnchantment": false,
     "destroysLand": false,
-    "destroysPermanent": false,
+    "destroysPermanent": true,
     "exilesCreature": false,
     "exilesArtifact": false,
     "exilesEnchantment": false,
@@ -90,6 +94,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -109,7 +116,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -123,6 +141,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -158,20 +178,30 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "artifact"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Modal spell allowing same mode to be chosen multiple times"
+      "Modal spell allowing the same mode to be chosen multiple times",
+      "Can deal up to 3 damage to each creature if all three modes choose option 1",
+      "Can deal up to 6 damage to each opponent if all three modes choose option 2",
+      "Can destroy up to 3 artifacts if all three modes choose option 3"
     ]
   },
   "audit": {
-    "shortRationale": "Modal sorcery that deals damage to creatures and/or opponents and/or destroys artifacts, with the flexibility to choose the same mode multiple times.",
+    "shortRationale": "A modal red sorcery that lets you choose three times from three options: deal 1 damage to each creature, deal 2 damage to each opponent, or destroy target artifact. You can repeat the same mode multiple times.",
     "flaggedAmbiguities": []
   }
 }

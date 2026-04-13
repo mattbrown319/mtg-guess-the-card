@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -40,7 +44,6 @@
     "createdTokenTypes": [],
     "addsMana": true,
     "addedManaColors": [
-      "C",
       "W",
       "U",
       "B",
@@ -90,6 +93,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -109,7 +115,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": true,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -123,6 +140,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
+    "caresAboutControllerCastingSpells": true,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -141,7 +160,7 @@
     "mentionsCreature": true,
     "mentionsArtifact": false,
     "mentionsEnchantment": false,
-    "mentionsLand": true,
+    "mentionsLand": false,
     "mentionsPlaneswalker": false,
     "mentionsGraveyard": false,
     "mentionsLibrary": false,
@@ -158,19 +177,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The second mana ability has a restriction on how the mana can be spent",
-      "The mana ability also provides an uncounterable effect to creature spells of the chosen type"
+      "Requires choosing a creature type as it enters the battlefield",
+      "Second mana ability has a restriction on how the mana can be spent and grants uncounterability to the creature spell"
     ]
   },
   "audit": {
-    "shortRationale": "Cavern of Souls is a land with two mana abilities: one produces colorless mana, the other produces colored mana restricted to casting creature spells of a type chosen as it enters, making those spells uncounterable.",
+    "shortRationale": "Cavern of Souls is a land that produces colorless mana or colored mana restricted to casting creature spells of a chosen type, making those spells uncounterable.",
     "flaggedAmbiguities": []
   }
 }

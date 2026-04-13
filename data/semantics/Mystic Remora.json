@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": true,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,10 +113,21 @@
     "taxesOpponent": true,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": true,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": true,
+    "caresAboutCreatures": false,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -118,9 +136,11 @@
     "caresAboutCardsDrawn": false,
     "caresAboutDiscard": false,
     "caresAboutLifeGainOrLoss": false,
-    "caresAboutCounters": true,
+    "caresAboutCounters": false,
     "caresAboutCastingSpells": true,
-    "caresAboutInstantsAndSorceries": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": true,
+    "caresAboutInstantsAndSorceries": true,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
     "caresAboutLeaveBattlefield": false,
@@ -150,24 +170,31 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Cumulative upkeep cost increases each turn",
-      "Opponent can pay {4} to prevent the draw"
+      "Trigger is optional for controller",
+      "Opponent may pay {4} to prevent draw"
     ]
   },
   "audit": {
-    "shortRationale": "Mystic Remora triggers whenever an opponent casts a noncreature spell, allowing you to draw a card unless they pay {4}. It has cumulative upkeep requiring increasing mana payments or sacrifice.",
+    "shortRationale": "Mystic Remora triggers whenever an opponent casts a noncreature spell, giving you the option to draw a card unless that opponent pays {4}. It has cumulative upkeep that eventually forces you to sacrifice it.",
     "flaggedAmbiguities": []
   }
 }

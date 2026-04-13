@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": true,
-    "hasStaticAbility": false,
+    "hasStaticAbility": true,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": false,
@@ -13,19 +13,19 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
     "hasOptionalAdditionalCost": false,
-    "hasManaAbility": false,
+    "hasManaAbility": true,
     "hasNonManaActivatedAbility": true,
-    "namedMechanics": [
-      "vigilance",
-      "haste",
-      "indestructible"
-    ]
+    "namedMechanics": []
   },
   "actions": {
     "drawsCards": false,
@@ -92,7 +92,12 @@
     "sacrificesOwnPermanent": false,
     "forcesOpponentSacrifice": false,
     "fetchesLand": true,
-    "fetchesBasicLand": false,
+    "fetchesBasicLand": true,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": true,
+    "fetchedLandTypes": [
+      "Forest"
+    ],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -112,7 +117,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": true,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -126,6 +142,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -161,21 +179,27 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "land"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Plus ability animates lands into 0/0 creatures that rely on +1/+1 counters for size",
-      "Ultimate creates emblem granting lands indestructible"
+      "The +1 ability animates a land you control into a 0/0 Elemental creature with three +1/+1 counters, vigilance, and haste"
     ]
   },
   "audit": {
-    "shortRationale": "This planeswalker doubles Forest mana production, can animate lands into creatures with vigilance and haste, and has an ultimate that grants all lands indestructible while fetching any number of Forests from the library.",
+    "shortRationale": "Nissa doubles green mana from Forests, can animate lands into 3/3 creatures with vigilance and haste, and has an ultimate that grants indestructible to all your lands while fetching all Forests from your library.",
     "flaggedAmbiguities": []
   }
 }

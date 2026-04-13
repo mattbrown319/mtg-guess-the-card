@@ -8,10 +8,22 @@ You must output a JSON object matching the schema below. Be precise and literal.
 CRITICAL RULES:
 
 0. ALTERNATIVE COSTS: hasAlternativeCost should ONLY be true for actual alternative ways to CAST the spell:
-   Force of Will (pitch a blue card), evoke, ninjutsu, delve, phyrexian mana in casting cost, spectacle, dash, etc.
+   Force of Will (pitch a blue card), evoke, ninjutsu, delve, phyrexian mana in casting cost, spectacle, dash,
+   flashback, channel, escape, suspend, etc.
    Cycling is NOT an alternative casting cost — it's an activated ability. Equip is NOT an alternative casting cost.
    Cards that let you cast OTHER spells with alternative costs (Bolas's Citadel, Dream Halls, Omniscience) →
    set grantsAlternativeCostToOtherSpells: true, NOT hasAlternativeCost: true.
+
+0a. PAYING LIFE = LOSING LIFE: Per MTG rule 119.4, paying life IS losing life.
+    If a card has "pay 1 life" as a cost → paysLife: true AND causesLifeLoss: true AND causesLifeLossForController: true.
+
+0b. SACRIFICE = ADDITIONAL COST: If an ability requires sacrificing a permanent (including self) as part of its cost,
+    hasAdditionalCost: true. Fetchlands (sacrifice this land) = hasAdditionalCost: true.
+    Also: if a card sacrifices ITSELF, BOTH sacrificesSelf: true AND sacrificesOwnPermanent: true.
+
+0c. KEYWORD-DERIVED ACTIONS: Creatures with lifelink inherently gain life → gainsLife: true.
+    Creatures inherently deal combat damage → dealsDamage: true (for creatures with power > 0).
+    Cycling draws a card → drawsCards: true, drawsCardsForController: true.
 
 1. ACTIONS vs CONDITIONS vs REFERENCES:
    - ACTIONS = things the card's effects actively DO.
@@ -47,6 +59,18 @@ CRITICAL RULES:
 6. For DFCs (double-faced cards), analyze BOTH faces combined. Set faceDependent: true.
 
 7. Be conservative. If genuinely unsure, set to false and note in audit.flaggedAmbiguities.
+
+7a. MODAL vs TARGET RESTRICTION: hasModalChoice should ONLY be true for genuine modal spells
+    with "Choose one", "Choose two", bulleted options, or spree/entwine structures.
+    A card that says "destroy target artifact, enchantment, or land" is NOT modal — that's a
+    target restriction with multiple valid target types. Acidic Slime = NOT modal. Abrade = modal
+    (it has "Choose one" with two distinct effects). Austere Command = modal.
+
+7b. STATIC ABILITIES on instants/sorceries: "This spell can't be countered" on an instant or
+    sorcery should NOT set hasStaticAbility: true. hasStaticAbility is for PERMANENTS with
+    continuous effects on the battlefield (like "Creatures you control have haste" or
+    "Nonland permanents your opponents control enter tapped"). Spell-only text like "can't be
+    countered" or "this spell costs {1} less" are properties of the spell, not static abilities.
 
 8. namedMechanics should include mechanic names found in the rules text or keywords:
    cycling, flashback, kicker, multikicker, cascade, storm, devoid, convoke, delve,

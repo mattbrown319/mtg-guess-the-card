@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -120,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": true,
@@ -137,16 +157,16 @@
   "references": {
     "mentionsCreature": true,
     "mentionsArtifact": false,
-    "mentionsEnchantment": true,
+    "mentionsEnchantment": false,
     "mentionsLand": false,
-    "mentionsPlaneswalker": true,
+    "mentionsPlaneswalker": false,
     "mentionsGraveyard": false,
     "mentionsLibrary": false,
     "mentionsHand": false,
     "mentionsExile": false,
     "mentionsOpponent": false,
-    "mentionsPlayer": true,
-    "mentionsCombat": true
+    "mentionsPlayer": false,
+    "mentionsCombat": false
   },
   "battlefield": {
     "entersTapped": false,
@@ -155,19 +175,26 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "ETB trigger only happens if condition is met when enchantment enters",
-      "Ongoing trigger only checks power 4+ creatures entering"
+      "ETB trigger requires controlling a creature with power 4 or greater",
+      "Repeated draw trigger requires creatures with power 4 or greater entering"
     ]
   },
   "audit": {
-    "shortRationale": "Garruk's Uprising grants trample to all creatures you control and triggers card draw when it enters (if you control a 4+ power creature) and whenever a 4+ power creature enters under your control.",
+    "shortRationale": "Garruk's Uprising grants trample to all your creatures and draws you cards when it enters (if you control a big creature) and whenever a big creature enters under your control, providing card advantage for playing large creatures.",
     "flaggedAmbiguities": []
   }
 }

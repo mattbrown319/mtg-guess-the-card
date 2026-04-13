@@ -1,11 +1,11 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
     "hasStaticAbility": true,
-    "hasReplacementEffect": true,
-    "hasPreventionEffect": false,
+    "hasReplacementEffect": false,
+    "hasPreventionEffect": true,
     "hasEnterBattlefieldTrigger": false,
     "hasLeavesBattlefieldTrigger": false,
     "hasDiesTrigger": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": true,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -21,11 +25,7 @@
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
     "hasNonManaActivatedAbility": false,
-    "namedMechanics": [
-      "vigilance",
-      "deathtouch",
-      "haste"
-    ]
+    "namedMechanics": []
   },
   "actions": {
     "drawsCards": false,
@@ -76,7 +76,7 @@
     "untapsThings": false,
     "grantsKeywords": false,
     "grantedKeywords": [],
-    "grantsEvasion": true,
+    "grantsEvasion": false,
     "grantsPTBonus": false,
     "grantsPTPenalty": false,
     "modifiesPower": false,
@@ -89,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -108,10 +111,21 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": true,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
-    "caresAboutCreatures": true,
+    "caresAboutCreatures": false,
     "caresAboutArtifacts": false,
     "caresAboutEnchantments": false,
     "caresAboutLands": false,
@@ -122,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -131,7 +147,7 @@
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
-    "caresAboutPowerOrToughness": true,
+    "caresAboutPowerOrToughness": false,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
     "caresAboutAuras": false
@@ -157,18 +173,25 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": true,
+    "targetKinds": [
+      "planeswalker"
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "The combat damage trigger targets a planeswalker on resolution, not on cast"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Questing Beast is a legendary creature with vigilance, deathtouch, and haste that has evasion against small blockers, prevents combat damage prevention for your creatures, and damages planeswalkers when it deals combat damage to opponents.",
+    "shortRationale": "Questing Beast is a 4/4 creature with vigilance, deathtouch, and haste that has evasion against small blockers, prevents combat damage prevention, and triggers when dealing combat damage to an opponent to also damage their planeswalkers.",
     "flaggedAmbiguities": []
   }
 }

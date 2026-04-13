@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
     "hasActivatedAbility": false,
-    "hasStaticAbility": true,
+    "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
     "hasEnterBattlefieldTrigger": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -58,7 +62,7 @@
     "exilesArtifact": false,
     "exilesEnchantment": false,
     "exilesLand": false,
-    "exilesPermanent": false,
+    "exilesPermanent": true,
     "exilesFromGraveyard": false,
     "exilesFromLibrary": false,
     "exilesFromHand": false,
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": true,
     "gainsLifeForController": false,
@@ -106,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": false,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -120,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -129,7 +149,7 @@
     "caresAboutTappedUntappedState": false,
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
-    "caresAboutPowerOrToughness": false,
+    "caresAboutPowerOrToughness": true,
     "caresAboutTokens": false,
     "caresAboutEquipment": false,
     "caresAboutAuras": false
@@ -142,7 +162,7 @@
     "mentionsPlaneswalker": false,
     "mentionsGraveyard": false,
     "mentionsLibrary": false,
-    "mentionsHand": true,
+    "mentionsHand": false,
     "mentionsExile": true,
     "mentionsOpponent": false,
     "mentionsPlayer": false,
@@ -150,25 +170,30 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": false,
+    "canEnterUntapped": true,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
-    "notes": [
-      "Evoke provides an alternative cost that exiles a white card from hand"
-    ]
+    "notes": []
   },
   "audit": {
-    "shortRationale": "Solitude is a creature with flash and lifelink that exiles another target creature when it enters, giving that creature's controller life equal to its power. It has evoke as an alternative casting cost.",
+    "shortRationale": "Solitude is a white creature with flash and lifelink that exiles a target creature when it enters the battlefield, giving that creature's controller life equal to its power. It has evoke as an alternative casting cost.",
     "flaggedAmbiguities": []
   }
 }

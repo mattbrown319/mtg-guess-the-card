@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": false,
@@ -13,12 +13,16 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": true,
     "modalCount": 3,
     "modalKind": [
-      "counter spell",
-      "bounce creature",
-      "draw card"
+      "counter",
+      "bounce",
+      "draw"
     ],
     "hasAdditionalCost": false,
     "hasAlternativeCost": false,
@@ -66,7 +70,7 @@
     "reanimatesOther": false,
     "returnsToHand": true,
     "bouncesCreature": true,
-    "bouncesPermanent": false,
+    "bouncesPermanent": true,
     "countersSpells": true,
     "copiesSpells": false,
     "copiesPermanents": false,
@@ -87,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -106,7 +113,18 @@
     "taxesOpponent": true,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -120,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -155,21 +175,29 @@
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "spell",
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Modal spell allowing controller to choose the same mode multiple times, enabling flexible combinations like triple counterspell, triple bounce, triple draw, or any mix"
+      "Modal spell allowing same mode to be chosen multiple times",
+      "Can counter up to 3 spells, bounce up to 3 creatures, or draw up to 3 cards in various combinations"
     ]
   },
   "audit": {
-    "shortRationale": "Modal instant with three modes that can be chosen in any combination: counter spell with mana tax, bounce creature, or draw card. All three modes are actions performed by the spell itself.",
+    "shortRationale": "Mystic Confluence is a flexible modal instant that lets you choose three effects from countering spells (with tax), bouncing creatures, or drawing cards, with the option to repeat modes.",
     "flaggedAmbiguities": []
   }
 }

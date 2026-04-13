@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": true,
-    "hasActivatedAbility": true,
+    "hasActivatedAbility": false,
     "hasStaticAbility": false,
     "hasReplacementEffect": false,
     "hasPreventionEffect": false,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": true,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -20,7 +24,7 @@
     "hasAlternativeCost": true,
     "hasOptionalAdditionalCost": false,
     "hasManaAbility": false,
-    "hasNonManaActivatedAbility": true,
+    "hasNonManaActivatedAbility": false,
     "namedMechanics": [
       "ninjutsu"
     ]
@@ -85,6 +89,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +111,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": false,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": false,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": false,
@@ -118,6 +136,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -147,25 +167,32 @@
     "mentionsCombat": true
   },
   "battlefield": {
-    "entersTapped": true,
-    "canEnterUntapped": false,
-    "alwaysEntersTapped": true,
-    "conditionallyEntersTapped": false
+    "entersTapped": false,
+    "canEnterUntapped": true,
+    "alwaysEntersTapped": false,
+    "conditionallyEntersTapped": true
   },
   "targeting": {
-    "targetKinds": [],
-    "hasTargeting": false
+    "hasTargeting": false,
+    "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "Ninjutsu is an alternative way to put this onto the battlefield tapped and attacking",
-      "The combat damage trigger is optional"
+      "Ninjutsu causes the creature to enter tapped and attacking when used",
+      "Draw trigger is optional (you may draw)"
     ]
   },
   "audit": {
-    "shortRationale": "This creature has ninjutsu (an alternative cost to put it onto the battlefield attacking) and draws its controller a card when it deals combat damage to a player.",
+    "shortRationale": "A 2/2 creature with ninjutsu {1}{U} that draws a card whenever it deals combat damage to a player, providing card advantage through combat damage triggers.",
     "flaggedAmbiguities": []
   }
 }

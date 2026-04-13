@@ -1,6 +1,6 @@
 {
   "_comment": "Manual overrides applied AFTER every Sonnet sweep. Source of truth for corrections.",
-  "_comment2": "Format: card name → path → value. Applied by scripts/apply-overrides.ts",
+  "_comment2": "Format: card name \u2192 path \u2192 value. Applied by scripts/apply-overrides.ts",
   "overrides": [
     {
       "card": "Cast Out",
@@ -9,7 +9,7 @@
       "reason": "Cycling is an activated ability, not an alternative casting cost"
     },
     {
-      "card": "Lórien Revealed",
+      "card": "L\u00f3rien Revealed",
       "field": "structure.hasAlternativeCost",
       "value": false,
       "reason": "Cycling is an activated ability, not an alternative casting cost"
@@ -53,32 +53,408 @@
     {
       "card": "Jace, Vryn's Prodigy // Jace, Telepath Unbound",
       "field": "targeting.targetKinds",
-      "value": ["creature", "instant or sorcery card in graveyard", "opponent"],
-      "reason": "Sonnet used bare 'instant' and 'sorcery' — should be 'instant or sorcery card in graveyard' (his -3 targets cards in graveyard)"
+      "value": [
+        "creature",
+        "instant or sorcery card in graveyard",
+        "opponent"
+      ],
+      "reason": "Sonnet used bare 'instant' and 'sorcery' \u2014 should be 'instant or sorcery card in graveyard' (his -3 targets cards in graveyard)"
     },
     {
       "card": "Dack Fayden",
       "field": "actions.drawsCardsForController",
       "value": true,
-      "reason": "Target player draws — can target yourself"
+      "reason": "Target player draws \u2014 can target yourself"
     },
     {
       "card": "Dack Fayden",
       "field": "actions.drawsCardsForOpponent",
       "value": true,
-      "reason": "Target player draws — can target opponent"
+      "reason": "Target player draws \u2014 can target opponent"
     },
     {
       "card": "Dack Fayden",
       "field": "actions.discardsForController",
       "value": true,
-      "reason": "Target player discards — can target yourself"
+      "reason": "Target player discards \u2014 can target yourself"
     },
     {
       "card": "Dack Fayden",
       "field": "actions.forcesOpponentDiscard",
       "value": true,
-      "reason": "Target player discards — can target opponent"
+      "reason": "Target player discards \u2014 can target opponent"
+    },
+    {
+      "card": "Reality Smasher",
+      "field": "actions.discardsCards",
+      "value": true,
+      "reason": "Opponent discards to prevent counter \u2014 discardsCards parent should be true when forcesOpponentDiscard is true"
+    },
+    {
+      "card": "Prismatic Vista",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "Paying life IS losing life per MTG rule 119.4. causesLifeLoss should be true when paysLife or causesLifeLossForController is true."
+    },
+    {
+      "card": "Arid Mesa",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Baneslayer Angel",
+      "field": "actions.gainsLife",
+      "value": true,
+      "reason": "v2 regression: lifelink inherently gains life"
+    },
+    {
+      "card": "Baneslayer Angel",
+      "field": "actions.gainsLifeForController",
+      "value": true,
+      "reason": "v2 regression: lifelink inherently gains life for controller"
+    },
+    {
+      "card": "Baneslayer Angel",
+      "field": "actions.dealsDamage",
+      "value": true,
+      "reason": "v2 regression: creatures inherently deal combat damage"
+    },
+    {
+      "card": "Black Lotus",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Bloodstained Mire",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Bloodstained Mire",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Dauntless Bodyguard",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Dauthi Voidwalker",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Evolving Wilds",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Fabled Passage",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Faithless Looting",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Fauna Shaman",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Firebolt",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Fleshbag Marauder",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Gingerbrute",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Glen Elendra Archmage",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Goblin Welder",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Inventors' Fair",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Karmic Guide",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Knight of the Reliquary",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Lingering Souls",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Mana Confluence",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Memory Jar",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Miscalculation",
+      "field": "actions.drawsCards",
+      "value": true,
+      "reason": "v2 regression: cycling draws a card"
+    },
+    {
+      "card": "Miscalculation",
+      "field": "actions.drawsCardsForController",
+      "value": true,
+      "reason": "v2 regression: cycling draws for controller"
+    },
+    {
+      "card": "Mishra's Bauble",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Mogg War Marshal",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Momentary Blink",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Mystic Forge",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Mystic Forge",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Necromancy",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Otawara, Soaring City",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: channel IS an alternative casting cost"
+    },
+    {
+      "card": "Pernicious Deed",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Phantasmal Image",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Polluted Delta",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Priest of Forgotten Gods",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Prismatic Vista",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Recurring Nightmare",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Scalding Tarn",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Scalding Tarn",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Scrapheap Scrounger",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Selfless Spirit",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Shriekmaw",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Sulfuric Vortex",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Survival of the Fittest",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Tangle Wire",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Terramorphic Expanse",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Think Twice",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Unburial Rites",
+      "field": "structure.hasAlternativeCost",
+      "value": true,
+      "reason": "v2 regression: flashback IS an alternative casting cost"
+    },
+    {
+      "card": "Verdant Catacombs",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Verdant Catacombs",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Verdant Catacombs",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Viscera Seer",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Windswept Heath",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Wooded Foothills",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
+    },
+    {
+      "card": "Yavimaya Elder",
+      "field": "actions.sacrificesOwnPermanent",
+      "value": true,
+      "reason": "v2 regression: sacrificing self or own permanents should set sacrificesOwnPermanent=true"
+    },
+    {
+      "card": "Yawgmoth's Bargain",
+      "field": "actions.causesLifeLoss",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Yawgmoth's Bargain",
+      "field": "actions.causesLifeLossForController",
+      "value": true,
+      "reason": "v2 regression: paying life IS losing life per MTG rule 119.4"
+    },
+    {
+      "card": "Yawgmoth, Thran Physician",
+      "field": "structure.hasAdditionalCost",
+      "value": true,
+      "reason": "v2 regression: sacrifice/life payment/discard as part of cost IS an additional cost"
     }
   ]
 }

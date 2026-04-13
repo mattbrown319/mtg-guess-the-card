@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": false,
     "hasActivatedAbility": true,
@@ -13,6 +13,10 @@
     "hasBlockTrigger": false,
     "hasUpkeepTrigger": false,
     "hasCombatDamageTrigger": false,
+    "hasBeginningOfCombatTrigger": false,
+    "hasEndStepTrigger": false,
+    "hasDrawStepTrigger": false,
+    "hasEndOfCombatTrigger": false,
     "hasModalChoice": false,
     "modalCount": null,
     "modalKind": [],
@@ -38,8 +42,10 @@
     "looksAtTopOfLibrary": false,
     "searchesLibrary": false,
     "shufflesLibrary": false,
-    "createsTokens": false,
-    "createdTokenTypes": [],
+    "createsTokens": true,
+    "createdTokenTypes": [
+      "Zombie"
+    ],
     "addsMana": false,
     "addedManaColors": [],
     "canAddAnyColor": false,
@@ -85,6 +91,9 @@
     "forcesOpponentSacrifice": false,
     "fetchesLand": false,
     "fetchesBasicLand": false,
+    "fetchesBasicLandOnly": false,
+    "fetchesNonbasicLand": false,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": false,
     "gainsLife": false,
     "gainsLifeForController": false,
@@ -104,7 +113,18 @@
     "taxesOpponent": false,
     "reducesCosts": false,
     "phaseOut": false,
-    "flickersOrBlinks": false
+    "flickersOrBlinks": false,
+    "grantsAlternativeCostToOtherSpells": false,
+    "sacrificesSelf": false,
+    "canCastFromGraveyard": false,
+    "hasEvasion": false,
+    "isRemoval": true,
+    "protectsSelf": false,
+    "protectsOthers": false,
+    "providesCardAdvantage": true,
+    "providesCardSelection": true,
+    "payoffForCastingSpells": false,
+    "payoffForCastingInstantsOrSorceries": false
   },
   "conditions": {
     "caresAboutCreatures": true,
@@ -118,6 +138,8 @@
     "caresAboutLifeGainOrLoss": false,
     "caresAboutCounters": false,
     "caresAboutCastingSpells": false,
+    "caresAboutControllerCastingSpells": false,
+    "caresAboutOpponentCastingSpells": false,
     "caresAboutInstantsAndSorceries": false,
     "caresAboutDeath": false,
     "caresAboutEnterBattlefield": false,
@@ -128,7 +150,7 @@
     "caresAboutColors": false,
     "caresAboutManaSpent": false,
     "caresAboutPowerOrToughness": false,
-    "caresAboutTokens": false,
+    "caresAboutTokens": true,
     "caresAboutEquipment": false,
     "caresAboutAuras": false
   },
@@ -148,25 +170,32 @@
   },
   "battlefield": {
     "entersTapped": false,
-    "canEnterUntapped": true,
+    "canEnterUntapped": false,
     "alwaysEntersTapped": false,
     "conditionallyEntersTapped": false
   },
   "targeting": {
+    "hasTargeting": true,
     "targetKinds": [
       "creature"
-    ],
-    "hasTargeting": true
+    ]
+  },
+  "animated": {
+    "animatesSelf": false,
+    "animatedPower": null,
+    "animatedToughness": null,
+    "animatedKeywords": [],
+    "animatedCreatureType": null
   },
   "conditionality": {
     "typeChangesConditionally": false,
     "faceDependent": false,
     "notes": [
-      "The emblem created by the ultimate ability has a triggered ability that creates tokens, but this is separate from the planeswalker itself"
+      "The emblem's token creation scales with the number of Zombies controlled"
     ]
   },
   "audit": {
-    "shortRationale": "Liliana has three loyalty abilities: weakening creatures temporarily, milling then returning creatures from graveyard to hand, and creating an emblem that generates Zombie tokens. The card itself mills and returns creatures but does not create tokens directly\u2014only the emblem does.",
+    "shortRationale": "Liliana is a planeswalker with three loyalty abilities: weakening creatures, milling and recursion from graveyard, and creating an emblem that generates exponentially growing Zombie tokens each end step.",
     "flaggedAmbiguities": []
   }
 }
