@@ -291,6 +291,7 @@ export type StructuredQuery =
   | AtomicQuery
   | { kind: "unsupported" }
   | { kind: "subjective" }
+  | { kind: "unreliable" }
   | { kind: "ambiguous" };
 
 // ============================================================

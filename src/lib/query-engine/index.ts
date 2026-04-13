@@ -250,15 +250,26 @@ export async function processQuestion(
     };
   }
 
-  // Step 4a: Subjective or ambiguous questions — refund without hitting Sonnet
-  if (translation.envelope.query.kind === "subjective" || translation.envelope.query.kind === "ambiguous") {
-    const reasonCode = translation.envelope.query.kind === "subjective" ? "SUBJECTIVE_QUESTION" : "AMBIGUOUS_QUESTION";
+  // Step 4a: Subjective, unreliable, or ambiguous questions — refund without hitting Sonnet
+  if (translation.envelope.query.kind === "subjective" || translation.envelope.query.kind === "ambiguous" || translation.envelope.query.kind === "unreliable") {
+    const reasonMap: Record<string, string> = {
+      subjective: "SUBJECTIVE_QUESTION",
+      ambiguous: "AMBIGUOUS_QUESTION",
+      unreliable: "UNRELIABLE_QUESTION",
+    };
+    const messageMap: Record<string, string> = {
+      subjective: "I can only answer factual questions about the card's rules and properties.",
+      ambiguous: "I'm not sure about that — try asking something else or rephrasing.",
+      unreliable: "I'm not confident I can answer that accurately — try a different angle.",
+    };
+    const kind = translation.envelope.query.kind;
+    const reasonCode = reasonMap[kind] || "UNKNOWN_REFUND";
     const totalMs = Date.now() - t0;
     console.log(`[QE] ${reasonCode} — refunding (${totalMs}ms)`);
     if (sessionId) {
       persistLog({
         sessionId, cardName: card.name, question,
-        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: translation.envelope.query.kind,
+        translatedQuery: JSON.stringify(translation.envelope.query), queryKind: kind,
         validationErrors: null, outcome: "refund",
         reasonCode, usedContext: translation.envelope.meta?.usedContext || false,
         translateLatencyMs: translation.latencyMs, totalLatencyMs: totalMs,
@@ -266,7 +277,7 @@ export async function processQuestion(
     }
     return {
       outcome: "refund",
-      playerMessage: "I'm not sure about that — try asking something else or rephrasing.",
+      playerMessage: messageMap[kind] || "I'm not sure about that — try asking something else or rephrasing.",
       reasonCode,
       translatedQuery: translation.envelope,
     };

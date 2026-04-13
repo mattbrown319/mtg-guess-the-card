@@ -144,9 +144,10 @@ Animated creature stats (for manlands, vehicles, etc.):
 Compound: {"kind":"and","clauses":[...]} | {"kind":"or","clauses":[...]} | {"kind":"not","clause":{...}}
 
 Fallback:
-  {"kind":"unsupported"} — factual question but no matching kind. Set "supported":false.
-  {"kind":"subjective"}  — opinion/art/price question. Set "supported":false.
-  {"kind":"ambiguous"}   — too ambiguous to translate. Set "supported":false.
+  {"kind":"unsupported"} — factual question about the card but no matching kind. Set "supported":false.
+  {"kind":"subjective"}  — genuinely opinion-based, no right answer. Set "supported":false.
+  {"kind":"unreliable"}  — has a real answer but we lack the data to answer reliably. Set "supported":false.
+  {"kind":"ambiguous"}   — player's intent is unclear. Set "supported":false.
 
 === RULES ===
 
@@ -161,8 +162,8 @@ MTG-specific distinctions:
 6. Generic mana ({1},{2}) and colorless mana ({C}) are different things.
 7. "Target creature" = battlefield creature. "Target creature card in graveyard" is different. "Target spell" = stack.
 8. "Keywords" (flying, haste) are NOT "abilities" (which includes activated/triggered/static). Don't use keyword_count for ability-count questions — use unsupported.
-   "Unblockable" and "can't be blocked" are NOT keywords — use grants_evasion instead.
-   "Does it become a creature?" or "does it become a 3/2?" → use unsupported (animated stats aren't in card fields).
+   "Unblockable" and "can't be blocked" are NOT keywords — use grants_evasion or has_evasion instead.
+   "Does it become a 3/2?" → use animated_power_equals and animated_toughness_equals.
 9. If a question asks about a SPECIFIC trigger timing ("start of combat?", "end of turn?") and no specific kind matches, use unsupported. Don't fall back to generic triggered_ability.
 
 Compound query rules:
@@ -173,6 +174,12 @@ Compound query rules:
 12. "Interact with [type]" / "do something with [type]" → OR across destroys, exiles, bounces, cares_about, targets_kind for that type.
 
 Refund rules:
-13. Subjective (good? competitive? see play?) or art/visual → subjective.
-14. Bare year "2024?" is ambiguous — could mean before/in/after → ambiguous. "before 2024?" or "in 2024?" is clear.
-15. When unsure about a factual question, use unsupported. Never guess.`;
+13. Subjective — genuinely opinion-based: "is it good?", "does it see play?", "is it fun?" → subjective.
+14. Unreliable — has an answer but we can't answer it reliably:
+    - Art/visual questions ("does the art show a dragon?", "what's in the picture?") → unreliable
+    - Letter/spelling questions ("does the name start with B?", "does its color end in E?") → unreliable
+    - Historical format legality ("was it modern legal in 2010?") → unreliable (we only have current legality)
+    - Price questions ("is it worth $50?", "is it expensive?") → unreliable
+    - Competitive history ("did it win a pro tour?", "was it in a world championship deck?") → unreliable
+15. Ambiguous — player's intent is unclear: bare year "2024?" → ambiguous.
+16. When unsure about a factual question, use unsupported. Never guess.`;
