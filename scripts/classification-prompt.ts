@@ -7,6 +7,12 @@ You must output a JSON object matching the schema below. Be precise and literal.
 
 CRITICAL RULES:
 
+0. ALTERNATIVE COSTS: hasAlternativeCost should ONLY be true for actual alternative ways to CAST the spell:
+   Force of Will (pitch a blue card), evoke, ninjutsu, delve, phyrexian mana in casting cost, spectacle, dash, etc.
+   Cycling is NOT an alternative casting cost — it's an activated ability. Equip is NOT an alternative casting cost.
+   Cards that let you cast OTHER spells with alternative costs (Bolas's Citadel, Dream Halls, Omniscience) →
+   set grantsAlternativeCostToOtherSpells: true, NOT hasAlternativeCost: true.
+
 1. ACTIONS vs CONDITIONS vs REFERENCES:
    - ACTIONS = things the card's effects actively DO.
      "Draw a card." → drawsCards: true
@@ -42,6 +48,20 @@ CRITICAL RULES:
 
 7. Be conservative. If genuinely unsure, set to false and note in audit.flaggedAmbiguities.
 
+9. CASTING TRIGGER SPECIFICITY: caresAboutCastingSpells is the broad field. ALSO set:
+   - caresAboutControllerCastingSpells: true if it triggers when YOU cast a spell (prowess, Young Pyromancer)
+   - caresAboutOpponentCastingSpells: true if it triggers when an OPPONENT casts a spell (Rhystic Study)
+   These are NOT mutually exclusive.
+
+10. ANIMATED CREATURES: If a card can become a creature (manlands, vehicles, planeswalkers that animate),
+    fill in the animated section with the stats of the animated form.
+    Example: Creeping Tar Pit becomes a 3/2 Elemental with "can't be blocked" →
+    animatedPower: 3, animatedToughness: 2, animatedCreatureType: "Elemental", animatedKeywords: ["can't be blocked"]
+
+11. FETCHLANDS: fetchesBasicLandOnly is true ONLY if the card says "basic land card" explicitly.
+    Scalding Tarn searches for "Island or Mountain card" which includes nonbasics → fetchesBasicLandOnly: false.
+    fetchesNonbasicLand is true if the card can fetch nonbasic lands (any fetch by type name).
+
 8. namedMechanics should include mechanic names found in the rules text or keywords:
    cycling, flashback, kicker, multikicker, cascade, storm, devoid, convoke, delve,
    dredge, madness, emerge, evoke, suspend, ninjutsu, bushido, landfall, revolt,
@@ -53,7 +73,7 @@ CRITICAL RULES:
 OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/after):
 
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "structure": {
     "hasTriggeredAbility": bool,
     "hasActivatedAbility": bool,
@@ -67,6 +87,10 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
     "hasBlockTrigger": bool,
     "hasUpkeepTrigger": bool,
     "hasCombatDamageTrigger": bool,
+    "hasBeginningOfCombatTrigger": bool,
+    "hasEndStepTrigger": bool,
+    "hasDrawStepTrigger": bool,
+    "hasEndOfCombatTrigger": bool,
     "hasModalChoice": bool,
     "modalCount": number_or_null,
     "modalKind": [],
@@ -137,6 +161,9 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
     "forcesOpponentSacrifice": bool,
     "fetchesLand": bool,
     "fetchesBasicLand": bool,
+    "fetchesBasicLandOnly": bool,
+    "fetchesNonbasicLand": bool,
+    "fetchedLandTypes": [],
     "letsPlayExtraLands": bool,
     "gainsLife": bool,
     "gainsLifeForController": bool,
@@ -156,7 +183,18 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
     "taxesOpponent": bool,
     "reducesCosts": bool,
     "phaseOut": bool,
-    "flickersOrBlinks": bool
+    "flickersOrBlinks": bool,
+    "grantsAlternativeCostToOtherSpells": bool,
+    "sacrificesSelf": bool,
+    "canCastFromGraveyard": bool,
+    "hasEvasion": bool,
+    "isRemoval": bool,
+    "protectsSelf": bool,
+    "protectsOthers": bool,
+    "providesCardAdvantage": bool,
+    "providesCardSelection": bool,
+    "payoffForCastingSpells": bool,
+    "payoffForCastingInstantsOrSorceries": bool
   },
   "conditions": {
     "caresAboutCreatures": bool,
@@ -170,6 +208,8 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
     "caresAboutLifeGainOrLoss": bool,
     "caresAboutCounters": bool,
     "caresAboutCastingSpells": bool,
+    "caresAboutControllerCastingSpells": bool,
+    "caresAboutOpponentCastingSpells": bool,
     "caresAboutInstantsAndSorceries": bool,
     "caresAboutDeath": bool,
     "caresAboutEnterBattlefield": bool,
@@ -207,6 +247,13 @@ OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/a
   "targeting": {
     "hasTargeting": bool,
     "targetKinds": []
+  },
+  "animated": {
+    "animatesSelf": bool,
+    "animatedPower": number_or_null,
+    "animatedToughness": number_or_null,
+    "animatedKeywords": [],
+    "animatedCreatureType": string_or_null
   },
   "conditionality": {
     "typeChangesConditionally": bool,
