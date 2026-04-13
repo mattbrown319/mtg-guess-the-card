@@ -48,20 +48,6 @@ CRITICAL RULES:
 
 7. Be conservative. If genuinely unsure, set to false and note in audit.flaggedAmbiguities.
 
-9. CASTING TRIGGER SPECIFICITY: caresAboutCastingSpells is the broad field. ALSO set:
-   - caresAboutControllerCastingSpells: true if it triggers when YOU cast a spell (prowess, Young Pyromancer)
-   - caresAboutOpponentCastingSpells: true if it triggers when an OPPONENT casts a spell (Rhystic Study)
-   These are NOT mutually exclusive.
-
-10. ANIMATED CREATURES: If a card can become a creature (manlands, vehicles, planeswalkers that animate),
-    fill in the animated section with the stats of the animated form.
-    Example: Creeping Tar Pit becomes a 3/2 Elemental with "can't be blocked" →
-    animatedPower: 3, animatedToughness: 2, animatedCreatureType: "Elemental", animatedKeywords: ["can't be blocked"]
-
-11. FETCHLANDS: fetchesBasicLandOnly is true ONLY if the card says "basic land card" explicitly.
-    Scalding Tarn searches for "Island or Mountain card" which includes nonbasics → fetchesBasicLandOnly: false.
-    fetchesNonbasicLand is true if the card can fetch nonbasic lands (any fetch by type name).
-
 8. namedMechanics should include mechanic names found in the rules text or keywords:
    cycling, flashback, kicker, multikicker, cascade, storm, devoid, convoke, delve,
    dredge, madness, emerge, evoke, suspend, ninjutsu, bushido, landfall, revolt,
@@ -69,6 +55,43 @@ CRITICAL RULES:
    annihilator, modular, entwine, overload, bestow, adventure, foretell, ward,
    companion, escape, mutate, spectacle, riot, adapt, afterlife, surveil, amass,
    learn, daybound, nightbound, disturb, cleave, exploit, domain, etc.
+
+9. CASTING TRIGGER SPECIFICITY: caresAboutCastingSpells is the broad field. ALSO set:
+   - caresAboutControllerCastingSpells: true if it triggers when YOU cast a spell (prowess, Young Pyromancer)
+   - caresAboutOpponentCastingSpells: true if it triggers when an OPPONENT casts a spell (Rhystic Study)
+   These are NOT mutually exclusive. Both can be true for "whenever a player casts a spell."
+
+10. ANIMATED CREATURES: If a card can become a creature (manlands, vehicles, planeswalkers that animate),
+    fill in the animated section with the stats of the animated form.
+    Example: Creeping Tar Pit becomes a 3/2 Elemental with "can't be blocked" →
+    animatedPower: 3, animatedToughness: 2, animatedCreatureType: "Elemental", animatedKeywords: ["can't be blocked"]
+    If the card does NOT animate itself, set all animated fields to false/null/[].
+
+11. FETCHLANDS: fetchesBasicLandOnly is true ONLY if the card says "basic land card" explicitly.
+    Scalding Tarn searches for "Island or Mountain card" which includes nonbasics → fetchesBasicLandOnly: false.
+    fetchesNonbasicLand is true if the card can fetch nonbasic lands (any fetch by type name).
+    fetchedLandTypes should list the specific land types: Scalding Tarn → ["Island", "Mountain"].
+
+12. POLICY FIELDS — these are higher-level judgments. Apply these criteria strictly:
+    - providesCardAdvantage: true if the card generates MORE cards/resources than it costs to use.
+      Draw 2 for 1 card = true. Cantrip (replaces itself) = false. 1-for-1 removal = false.
+      Repeatable card draw = true. "Sometimes" is NOT valid — use true or false.
+    - providesCardSelection: true if it filters or improves card quality without net card gain.
+      Scry, surveil, looting (draw+discard), top-of-library manipulation = true.
+    - hasEvasion: true if the creature itself has any form of evasion. Flying, menace, shadow,
+      fear, intimidate, skulk, horsemanship, "can't be blocked", protection = true.
+      Cards that GRANT evasion to others → grantsEvasion, not hasEvasion.
+    - isRemoval: true if the card removes permanents from the battlefield. Destroy, exile,
+      bounce, tuck, sacrifice-forcing = true. Counterspells = false (they prevent, not remove).
+    - protectsSelf: true if the card can protect ITSELF. Hexproof, indestructible, ward,
+      regenerate, phase out on itself = true.
+    - protectsOthers: true if it can protect OTHER permanents. Grants hexproof/indestructible,
+      gives protection, shields = true.
+    - payoffForCastingSpells: true if the card rewards you for casting spells with a beneficial
+      effect beyond the spells themselves. Young Pyromancer (makes tokens) = true.
+      A card that just HAS prowess = false (prowess is a keyword, not a payoff mechanism).
+    - payoffForCastingInstantsOrSorceries: true only if the payoff specifically requires
+      instants/sorceries, not any spell.
 
 OUTPUT: Return ONLY valid JSON (no markdown code blocks, no explanation before/after):
 
