@@ -2,7 +2,7 @@
 // Runtime resolvers query this deterministically. No LLM calls at runtime.
 
 export interface OracleSemanticSummary {
-  schemaVersion: 1;
+  schemaVersion: 1 | 2;
 
   // ============================================================
   // STRUCTURE — ability shapes and structural facts
@@ -21,6 +21,10 @@ export interface OracleSemanticSummary {
     hasBlockTrigger: boolean;
     hasUpkeepTrigger: boolean;
     hasCombatDamageTrigger: boolean;
+    hasBeginningOfCombatTrigger?: boolean;
+    hasEndStepTrigger?: boolean;
+    hasDrawStepTrigger?: boolean;
+    hasEndOfCombatTrigger?: boolean;
 
     hasModalChoice: boolean;
     modalCount: number | null; // number of modes, null if not modal
@@ -128,6 +132,9 @@ export interface OracleSemanticSummary {
     // Land
     fetchesLand: boolean;
     fetchesBasicLand: boolean;
+    fetchesBasicLandOnly?: boolean;
+    fetchesNonbasicLand?: boolean;
+    fetchedLandTypes?: string[];
     letsPlayExtraLands: boolean;
 
     // Life — split by who is affected
@@ -156,6 +163,19 @@ export interface OracleSemanticSummary {
     // Phase/flicker
     phaseOut: boolean;
     flickersOrBlinks: boolean; // exile and return
+
+    // v2 additions
+    grantsAlternativeCostToOtherSpells?: boolean;
+    sacrificesSelf?: boolean;
+    canCastFromGraveyard?: boolean;
+    hasEvasion?: boolean;
+    isRemoval?: boolean;
+    protectsSelf?: boolean;
+    protectsOthers?: boolean;
+    providesCardAdvantage?: boolean;
+    providesCardSelection?: boolean;
+    payoffForCastingSpells?: boolean;
+    payoffForCastingInstantsOrSorceries?: boolean;
   };
 
   // ============================================================
@@ -173,6 +193,8 @@ export interface OracleSemanticSummary {
     caresAboutLifeGainOrLoss: boolean;
     caresAboutCounters: boolean;
     caresAboutCastingSpells: boolean;
+    caresAboutControllerCastingSpells?: boolean;
+    caresAboutOpponentCastingSpells?: boolean;
     caresAboutInstantsAndSorceries: boolean;
     caresAboutDeath: boolean;
     caresAboutEnterBattlefield: boolean;
@@ -222,6 +244,17 @@ export interface OracleSemanticSummary {
   targeting: {
     hasTargeting: boolean;
     targetKinds: string[]; // "creature", "player", "spell", "permanent", "card_in_graveyard", etc.
+  };
+
+  // ============================================================
+  // ANIMATED — stats when card becomes a creature (v2)
+  // ============================================================
+  animated?: {
+    animatesSelf: boolean;
+    animatedPower: number | null;
+    animatedToughness: number | null;
+    animatedKeywords: string[];
+    animatedCreatureType: string | null;
   };
 
   // ============================================================

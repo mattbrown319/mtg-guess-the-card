@@ -73,6 +73,15 @@ const DERIVED_KINDS = new Set([
   "cares_about_colors", "cares_about_mana_spent",
   "cares_about_equipment", "cares_about_auras",
   "targets_kind",
+  // v2 additions
+  "beginning_of_combat_trigger", "end_step_trigger", "draw_step_trigger", "end_of_combat_trigger",
+  "grants_alternative_cost_to_others", "sacrifices_self", "can_cast_from_graveyard",
+  "has_evasion", "is_removal", "protects_self", "protects_others",
+  "provides_card_advantage", "provides_card_selection",
+  "payoff_for_casting_spells", "payoff_for_instants_sorceries",
+  "fetches_basic_land_only", "fetches_nonbasic_land", "fetches_land_type",
+  "cares_about_controller_casting", "cares_about_opponent_casting",
+  "animated_power_equals", "animated_toughness_equals",
 ]);
 
 export function resolveAtomicQuery(

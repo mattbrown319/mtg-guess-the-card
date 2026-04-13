@@ -45,7 +45,6 @@ P/T:
 Keywords:
   {"kind":"keyword_contains","value":"flying"}    — flying/trample/haste/flash/hexproof/etc.
   {"kind":"keyword_count_compare","operator":">","value":0} — has any keywords (>0), no keywords (=0)
-  Note: "unblockable" and "can't be blocked" are NOT keywords — use {"kind":"grants_evasion"} instead.
 
 Rarity: {"kind":"rarity_equals","value":"rare"}   — common/uncommon/rare/mythic
 Legality: {"kind":"legality_equals","format":"modern","value":"legal"} — format: standard/modern/pioneer/legacy/vintage/commander/pauper
@@ -103,9 +102,14 @@ Structure:
   {"kind":"triggered_ability"}, {"kind":"activated_ability"}, {"kind":"static_ability"}
   {"kind":"etb_ability"}, {"kind":"leaves_battlefield_trigger"}, {"kind":"dies_trigger"}
   {"kind":"attack_trigger"}, {"kind":"block_trigger"}, {"kind":"upkeep_trigger"}, {"kind":"combat_damage_trigger"}
+  {"kind":"beginning_of_combat_trigger"}     — triggers at beginning of combat
+  {"kind":"end_step_trigger"}                — triggers at end step / end of turn
+  {"kind":"draw_step_trigger"}               — triggers at draw step
+  {"kind":"end_of_combat_trigger"}           — triggers at end of combat
   {"kind":"replacement_effect"}, {"kind":"prevention_effect"}
   {"kind":"has_mana_ability"}, {"kind":"has_non_mana_ability"}
   {"kind":"has_additional_cost"}, {"kind":"has_alternative_cost"}, {"kind":"has_kicker_or_optional_cost"}
+  {"kind":"grants_alternative_cost_to_others"} — does it let you cast other spells with alt cost (Omniscience, Dream Halls)
 
 Mana production:
   {"kind":"produces_mana"}                        — does it produce/tap for mana
@@ -113,6 +117,29 @@ Mana production:
   {"kind":"produces_colored_mana"}                — taps for colored mana (at least one color, vs only colorless)
   {"kind":"produces_all_colors"}                  — taps for ALL five colors. In MTG "any color" = all 5.
   {"kind":"produces_multiple_colors"}             — produces 2+ colors
+
+Card-level concepts (v2):
+  {"kind":"provides_card_advantage"}         — does it generate card advantage
+  {"kind":"provides_card_selection"}         — does it filter/select cards (scry, surveil, looting)
+  {"kind":"has_evasion"}                     — does the creature have evasion (flying, menace, "can't be blocked", etc.)
+  {"kind":"is_removal"}                      — does it remove permanents from the battlefield
+  {"kind":"protects_self"}                   — can it protect itself (hexproof, indestructible, ward)
+  {"kind":"protects_others"}                 — can it protect other permanents
+  {"kind":"sacrifices_self"}                 — does it sacrifice itself
+  {"kind":"can_cast_from_graveyard"}         — does it let you cast from graveyard (flashback, etc.)
+  {"kind":"payoff_for_casting_spells"}       — does it reward you for casting spells (Young Pyromancer)
+  {"kind":"payoff_for_instants_sorceries"}   — specifically rewards instants/sorceries
+  {"kind":"cares_about_controller_casting"}  — triggers when YOU cast a spell
+  {"kind":"cares_about_opponent_casting"}    — triggers when OPPONENT casts a spell
+
+Fetchland specificity:
+  {"kind":"fetches_basic_land_only"}          — does it ONLY fetch basic lands (Evolving Wilds = yes, Scalding Tarn = no)
+  {"kind":"fetches_nonbasic_land"}           — can it fetch nonbasic lands
+  {"kind":"fetches_land_type","value":"Mountain"} — does it fetch a specific land type (Plains/Island/Swamp/Mountain/Forest)
+
+Animated creature stats (for manlands, vehicles, etc.):
+  {"kind":"animated_power_equals","value":3}  — when it becomes a creature, is its power X?
+  {"kind":"animated_toughness_equals","value":2} — when it becomes a creature, is its toughness X?
 
 Compound: {"kind":"and","clauses":[...]} | {"kind":"or","clauses":[...]} | {"kind":"not","clause":{...}}
 
@@ -134,6 +161,8 @@ MTG-specific distinctions:
 6. Generic mana ({1},{2}) and colorless mana ({C}) are different things.
 7. "Target creature" = battlefield creature. "Target creature card in graveyard" is different. "Target spell" = stack.
 8. "Keywords" (flying, haste) are NOT "abilities" (which includes activated/triggered/static). Don't use keyword_count for ability-count questions — use unsupported.
+   "Unblockable" and "can't be blocked" are NOT keywords — use grants_evasion instead.
+   "Does it become a creature?" or "does it become a 3/2?" → use unsupported (animated stats aren't in card fields).
 9. If a question asks about a SPECIFIC trigger timing ("start of combat?", "end of turn?") and no specific kind matches, use unsupported. Don't fall back to generic triggered_ability.
 
 Compound query rules:

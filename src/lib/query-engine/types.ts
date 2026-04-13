@@ -256,7 +256,33 @@ export type AtomicQuery =
   | { kind: "cares_about_equipment" }
   | { kind: "cares_about_auras" }
   // Parameterized targeting
-  | { kind: "targets_kind"; value: string };
+  | { kind: "targets_kind"; value: string }
+  // v2 trigger timings
+  | { kind: "beginning_of_combat_trigger" }
+  | { kind: "end_step_trigger" }
+  | { kind: "draw_step_trigger" }
+  | { kind: "end_of_combat_trigger" }
+  // v2 actions
+  | { kind: "grants_alternative_cost_to_others" }
+  | { kind: "sacrifices_self" }
+  | { kind: "can_cast_from_graveyard" }
+  | { kind: "has_evasion" }
+  | { kind: "is_removal" }
+  | { kind: "protects_self" }
+  | { kind: "protects_others" }
+  | { kind: "provides_card_advantage" }
+  | { kind: "provides_card_selection" }
+  | { kind: "payoff_for_casting_spells" }
+  | { kind: "payoff_for_instants_sorceries" }
+  | { kind: "fetches_basic_land_only" }
+  | { kind: "fetches_nonbasic_land" }
+  | { kind: "fetches_land_type"; value: string }
+  // v2 conditions
+  | { kind: "cares_about_controller_casting" }
+  | { kind: "cares_about_opponent_casting" }
+  // v2 animated
+  | { kind: "animated_power_equals"; value: number }
+  | { kind: "animated_toughness_equals"; value: number };
 
 export type StructuredQuery =
   | { kind: "and"; clauses: StructuredQuery[] }

@@ -68,6 +68,15 @@ const VALID_ATOMIC_KINDS = new Set([
   "cares_about_colors", "cares_about_mana_spent",
   "cares_about_equipment", "cares_about_auras",
   "targets_kind",
+  // v2
+  "beginning_of_combat_trigger", "end_step_trigger", "draw_step_trigger", "end_of_combat_trigger",
+  "grants_alternative_cost_to_others", "sacrifices_self", "can_cast_from_graveyard",
+  "has_evasion", "is_removal", "protects_self", "protects_others",
+  "provides_card_advantage", "provides_card_selection",
+  "payoff_for_casting_spells", "payoff_for_instants_sorceries",
+  "fetches_basic_land_only", "fetches_nonbasic_land", "fetches_land_type",
+  "cares_about_controller_casting", "cares_about_opponent_casting",
+  "animated_power_equals", "animated_toughness_equals",
 ]);
 
 const VALID_COLORS = new Set(["W", "U", "B", "R", "G"]);
@@ -134,7 +143,7 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
            "mana_cost_equals", "mana_cost_contains_symbol",
            "keyword_contains", "rarity_equals",
            "printed_in_set", "name_equals", "name_contains",
-           "targets_kind"].includes(query.kind)) {
+           "targets_kind", "fetches_land_type"].includes(query.kind)) {
         if (typeof q.value !== "string" || !q.value) {
           errors.push(`${path}: ${query.kind} requires a non-empty string 'value'`);
         }
@@ -167,6 +176,13 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
         if (!VALID_OPERATORS.has(q.operator as string)) {
           errors.push(`${path}: ${query.kind} requires valid operator (= < <= > >=), got '${q.operator}'`);
         }
+        if (typeof q.value !== "number") {
+          errors.push(`${path}: ${query.kind} requires numeric value, got '${q.value}'`);
+        }
+      }
+
+      // Animated P/T queries requiring numeric value
+      if (["animated_power_equals", "animated_toughness_equals"].includes(query.kind)) {
         if (typeof q.value !== "number") {
           errors.push(`${path}: ${query.kind} requires numeric value, got '${q.value}'`);
         }

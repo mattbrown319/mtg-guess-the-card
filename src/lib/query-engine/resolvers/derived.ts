@@ -623,6 +623,57 @@ export function resolveDerivedQuery(
       return matchesTargetKind(normalized, queryValue) ? "yes" : "no";
     }
 
+    // ==================== V2: TRIGGER TIMINGS ====================
+    case "beginning_of_combat_trigger": { const s = card.semantics; if (!s) return null; return s.structure.hasBeginningOfCombatTrigger ? "yes" : "no"; }
+    case "end_step_trigger": { const s = card.semantics; if (!s) return null; return s.structure.hasEndStepTrigger ? "yes" : "no"; }
+    case "draw_step_trigger": { const s = card.semantics; if (!s) return null; return s.structure.hasDrawStepTrigger ? "yes" : "no"; }
+    case "end_of_combat_trigger": { const s = card.semantics; if (!s) return null; return s.structure.hasEndOfCombatTrigger ? "yes" : "no"; }
+
+    // ==================== V2: NEW ACTIONS ====================
+    case "grants_alternative_cost_to_others": { const s = card.semantics; if (!s) return null; return s.actions.grantsAlternativeCostToOtherSpells ? "yes" : "no"; }
+    case "sacrifices_self": { const s = card.semantics; if (!s) return null; return s.actions.sacrificesSelf ? "yes" : "no"; }
+    case "can_cast_from_graveyard": { const s = card.semantics; if (!s) return null; return s.actions.canCastFromGraveyard ? "yes" : "no"; }
+    case "has_evasion": { const s = card.semantics; if (!s) return null; return s.actions.hasEvasion ? "yes" : "no"; }
+    case "is_removal": { const s = card.semantics; if (!s) return null; return s.actions.isRemoval ? "yes" : "no"; }
+    case "protects_self": { const s = card.semantics; if (!s) return null; return s.actions.protectsSelf ? "yes" : "no"; }
+    case "protects_others": { const s = card.semantics; if (!s) return null; return s.actions.protectsOthers ? "yes" : "no"; }
+    case "provides_card_advantage": { const s = card.semantics; if (!s) return null; return s.actions.providesCardAdvantage ? "yes" : "no"; }
+    case "provides_card_selection": { const s = card.semantics; if (!s) return null; return s.actions.providesCardSelection ? "yes" : "no"; }
+    case "payoff_for_casting_spells": { const s = card.semantics; if (!s) return null; return s.actions.payoffForCastingSpells ? "yes" : "no"; }
+    case "payoff_for_instants_sorceries": { const s = card.semantics; if (!s) return null; return s.actions.payoffForCastingInstantsOrSorceries ? "yes" : "no"; }
+    case "fetches_basic_land_only": { const s = card.semantics; if (!s) return null; return s.actions.fetchesBasicLandOnly ? "yes" : "no"; }
+    case "fetches_nonbasic_land": { const s = card.semantics; if (!s) return null; return s.actions.fetchesNonbasicLand ? "yes" : "no"; }
+
+    // ==================== V2: PARAMETERIZED FETCH ====================
+    case "fetches_land_type": {
+      const s = card.semantics;
+      if (!s) return null;
+      const types = s.actions.fetchedLandTypes || [];
+      if (types.length === 0) return "no";
+      const queryValue = (query as { kind: "fetches_land_type"; value: string }).value.toLowerCase();
+      return types.some(t => t.toLowerCase() === queryValue) ? "yes" : "no";
+    }
+
+    // ==================== V2: CONDITIONS ====================
+    case "cares_about_controller_casting": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutControllerCastingSpells ? "yes" : "no"; }
+    case "cares_about_opponent_casting": { const s = card.semantics; if (!s) return null; return s.conditions.caresAboutOpponentCastingSpells ? "yes" : "no"; }
+
+    // ==================== V2: ANIMATED ====================
+    case "animated_power_equals": {
+      const s = card.semantics;
+      if (!s || !s.animated) return null;
+      if (!s.animated.animatesSelf) return "no";
+      const target = (query as { kind: "animated_power_equals"; value: number }).value;
+      return s.animated.animatedPower === target ? "yes" : "no";
+    }
+    case "animated_toughness_equals": {
+      const s = card.semantics;
+      if (!s || !s.animated) return null;
+      if (!s.animated.animatesSelf) return "no";
+      const target = (query as { kind: "animated_toughness_equals"; value: number }).value;
+      return s.animated.animatedToughness === target ? "yes" : "no";
+    }
+
     default:
       return null;
   }
