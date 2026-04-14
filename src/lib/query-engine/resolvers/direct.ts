@@ -114,7 +114,9 @@ export function resolveDirectQuery(
 
     case "has_hybrid_mana": {
       if (!card.manaCost) return "no";
-      return /\{[^}]*\/[^}]*\}/.test(card.manaCost) ? "yes" : "no";
+      // Match hybrid like {W/U}, {R/G} but NOT phyrexian like {U/P}, {G/P}
+      const symbols = card.manaCost.match(/\{[^}]+\}/g) || [];
+      return symbols.some(s => s.includes("/") && !s.includes("/P}")) ? "yes" : "no";
     }
 
     case "colored_pips_in_cost": {
