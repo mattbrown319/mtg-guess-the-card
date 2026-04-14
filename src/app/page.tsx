@@ -98,18 +98,18 @@ export default function Home() {
     const settingsKey = `${tier}:${time}`;
     setPrefetchSettings(settingsKey);
     const excludeNames = getRecentCardNames();
-    fetch("/api/game", {
+    // Only pick a card — don't create a session yet
+    fetch("/api/game/pick", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         popularityTier: tier,
-        timeLimitSeconds: time,
         excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
       }),
     })
       .then(r => r.json())
       .then(data => {
-        if (data.sessionId) {
+        if (data.cardId) {
           setPrefetchedGame(data);
         }
       })
@@ -142,30 +142,28 @@ export default function Home() {
     setError("");
 
     try {
-      // Use prefetched game if settings match
+      // Create a game — use prefetched cardId if available and settings match
       const currentSettingsKey = `${popularityTier}:${timeLimit}`;
-      let data = null;
+      const usePrefetch = prefetchedGame && prefetchSettings === currentSettingsKey;
+      const excludeNames = getRecentCardNames();
 
-      if (prefetchedGame && prefetchSettings === currentSettingsKey) {
-        data = prefetchedGame;
-        setPrefetchedGame(null);
-      } else {
-        const excludeNames = getRecentCardNames();
-        const res = await fetch("/api/game", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            popularityTier: popularityTier || undefined,
-            timeLimitSeconds: timeLimit,
-            excludeNames: excludeNames.length > 0 ? excludeNames : undefined,
-          }),
-        });
+      const res = await fetch("/api/game", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cardId: usePrefetch ? prefetchedGame.cardId : undefined,
+          popularityTier: usePrefetch ? undefined : (popularityTier || undefined),
+          timeLimitSeconds: timeLimit,
+          excludeNames: usePrefetch ? undefined : (excludeNames.length > 0 ? excludeNames : undefined),
+        }),
+      });
 
-        data = await res.json();
-        if (!res.ok) {
-          setError(data.error || "Failed to start game");
-          return;
-        }
+      if (usePrefetch) setPrefetchedGame(null);
+
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error || "Failed to start game");
+        return;
       }
 
       if (data.cardName) {
