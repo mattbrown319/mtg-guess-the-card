@@ -44,6 +44,7 @@ export interface CardFilters {
 
 // Cache iconic card IDs in memory to avoid ORDER BY RANDOM() on Turso
 let iconicCardIds: string[] | null = null;
+let starterCardIds: string[] | null = null;
 
 async function getIconicCardIds(): Promise<string[]> {
   if (iconicCardIds) return iconicCardIds;
@@ -52,6 +53,27 @@ async function getIconicCardIds(): Promise<string[]> {
   iconicCardIds = result.rows.map(r => r.id as string);
   console.log(`[CACHE] Loaded ${iconicCardIds.length} iconic card IDs`);
   return iconicCardIds;
+}
+
+async function getStarterCardIds(): Promise<string[]> {
+  if (starterCardIds) return starterCardIds;
+  const db = await getDb();
+  const result = await db.execute("SELECT id FROM cards WHERE is_starter = 1 AND image_uri_normal IS NOT NULL");
+  starterCardIds = result.rows.map(r => r.id as string);
+  console.log(`[CACHE] Loaded ${starterCardIds.length} starter card IDs`);
+  return starterCardIds;
+}
+
+export async function getStarterCard(excludeNames?: string[]): Promise<Card | null> {
+  const ids = await getStarterCardIds();
+  const excludeSet = new Set(excludeNames || []);
+  for (let attempt = 0; attempt < 10; attempt++) {
+    const randomId = ids[Math.floor(Math.random() * ids.length)];
+    const card = await getCardById(randomId);
+    if (card && !excludeSet.has(card.name)) return card;
+  }
+  const randomId = ids[Math.floor(Math.random() * ids.length)];
+  return getCardById(randomId);
 }
 
 export async function getRandomCard(filters: CardFilters): Promise<Card | null> {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRandomCard, getCardCount, getCardById, getAllCardNames } from "@/lib/cards";
+import { getRandomCard, getStarterCard, getCardCount, getCardById, getAllCardNames } from "@/lib/cards";
 import { createGame } from "@/lib/game-store";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { v4 as uuidv4 } from "uuid";
@@ -52,11 +52,14 @@ export async function POST(request: NextRequest) {
   }
 
   const t0 = Date.now();
-  const filters = { format, popularityTier, cardType, excludeNames };
 
-  const card = await getRandomCard(filters);
+  // New players get a super-recognizable starter card for their first game
+  const useStarter = isNew && popularityTier === "popular" && !format && !cardType && !cardId;
+  const card = useStarter
+    ? await getStarterCard(excludeNames)
+    : await getRandomCard({ format, popularityTier, cardType, excludeNames });
   const t1 = Date.now();
-  console.log(`[GAME] getRandomCard: ${t1 - t0}ms`);
+  console.log(`[GAME] ${useStarter ? "getStarterCard" : "getRandomCard"}: ${t1 - t0}ms`);
   if (!card) {
     return NextResponse.json(
       { error: "No cards match those filters. Try different settings." },
