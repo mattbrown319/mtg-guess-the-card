@@ -43,3 +43,4 @@
 - [ ] Quiz builder
 - [ ] Vote weighting
 - [ ] Set filtering
+- [ ] **Akinator mode** — reverse the game: computer asks yes/no questions to guess the card the player is thinking of. Picks most informative question via entropy calculation over candidate pool. Would need full 33k card support (direct resolvers work without semantic data). Human-readable question templates for each query kind. See akinator.com for inspiration.
