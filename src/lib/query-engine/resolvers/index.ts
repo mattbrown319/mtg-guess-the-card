@@ -9,7 +9,7 @@ const DIRECT_KINDS = new Set([
   "color_contains", "color_count_compare", "color_identity_contains",
   "guild_equals", "shard_wedge_equals",
   "cmc_compare",
-  "mana_cost_equals", "mana_cost_contains_symbol", "mana_cost_has_generic",
+  "mana_cost_equals", "mana_cost_contains_symbol", "mana_cost_has_generic", "has_hybrid_mana", "colored_pips_in_cost",
   "power_compare", "toughness_compare", "power_vs_toughness",
   "keyword_contains", "keyword_count_compare",
   "rarity_equals",

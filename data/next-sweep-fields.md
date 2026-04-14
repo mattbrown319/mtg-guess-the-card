@@ -77,3 +77,7 @@ Add them to the schema and classification prompt before the next run.
 - `numberOfAbilities: number` — how many distinct abilities does the card have?
 - `rulesTextLength: "none" | "short" | "medium" | "long"` — rough categorization of text complexity
 - `requiresSpecificBoardState: boolean` — does it need other things in play to function? (equipment needs creatures, tribal payoffs need tribe members, etc.)
+
+## V3 Sweep Wishlist (post-v2 observations)
+
+- `isUncounterable: boolean` — does this spell say "can't be countered"? (Abrupt Decay, Supreme Verdict, Dovin's Veto, etc.) Triggered by "can it be countered?" Sonnet fallback on Fractured Identity game.

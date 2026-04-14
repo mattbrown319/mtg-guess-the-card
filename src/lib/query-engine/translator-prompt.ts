@@ -36,6 +36,8 @@ Mana cost:
   {"kind":"mana_cost_equals","value":"{1}{R}{R}"}  — exact mana cost. Player writes "1RR" → translate to "{1}{R}{R}"
   {"kind":"mana_cost_contains_symbol","value":"{X}"} — has X in cost, has colorless pip {C}, etc.
   {"kind":"mana_cost_has_generic"}                — has generic mana ({1},{2},{3}) in cost. Different from colorless {C}.
+  {"kind":"has_hybrid_mana"}                     — does it have hybrid mana in its cost ({W/U}, {G/P}, etc.)
+  {"kind":"colored_pips_in_cost","operator":"=","value":3} — how many colored pips in mana cost (Mantis Rider = 3, Lightning Bolt = 1)
 
 P/T:
   {"kind":"power_compare","operator":"=","value":3}

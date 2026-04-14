@@ -112,6 +112,18 @@ export function resolveDirectQuery(
       return genericMatch.length > 0 ? "yes" : "no";
     }
 
+    case "has_hybrid_mana": {
+      if (!card.manaCost) return "no";
+      return /\{[^}]*\/[^}]*\}/.test(card.manaCost) ? "yes" : "no";
+    }
+
+    case "colored_pips_in_cost": {
+      if (!card.manaCost) return "no";
+      const symbols = card.manaCost.match(/\{[^}]+\}/g) || [];
+      const coloredCount = symbols.filter(s => /[WUBRG]/.test(s)).length;
+      return compareValues(coloredCount, query.operator, query.value) ? "yes" : "no";
+    }
+
     // ==================== POWER / TOUGHNESS ====================
     case "power_compare": {
       if (card.powerIsVariable) return "sometimes";

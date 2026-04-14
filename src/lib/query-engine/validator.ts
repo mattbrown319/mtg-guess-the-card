@@ -14,6 +14,7 @@ const VALID_ATOMIC_KINDS = new Set([
   "legality_equals",
   "printed_in_set", "printed_in_year_compare",
   "name_equals", "name_contains",
+  "has_hybrid_mana", "colored_pips_in_cost",
   "produces_mana", "produces_mana_color", "produces_any_color", "produces_colored_mana", "produces_all_colors", "produces_multiple_colors",
   // Derived — pattern
   "is_permanent", "creates_tokens", "enters_tapped", "can_enter_untapped",
@@ -173,7 +174,7 @@ function validateQuery(query: StructuredQuery, errors: string[], path: string): 
       // Comparison queries requiring operator + value
       if (["cmc_compare", "power_compare", "toughness_compare",
            "color_count_compare", "keyword_count_compare",
-           "printed_in_year_compare"].includes(query.kind)) {
+           "printed_in_year_compare", "colored_pips_in_cost"].includes(query.kind)) {
         if (!VALID_OPERATORS.has(q.operator as string)) {
           errors.push(`${path}: ${query.kind} requires valid operator (= < <= > >=), got '${q.operator}'`);
         }

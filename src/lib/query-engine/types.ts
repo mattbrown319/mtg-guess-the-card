@@ -101,6 +101,8 @@ export type AtomicQuery =
   | { kind: "mana_cost_equals"; value: string }
   | { kind: "mana_cost_contains_symbol"; value: string }
   | { kind: "mana_cost_has_generic"; value?: number | null }
+  | { kind: "has_hybrid_mana" }
+  | { kind: "colored_pips_in_cost"; operator: ComparisonOperator; value: number }
 
   // Power / Toughness
   | { kind: "power_compare"; operator: ComparisonOperator; value: number }
