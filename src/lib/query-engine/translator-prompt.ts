@@ -85,6 +85,9 @@ Who is affected (when player specifies controller vs opponent):
   {"kind":"discards_for_controller"}, {"kind":"forces_opponent_discard"}
   {"kind":"gains_life_for_controller"}, {"kind":"gains_life_for_opponent"}
   {"kind":"causes_life_loss_for_controller"}, {"kind":"causes_life_loss_for_opponent"}
+  "All players" / "each player" / "everyone" → AND both controller and opponent fields:
+    "cause life loss for all players?" → AND [causes_life_loss_for_controller, causes_life_loss_for_opponent]
+    "make everyone draw?" → AND [draws_cards_for_controller, draws_cards_for_opponent]
 
 Conditions — what the card CARES ABOUT or TRIGGERS ON:
   {"kind":"cares_about_creatures"}, {"kind":"cares_about_artifacts"}, {"kind":"cares_about_enchantments"}
