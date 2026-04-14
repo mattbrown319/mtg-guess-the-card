@@ -114,9 +114,16 @@ export function resolveDirectQuery(
 
     case "has_hybrid_mana": {
       if (!card.manaCost) return "no";
-      // Match hybrid like {W/U}, {R/G} but NOT phyrexian like {U/P}, {G/P}
+      // Hybrid = two colors or color/generic: {W/U}, {R/G}, {2/W}, {C/B}, {G/U/P}
+      // NOT hybrid: pure phyrexian {U/P}, {G/P}, {C/P} (only one color + P)
       const symbols = card.manaCost.match(/\{[^}]+\}/g) || [];
-      return symbols.some(s => s.includes("/") && !s.includes("/P}")) ? "yes" : "no";
+      return symbols.some(s => {
+        if (!s.includes("/")) return false;
+        // Strip /P if present to see what's left
+        const withoutP = s.replace("/P", "");
+        // If it still has a slash, it's hybrid (two mana options remain)
+        return withoutP.includes("/");
+      }) ? "yes" : "no";
     }
 
     case "colored_pips_in_cost": {
